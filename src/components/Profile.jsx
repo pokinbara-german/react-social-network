@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 import React from 'react';
+import styles from './Profile.module.css';
 
 const Profile = () => {
-    return <div className='content'>
+    return <div className={styles.content}>
         <div>
             <img src="https://image.freepik.com/free-photo/pic-du-midi-ossau-and-ayous-lake-in-the-french-pyrenees-mountains_112793-9123.jpg"/>
         </div>
@@ -18,10 +19,10 @@ const Profile = () => {
             <div>
                 New Post
             </div>
-            <div>
+            <div className={styles.item}>
                 Post 1
             </div>
-            <div>
+            <div className={styles.item}>
                 Post 2
             </div>
         </div>

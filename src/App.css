@@ -8,22 +8,3 @@
     width: 1200px;
     margin: 0 auto;
 }
-
-.header {
-    grid-area: header;
-    background-color: green;
-}
-
-.header img {
-    width: 40px;
-}
-
-.nav {
-    grid-area: nav;
-    background-color: #00f;
-}
-
-.content {
-    grid-area: content;
-    background-color: #298ee6;
-}
