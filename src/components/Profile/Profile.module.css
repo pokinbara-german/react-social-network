@@ -13,6 +13,6 @@ and open the template in the editor.
     background-color: #298ee6;
 }
 
-.item {
-    color: greenyellow;
+.content img{
+    height: 220px;
 }

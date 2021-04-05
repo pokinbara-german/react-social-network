@@ -5,27 +5,17 @@
  */
 import React from 'react';
 import styles from './Profile.module.css';
+import MyPosts from './MyPosts/MyPosts';
 
 const Profile = () => {
     return <div className={styles.content}>
         <div>
-            <img src="https://image.freepik.com/free-photo/pic-du-midi-ossau-and-ayous-lake-in-the-french-pyrenees-mountains_112793-9123.jpg"/>
+            <img src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
         </div>
         <div>
             ava + desc
         </div>
-        <div>
-            Posts
-            <div>
-                New Post
-            </div>
-            <div className={styles.item}>
-                Post 1
-            </div>
-            <div className={styles.item}>
-                Post 2
-            </div>
-        </div>
+        <MyPosts/>
       </div>
 };
 
