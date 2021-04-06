@@ -8,7 +8,8 @@ import styles from './Profile.module.css';
 import MyPosts from './MyPosts/MyPosts';
 
 const Profile = () => {
-    return <div className={styles.content}>
+    return(
+      <div className={styles.content}>
         <div>
             <img src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
         </div>
@@ -16,7 +17,7 @@ const Profile = () => {
             ava + desc
         </div>
         <MyPosts/>
-      </div>
+      </div>);
 };
 
 export default Profile;
