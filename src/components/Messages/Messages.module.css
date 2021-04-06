@@ -7,3 +7,24 @@ and open the template in the editor.
     Created on : 01.04.2021, 16:08:52
     Author     : shadow
 */
+
+.dialogs {
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+}
+
+.dialogs .dialogs_items {
+    padding: 10px;
+}
+
+.dialogs .dialogs_items .dialog {
+    
+}
+
+.messages {
+    padding: 10px;
+}
+
+.messages .message {
+    
+}
