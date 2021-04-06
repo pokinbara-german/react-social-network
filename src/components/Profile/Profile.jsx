@@ -6,16 +6,12 @@
 import React from 'react';
 import styles from './Profile.module.css';
 import MyPosts from './MyPosts/MyPosts';
+import ProfileInfo from './ProfileInfo/ProfileInfo';
 
 const Profile = () => {
     return(
       <div className={styles.content}>
-        <div>
-            <img src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
-        </div>
-        <div>
-            ava + desc
-        </div>
+        <ProfileInfo/>
         <MyPosts/>
       </div>);
 };

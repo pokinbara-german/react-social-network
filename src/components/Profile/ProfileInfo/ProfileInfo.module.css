@@ -8,10 +8,11 @@ and open the template in the editor.
     Author     : shadow
 */
 
-.postBlock {
-    padding: 10px;
+.content img{
+    height: 220px;
 }
 
-.posts {
-    margin-top: 20px;
+
+.profileDescription {
+    padding: 10px;
 }
