@@ -8,20 +8,26 @@ import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 
 const MyPosts = () => {
+    let postsData = [
+        {id: 1, text: 'Second post!', likes: 20},
+        {id: 2, text: 'First post!', likes: 15},
+    ];
+
+    let posts = postsData.map( post => <Post message={post.text} likeCount={post.likes}/>);
+
     return(
         <div className={styles.postBlock}>
             <h3>Posts</h3>
             <div>
                 <div>
-                    <textarea></textarea>
+                    <textarea/>
                 </div>
                 <div>
                     <button>Add Post</button>
                 </div>
             </div>
             <div className={styles.posts}>
-                <Post message="Second post!" likeCount="20"/>
-                <Post message="First post!" likeCount="15"/>
+                {posts}
             </div>
         </div>);
 };
