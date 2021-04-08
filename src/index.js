@@ -3,27 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-let postsData = [
-    {id: 1, text: 'Second post!', likes: 20},
-    {id: 2, text: 'First post!', likes: 15},
-];
-
-let userList = [
-    {id:1, name: 'Andrey'},
-    {id:2, name: 'Sergey'},
-    {id:3, name: 'Misha'}
-];
-
-let messageList = [
-    {id: 1, text: 'First!'},
-    {id: 2, text: 'Second!'},
-    {id: 3, text: 'Third!'},
-];
+import state from './redux/state'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App postsData={postsData} userList={userList} messageList={messageList} />
+    <App state={state} />
   </React.StrictMode>,
   document.getElementById('root')
 );

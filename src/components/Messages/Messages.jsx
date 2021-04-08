@@ -23,8 +23,8 @@ const Message = (props) => {
 }
 
 const Messages = (props) => {
-    let users = props.userList.map(user => <DialogsItem id={user.id} name={user.name}/>);
-    let messages = props.messageList.map(message => <Message message={message.text}/>);
+    let users = props.state.userList.map(user => <DialogsItem id={user.id} name={user.name}/>);
+    let messages = props.state.messageList.map(message => <Message message={message.text}/>);
 
     return (
         <div className={styles.dialogs}>
