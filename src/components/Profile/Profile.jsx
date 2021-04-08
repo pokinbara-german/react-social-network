@@ -8,12 +8,12 @@ import styles from './Profile.module.css';
 import MyPosts from './MyPosts/MyPosts';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
-const Profile = () => {
-    return(
-      <div className={styles.content}>
-        <ProfileInfo/>
-        <MyPosts/>
-      </div>);
+const Profile = (props) => {
+    return (
+        <div className={styles.content}>
+            <ProfileInfo/>
+            <MyPosts postsData={props.postsData}/>
+        </div>);
 };
 
 export default Profile;
