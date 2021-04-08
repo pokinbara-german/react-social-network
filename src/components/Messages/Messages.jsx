@@ -19,6 +19,14 @@ const Messages = (props) => {
             </div>
             <div className={styles.messages}>
                 {messages}
+                <div>
+                    <div>
+                        <textarea/>
+                    </div>
+                    <div>
+                        <button>Send</button>
+                    </div>
+                </div>
             </div>
         </div>);
 };
