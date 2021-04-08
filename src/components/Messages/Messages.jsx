@@ -5,26 +5,12 @@
  */
 import React from 'react';
 import styles from './Messages.module.css';
-import {NavLink} from 'react-router-dom';
-
-const DialogsItem = (props) => {
-    let path = "/messages/" + props.id;
-    return (
-        <div className={styles.dialog}>
-            <NavLink to={path}>{props.name}</NavLink>
-        </div>
-    );
-}
-
-const Message = (props) => {
-    return (
-        <div className={styles.message}>{props.message}</div>
-    );
-}
+import DialogsItem from "./DialogsItem/DialogsItem";
+import Message from "./Message/Message";
 
 const Messages = (props) => {
     let users = props.state.userList.map(user => <DialogsItem id={user.id} name={user.name}/>);
-    let messages = props.state.messageList.map(message => <Message message={message.text}/>);
+    let messages = props.state.messageList.map(message => <Message message={message.text} userId={message.userId}/>);
 
     return (
         <div className={styles.dialogs}>

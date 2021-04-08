@@ -12,9 +12,9 @@ let state = {
             {id:3, name: 'Misha'}
         ],
         messageList: [
-            {id: 1, text: 'First!'},
-            {id: 2, text: 'Second!'},
-            {id: 3, text: 'Third!'},
+            {id: 1, text: 'First!', userId: 1},
+            {id: 2, text: 'Second!', userId: 2},
+            {id: 3, text: 'Third!', userId: 1},
         ]
     }
 };

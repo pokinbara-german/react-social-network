@@ -8,16 +8,19 @@ and open the template in the editor.
     Author     : shadow
 */
 
-.dialogs {
+.dialog {
+    align-content: center;
     display: grid;
-    grid-template-columns: 2fr 10fr;
+    grid-template-columns: 3fr 10fr;
+    margin: 10px 0;
+}
+.dialog img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
 }
 
-.dialogs .dialogs_items {
-    padding: 10px;
-}
-
-.messages {
-    padding: 10px;
-    background-color: aliceblue;
+.dialog a {
+    text-align: center;
+    margin: auto;
 }
