@@ -10,7 +10,7 @@ const ProfileInfo = () => {
     return (
         <div>
           <div>
-                <img src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
+                <img alt='ava' src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
           </div>
           <div className={styles.profileDescription}>
                 ava + desc
