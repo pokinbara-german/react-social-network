@@ -10,8 +10,8 @@ import Settings from './components/Settings/Settings';
 import {BrowserRouter, Route} from 'react-router-dom';
 
 function App(props) {
-    let MessagesComponent = () => <Messages state={props.state.dialogsPage}/>;
-    let ProfileComponent = () => <Profile state={props.state.profilePage}/>;
+    let MessagesComponent = () => <Messages state={props.store.getState().dialogsPage}  store={props.store}/>;
+    let ProfileComponent = () => <Profile state={props.store.getState().profilePage} store={props.store}/>;
 
     return (
         <BrowserRouter>
