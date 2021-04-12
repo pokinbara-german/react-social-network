@@ -7,26 +7,24 @@ import Messages from './components/Messages/Messages';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 
 function App(props) {
-    let MessagesComponent = () => <Messages state={props.store.getState().dialogsPage}  store={props.store}/>;
-    let ProfileComponent = () => <Profile state={props.store.getState().profilePage} store={props.store}/>;
+    let MessagesComponent = () => <Messages state={props.state.dialogsPage}  dispatch={props.dispatch}/>;
+    let ProfileComponent = () => <Profile state={props.state.profilePage} dispatch={props.dispatch}/>;
 
     return (
-        <BrowserRouter>
-            <div className="app-wrapper">
-                <Header/>
-                <Navbar/>
-                <div className="content">
-                    <Route path="/profile" component={ProfileComponent}/>
-                    <Route path="/messages" component={MessagesComponent}/>
-                    <Route path="/news" component={News}/>
-                    <Route path="/music" component={Music}/>
-                    <Route path="/settings" component={Settings}/>
-                </div>
+        <div className="app-wrapper">
+            <Header/>
+            <Navbar/>
+            <div className="content">
+                <Route path="/profile" component={ProfileComponent}/>
+                <Route path="/messages" component={MessagesComponent}/>
+                <Route path="/news" component={News}/>
+                <Route path="/music" component={Music}/>
+                <Route path="/settings" component={Settings}/>
             </div>
-        </BrowserRouter>
+        </div>
     );
 }
 

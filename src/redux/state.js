@@ -1,3 +1,6 @@
+import profileReducer from "../reducers/profileReducer";
+import dialogsReducer from "../reducers/dialogsReducer";
+
 export let store= {
     _state: {
         profilePage: {
@@ -29,36 +32,10 @@ export let store= {
     subscribe: function (observer) {
         this._subscriber = observer;
     },
-    addMessage: function (text) {
-        if (this._state === undefined) {
-            console.log('No right context. See strict mode');
-            return;
-        }
+    dispatch: function (acton) {
+        profileReducer(this._state.profilePage, acton);
+        dialogsReducer(this._state.dialogsPage, acton);
 
-        if (text === '' || text === undefined) {
-            return;
-        }
-
-        this._state.dialogsPage.messageList.push({id: 4, text: text, userId: 1});
-        this._subscriber();
-    },
-    addPost: function (text) {
-        if (this._state === undefined) {
-            console.log('No right context. See strict mode');
-            return;
-        }
-
-        this._state.profilePage.postsData.push({id: 5, text: text, likes: 0});
-        this._state.profilePage.newPostText = '';
-        this._subscriber();
-    },
-    updateNewPostText: function (text) {
-        if (this._state === undefined) {
-            console.log('No right context. See strict mode');
-            return;
-        }
-
-        this._state.profilePage.newPostText = text;
         this._subscriber();
     }
 }

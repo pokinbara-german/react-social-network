@@ -6,20 +6,18 @@
 import React from 'react';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
+import {addPostCreator, updateNewPostCreator} from "../../../reducers/profileReducer";
 
 const MyPosts = (props) => {
-    let posts = props.postsData.map(post => <Post message={post.text} likeCount={post.likes}/>);
-
-    let NewPostArea = React.createRef();
+    let posts = props.postsData.map( (post, postIndex) => <Post key={"MyPost" +postIndex} message={post.text} likeCount={post.likes}/>);
 
     let AddNewPost = () => {
-        let text = NewPostArea.current.value;
-        props.store.addPost(text);
+        props.dispatch(addPostCreator());
     };
 
-    let onNewPostChange = () => {
-        let message = NewPostArea.current.value;
-        props.store.updateNewPostText(message);
+    let onNewPostChange = (event) => {
+        let message = event.target.value;
+        props.dispatch(updateNewPostCreator(message));
     }
 
     return (
@@ -27,7 +25,7 @@ const MyPosts = (props) => {
             <h3>Posts</h3>
             <div>
                 <div>
-                    <textarea onChange={onNewPostChange} ref={NewPostArea}  value={props.newPostText}/>
+                    <textarea onChange={onNewPostChange} value={props.newPostText}/>
                 </div>
                 <div>
                     <button onClick={AddNewPost}>Add Post</button>
@@ -36,7 +34,8 @@ const MyPosts = (props) => {
             <div className={styles.posts}>
                 {posts}
             </div>
-        </div>);
+        </div>
+    );
 };
 
 export default MyPosts;
