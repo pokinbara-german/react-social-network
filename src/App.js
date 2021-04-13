@@ -3,15 +3,15 @@ import './App.css';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
-import Messages from './components/Messages/Messages';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import {Route} from 'react-router-dom';
+import MessagesContainer from "./components/Messages/MessagesContainer";
 
-function App(props) {
-    let MessagesComponent = () => <Messages state={props.state.dialogsPage}  dispatch={props.dispatch}/>;
-    let ProfileComponent = () => <Profile state={props.state.profilePage} dispatch={props.dispatch}/>;
+function App() {
+    let MessagesComponent = () => <MessagesContainer/>;
+    let ProfileComponent = () => <Profile/>;
 
     return (
         <div className="app-wrapper">

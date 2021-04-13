@@ -9,6 +9,7 @@ import {NavLink} from 'react-router-dom';
 
 const DialogsItem = (props) => {
     let path = "/messages/" + props.id;
+
     return (
         <div className={styles.dialog}>
             <img alt='ava' src="https://png.pngtree.com/element_our/20190530/ourlarge/pngtree-520-couple-avatar-boy-avatar-little-dinosaur-cartoon-cute-image_1263411.jpg"/>

@@ -6,29 +6,19 @@
 import React from 'react';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
-import {addPostCreator, updateNewPostCreator} from "../../../reducers/profileReducer";
 
 const MyPosts = (props) => {
-    let posts = props.postsData.map( (post, postIndex) => <Post key={"MyPost" +postIndex} message={post.text} likeCount={post.likes}/>);
-
-    let AddNewPost = () => {
-        props.dispatch(addPostCreator());
-    };
-
-    let onNewPostChange = (event) => {
-        let message = event.target.value;
-        props.dispatch(updateNewPostCreator(message));
-    }
+    let posts = props.profilePage.postsData.map( (post, postIndex) => <Post key={"MyPost" +postIndex} message={post.text} likeCount={post.likes}/>);
 
     return (
         <div className={styles.postBlock}>
             <h3>Posts</h3>
             <div>
                 <div>
-                    <textarea onChange={onNewPostChange} value={props.newPostText}/>
+                    <textarea onChange={props.updatePostMessage} value={props.profilePage.newPostText}/>
                 </div>
                 <div>
-                    <button onClick={AddNewPost}>Add Post</button>
+                    <button onClick={props.sendPost}>Add Post</button>
                 </div>
             </div>
             <div className={styles.posts}>

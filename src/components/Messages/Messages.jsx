@@ -7,13 +7,12 @@ import React from 'react';
 import styles from './Messages.module.css';
 import DialogsItem from "./DialogsItem/DialogsItem";
 import Message from "./Message/Message";
-import {addMessageCreator} from "../../reducers/dialogsReducer";
 
 const Messages = (props) => {
-    let users = props.state.userList.map( (user, userIndex) => {
+    let users = props.dialogsPage.userList.map( (user, userIndex) => {
         return <DialogsItem key={'User'+userIndex} id={user.id} name={user.name}/>;
     });
-    let messages = props.state.messageList.map( (message, messageIndex) => {
+    let messages = props.dialogsPage.messageList.map( (message, messageIndex) => {
         return <Message key={'Message' + messageIndex} message={message.text} userId={message.userId}/>;
     });
 
@@ -21,7 +20,7 @@ const Messages = (props) => {
 
     let AddNewMessage = () => {
         let message = NewMessageArea.current.value;
-        props.dispatch(addMessageCreator(message));
+        props.sendMessage(message);
     };
 
     return (
