@@ -10,23 +10,27 @@ const initialState = {
 };
 
 const profileReducer = (state = initialState, action) => {
+    let newState = {...state};
     switch (action.type) {
         case ADD_POST:
-            state.postsData.push({id: 5, text: state.newPostText, likes: 0});
-            state.newPostText = '';
-            break;
-        case UPDATE_NEW_POST:
-            if (action.text === '' || action.text === undefined) {
+            if (state.newPostText === '') {
                 return state;
             }
 
-            state.newPostText = action.text;
-            break;
-        default:
-            break;
-    }
+            newState.postsData = [...state.postsData];
+            newState.postsData.push({id: 5, text: state.newPostText, likes: 0});
+            newState.newPostText = '';
+            return newState;
+        case UPDATE_NEW_POST:
+            if (action.text === undefined) {
+                return state;
+            }
 
-    return state;
+            newState.newPostText = action.text;
+            return newState;
+        default:
+            return state;
+    }
 }
 
 export const addPostCreator = () => ({type: ADD_POST});

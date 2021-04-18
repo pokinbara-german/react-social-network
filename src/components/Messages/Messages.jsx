@@ -16,13 +16,6 @@ const Messages = (props) => {
         return <Message key={'Message' + messageIndex} message={message.text} userId={message.userId}/>;
     });
 
-    let NewMessageArea = React.createRef();
-
-    let AddNewMessage = () => {
-        let message = NewMessageArea.current.value;
-        props.sendMessage(message);
-    };
-
     return (
         <div className={styles.dialogs}>
             <div className={styles.dialogs_items}>
@@ -32,10 +25,10 @@ const Messages = (props) => {
                 {messages}
                 <div>
                     <div>
-                        <textarea ref={NewMessageArea}/>
+                        <textarea onChange={props.updateNewMessage} value={props.dialogsPage.newMessageText}/>
                     </div>
                     <div>
-                        <button onClick={AddNewMessage}>Send</button>
+                        <button onClick={props.sendMessage}>Send</button>
                     </div>
                 </div>
             </div>
