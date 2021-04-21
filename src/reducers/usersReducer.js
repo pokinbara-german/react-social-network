@@ -2,11 +2,13 @@ const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET-USERS';
 const NEXT_PAGE = 'NEXT-PAGE';
+const UPDATE_IS_USERS_FETCHING = 'UPDATE-IS-USERS-FETCHING';
 
 const initialStage = {
     users: [],
     currentPage: 0,
-    pageSize: 4
+    pageSize: 4,
+    isUsersFetching: false
 };
 
 const usersReducer = (state = initialStage, action) => {
@@ -40,6 +42,8 @@ const usersReducer = (state = initialStage, action) => {
             return {...state, users: [...state.users, ...action.users]}
         case NEXT_PAGE:
             return {...state, currentPage: ++state.currentPage}
+        case UPDATE_IS_USERS_FETCHING:
+            return {...state, isUsersFetching: action.isUsersFetching}
         default:
             return state;
     }
@@ -49,5 +53,6 @@ export const followCreator = (userId) => ({type: FOLLOW, userId});
 export const unfollowCreator = (userId) => ({type: UNFOLLOW, userId});
 export const setUsersCreator = (users) => ({type: SET_USERS, users});
 export const nextPageCreator = () => ({type: NEXT_PAGE});
+export const updateIsUsersFetchingCreator = (isUsersFetching) => ({type: UPDATE_IS_USERS_FETCHING, isUsersFetching});
 
 export default usersReducer;

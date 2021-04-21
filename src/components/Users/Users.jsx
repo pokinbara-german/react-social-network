@@ -1,6 +1,7 @@
 import React from "react";
 import styles from './Users.module.css';
 import userMale from "../../assets/images/user-male.png"
+import Preloader from "../../Common/Preloader/Preloader";
 
 /**
  * Returns list of users and one button for update it's list.
@@ -37,12 +38,18 @@ const Users = (props) => {
         </div>
     );
 
-    return (
-        <div>
-            {users}
+    let MoreUsersComponent = () => {
+        return (
             <div className={styles.moreUsersWrapper}>
                 <button onClick={() => props.onPageChanged()}>More Users</button>
             </div>
+        );
+    }
+
+    return (
+        <div>
+            {users}
+            {props.isUsersFetching ? <Preloader/> : <MoreUsersComponent/>}
         </div>
     );
 }

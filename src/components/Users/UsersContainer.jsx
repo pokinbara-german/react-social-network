@@ -3,7 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {followCreator, nextPageCreator, setUsersCreator, unfollowCreator} from "../../reducers/usersReducer";
+import {
+    followCreator,
+    nextPageCreator,
+    setUsersCreator,
+    unfollowCreator,
+    updateIsUsersFetchingCreator
+} from "../../reducers/usersReducer";
 import {connect} from "react-redux";
 import Users from "./Users";
 import React from "react";
@@ -24,6 +30,7 @@ class UsersComponent extends React.Component {
 
     /** Gets data from ajax on call and append it to state field */
     onPageChanged() {
+        this.props.updateUsersFetching(true);
         this.props.setNextPage();
         axios.get(
             'https://social-network.samuraijs.com/api/1.0/users',
@@ -38,6 +45,7 @@ class UsersComponent extends React.Component {
                 }
 
                 this.props.setUsers(response.data.items);
+                this.props.updateUsersFetching(false);
             });
     }
 
@@ -47,6 +55,7 @@ class UsersComponent extends React.Component {
             onPageChanged={this.onPageChanged.bind(this)}
             unfollowUser={this.props.unfollowUser}
             followUser={this.props.followUser}
+            isUsersFetching={this.props.isUsersFetching}
         />;
     }
 }
@@ -61,7 +70,8 @@ let mapStateToProps = (state) => {
         {
             usersPage: state.usersPage.users,
             currentPage: state.usersPage.currentPage,
-            pageSize: state.usersPage.pageSize
+            pageSize: state.usersPage.pageSize,
+            isUsersFetching: state.usersPage.isUsersFetching
         }
     );
 };
@@ -85,6 +95,9 @@ let mapDispatchToProps = (dispatch) => {
             },
             setNextPage: () => {
                 dispatch(nextPageCreator());
+            },
+            updateUsersFetching: (isUsersFetching) => {
+                dispatch(updateIsUsersFetchingCreator(isUsersFetching));
             }
         }
     );
