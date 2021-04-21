@@ -1,11 +1,12 @@
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET-USERS';
+const NEXT_PAGE = 'NEXT-PAGE';
 
 const initialStage = {
-    users: [
-
-    ]
+    users: [],
+    currentPage: 0,
+    pageSize: 4
 };
 
 const usersReducer = (state = initialStage, action) => {
@@ -37,13 +38,16 @@ const usersReducer = (state = initialStage, action) => {
             }
         case SET_USERS:
             return {...state, users: [...state.users, ...action.users]}
+        case NEXT_PAGE:
+            return {...state, currentPage: ++state.currentPage}
         default:
             return state;
     }
 }
 
-export const followCreator = (userId) => ({type: FOLLOW, userId: userId});
-export const unfollowCreator = (userId) => ({type: UNFOLLOW, userId: userId});
-export const setUsersCreator = (users) => ({type: SET_USERS, users: users});
+export const followCreator = (userId) => ({type: FOLLOW, userId});
+export const unfollowCreator = (userId) => ({type: UNFOLLOW, userId});
+export const setUsersCreator = (users) => ({type: SET_USERS, users});
+export const nextPageCreator = () => ({type: NEXT_PAGE});
 
 export default usersReducer;

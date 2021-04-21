@@ -21,3 +21,8 @@ and open the template in the editor.
     width: 50px;
     border-radius: 50%;
 }
+
+.moreUsersWrapper {
+    text-align: center;
+    margin: 20px;
+}
