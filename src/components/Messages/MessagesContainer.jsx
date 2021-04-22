@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {addMessageCreator, updateNewMessageCreator} from "../../reducers/dialogsReducer";
+import {sendMessage, updateNewMessage} from "../../reducers/dialogsReducer";
 import {connect} from "react-redux";
 import Messages from "./Messages";
 
@@ -13,20 +13,6 @@ let mapStateToProps = (state) => {
     );
 };
 
-let mapDispatchToProps = (dispatch) => {
-    return (
-        {
-            sendMessage: () => {
-                dispatch(addMessageCreator());
-            },
-            updateNewMessage: (event) => {
-                let message = event.target.value;
-                dispatch(updateNewMessageCreator(message));
-            }
-        }
-    );
-};
-
-const MessagesContainer = connect(mapStateToProps, mapDispatchToProps)(Messages);
+const MessagesContainer = connect(mapStateToProps, {sendMessage, updateNewMessage})(Messages);
 
 export default MessagesContainer;

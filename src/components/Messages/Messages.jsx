@@ -16,6 +16,8 @@ const Messages = (props) => {
         return <Message key={'Message' + messageIndex} message={message.text} userId={message.userId}/>;
     });
 
+    let onMessageChange = (event) => props.updateNewMessage(event.target.value);
+
     return (
         <div className={styles.dialogs}>
             <div className={styles.dialogs_items}>
@@ -25,7 +27,7 @@ const Messages = (props) => {
                 {messages}
                 <div>
                     <div>
-                        <textarea onChange={props.updateNewMessage} value={props.dialogsPage.newMessageText}/>
+                        <textarea onChange={onMessageChange} value={props.dialogsPage.newMessageText}/>
                     </div>
                     <div>
                         <button onClick={props.sendMessage}>Send</button>
