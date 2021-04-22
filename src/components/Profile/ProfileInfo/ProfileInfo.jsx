@@ -5,15 +5,21 @@
  */
 import React from 'react';
 import styles from './ProfileInfo.module.css';
+import Preloader from "../../../Common/Preloader/Preloader";
 
-const ProfileInfo = () => {
+const ProfileInfo = (props) => {
+    if (!props.profile) {
+        return <Preloader/>
+    }
+
     return (
         <div>
           <div>
-                <img alt='ava' src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
+                <img className={styles.wallpaper} alt='wallpaper' src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
           </div>
           <div className={styles.profileDescription}>
-                ava + desc
+              <img className={styles.avatar} alt='ava' src={props.profile.photos.large}/>
+              <span className={styles.name}>{props.profile.fullName}</span>
           </div>
         </div>
       );

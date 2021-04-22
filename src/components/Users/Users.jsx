@@ -2,6 +2,7 @@ import React from "react";
 import styles from './Users.module.css';
 import userMale from "../../assets/images/user-male.png"
 import Preloader from "../../Common/Preloader/Preloader";
+import {NavLink} from "react-router-dom";
 
 /**
  * Returns list of users and one button for update it's list.
@@ -14,10 +15,10 @@ const Users = (props) => {
     let users = props.usersPage.map( (user, userIndex) =>
         <div key={'User' + userIndex} className={styles.user}>
             <span>
-                <div>
+                <NavLink to={'/profile/' + user.id}>
                     <img className={styles.photo} alt='ava'
                          src={user.photos.small !== null ? user.photos.small : userMale}/>
-                </div>
+                </NavLink>
                 <div>
                     {user.followed
                         ? <button onClick={() => props.unfollowUser(user.id)}>Unfollow</button>

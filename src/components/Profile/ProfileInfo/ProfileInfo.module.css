@@ -8,11 +8,27 @@ and open the template in the editor.
     Author     : shadow
 */
 
-.content img{
-    height: 220px;
+.wallpaper {
+    width: 100%;
+    height: 350px;
+    opacity: 0.5;
 }
 
 
 .profileDescription {
     padding: 10px;
+    position: absolute;
+    top: 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.profileDescription .avatar {
+    border-radius: 30%;
+}
+
+.profileDescription .name {
+    font-size: xx-large;
+    font-weight: 600;
+    margin: 0 30px;
 }
