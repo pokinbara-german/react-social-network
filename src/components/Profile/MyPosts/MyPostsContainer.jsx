@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {addPostCreator, updateNewPostCreator} from "../../../reducers/profileReducer";
+import {sendPost, updatePostMessage} from "../../../reducers/profileReducer";
 import {connect} from "react-redux";
 import MyPosts from "./MyPosts";
 
@@ -13,20 +13,6 @@ let mapStateToProps = (state) => {
     );
 };
 
-let mapDispatchToProps = (dispatch) => {
-    return (
-        {
-            sendPost: () => {
-                dispatch(addPostCreator());
-            },
-            updatePostMessage: (event) => {
-                let message = event.target.value;
-                dispatch(updateNewPostCreator(message));
-            }
-        }
-    );
-};
-
-const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);
+const MyPostsContainer = connect(mapStateToProps, {sendPost, updatePostMessage})(MyPosts);
 
 export default MyPostsContainer;

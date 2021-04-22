@@ -10,12 +10,14 @@ import Post from './Post/Post';
 const MyPosts = (props) => {
     let posts = props.profilePage.postsData.map( (post, postIndex) => <Post key={"MyPost" +postIndex} message={post.text} likeCount={post.likes}/>);
 
+    let onPostChange = (event) => props.updatePostMessage(event.target.value);
+
     return (
         <div className={styles.postBlock}>
             <h3>Posts</h3>
             <div>
                 <div>
-                    <textarea onChange={props.updatePostMessage} value={props.profilePage.newPostText}/>
+                    <textarea onChange={onPostChange} value={props.profilePage.newPostText}/>
                 </div>
                 <div>
                     <button onClick={props.sendPost}>Add Post</button>
