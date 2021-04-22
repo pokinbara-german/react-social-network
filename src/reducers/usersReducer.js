@@ -49,10 +49,10 @@ const usersReducer = (state = initialStage, action) => {
     }
 }
 
-export const followCreator = (userId) => ({type: FOLLOW, userId});
-export const unfollowCreator = (userId) => ({type: UNFOLLOW, userId});
-export const setUsersCreator = (users) => ({type: SET_USERS, users});
-export const nextPageCreator = () => ({type: NEXT_PAGE});
-export const updateIsUsersFetchingCreator = (isUsersFetching) => ({type: UPDATE_IS_USERS_FETCHING, isUsersFetching});
+export const followUser = (userId) => ({type: FOLLOW, userId});
+export const unfollowUser = (userId) => ({type: UNFOLLOW, userId});
+export const setUsers = (users) => ({type: SET_USERS, users});
+export const setNextPage = () => ({type: NEXT_PAGE});
+export const updateUsersFetching = (isUsersFetching) => ({type: UPDATE_IS_USERS_FETCHING, isUsersFetching});
 
 export default usersReducer;

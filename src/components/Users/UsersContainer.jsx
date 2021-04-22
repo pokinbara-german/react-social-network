@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 import {
-    followCreator,
-    nextPageCreator,
-    setUsersCreator,
-    unfollowCreator,
-    updateIsUsersFetchingCreator
+    followUser,
+    unfollowUser,
+    setNextPage,
+    setUsers,
+    updateUsersFetching
 } from "../../reducers/usersReducer";
 import {connect} from "react-redux";
 import Users from "./Users";
@@ -76,33 +76,12 @@ let mapStateToProps = (state) => {
     );
 };
 
-/**
- * Returns dispatched events for connect.
- * @param {function} dispatch - redux function
- * @returns {{followUser: followUser, setNextPage: setNextPage, setUsers: setUsers, unfollowUser: unfollowUser}}
- */
-let mapDispatchToProps = (dispatch) => {
-    return (
-        {
-            followUser: (userId) => {
-                dispatch(followCreator(userId));
-            },
-            unfollowUser: (userId) => {
-                dispatch(unfollowCreator(userId));
-            },
-            setUsers: (users) => {
-                dispatch(setUsersCreator(users));
-            },
-            setNextPage: () => {
-                dispatch(nextPageCreator());
-            },
-            updateUsersFetching: (isUsersFetching) => {
-                dispatch(updateIsUsersFetchingCreator(isUsersFetching));
-            }
-        }
-    );
-};
-
-const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersComponent);
+const UsersContainer = connect(mapStateToProps, {
+    followUser,
+    unfollowUser,
+    setUsers,
+    setNextPage,
+    updateUsersFetching
+})(UsersComponent);
 
 export default UsersContainer;
