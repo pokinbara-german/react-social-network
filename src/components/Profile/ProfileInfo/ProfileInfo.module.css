@@ -25,6 +25,7 @@ and open the template in the editor.
 
 .profileDescription .avatar {
     border-radius: 30%;
+    height: 300px;
 }
 
 .profileDescription .name {

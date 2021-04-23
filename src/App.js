@@ -19,7 +19,7 @@ function App() {
             <Header/>
             <Navbar/>
             <div className="content">
-                <Route path="/profile" component={ProfileComponent}/>
+                <Route path="/profile/:userId?" component={ProfileComponent}/>
                 <Route path="/messages" component={MessagesComponent}/>
                 <Route path="/news" component={News}/>
                 <Route path="/music" component={Music}/>

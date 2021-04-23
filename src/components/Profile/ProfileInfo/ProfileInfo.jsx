@@ -6,11 +6,14 @@
 import React from 'react';
 import styles from './ProfileInfo.module.css';
 import Preloader from "../../../Common/Preloader/Preloader";
+import userMale from "../../../assets/images/user-male.png"
 
 const ProfileInfo = (props) => {
     if (!props.profile) {
         return <Preloader/>
     }
+
+    let profileAvatar = props.profile.photos.large || userMale;
 
     return (
         <div>
@@ -18,7 +21,7 @@ const ProfileInfo = (props) => {
                 <img className={styles.wallpaper} alt='wallpaper' src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
           </div>
           <div className={styles.profileDescription}>
-              <img className={styles.avatar} alt='ava' src={props.profile.photos.large}/>
+              <img className={styles.avatar} alt='ava' src={profileAvatar}/>
               <span className={styles.name}>{props.profile.fullName}</span>
           </div>
         </div>
