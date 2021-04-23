@@ -16,3 +16,8 @@ and open the template in the editor.
 .header img {
     width: 40px;
 }
+
+.loginBlock {
+    float: right;
+    margin: 15px;
+}
