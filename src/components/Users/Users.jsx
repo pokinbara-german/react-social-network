@@ -3,6 +3,7 @@ import styles from './Users.module.css';
 import userMale from "../../assets/images/user-male.png"
 import Preloader from "../../Common/Preloader/Preloader";
 import {NavLink} from "react-router-dom";
+import {Api} from "../API/api";
 
 /**
  * Returns list of users and one button for update it's list.
@@ -21,8 +22,20 @@ const Users = (props) => {
                 </NavLink>
                 <div>
                     {user.followed
-                        ? <button onClick={() => props.unfollowUser(user.id)}>Unfollow</button>
-                        : <button onClick={() => props.followUser(user.id)}>Follow</button>
+                        ? <button onClick={() => {
+                            Api.Users.unfollow(user.id).then(isSuccessful => {
+                                if (isSuccessful) {
+                                    props.unfollowUser(user.id);
+                                }
+                            });
+                        }}>Unfollow</button>
+                        : <button onClick={() => {
+                            Api.Users.follow(user.id).then(isSuccessful => {
+                                if (isSuccessful) {
+                                    props.followUser(user.id);
+                                }
+                            });
+                        }}>Follow</button>
                     }
                 </div>
             </span>

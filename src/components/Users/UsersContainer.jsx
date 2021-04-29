@@ -13,7 +13,7 @@ import {
 import {connect} from "react-redux";
 import Users from "./Users";
 import React from "react";
-import axios from "axios";
+import {Api} from "../API/api";
 
 class UsersComponent extends React.Component {
     /** Gets data for page on component first render */
@@ -32,21 +32,15 @@ class UsersComponent extends React.Component {
     onPageChanged() {
         this.props.updateUsersFetching(true);
         this.props.setNextPage();
-        axios.get(
-            'https://social-network.samuraijs.com/api/1.0/users',
-            {params: {
-                    count: this.props.pageSize,
-                    page: this.props.currentPage+1,
-                }}
-        )
-            .then( response => {
-                if (response.data.items.length === 0) {
-                    return;
-                }
 
-                this.props.setUsers(response.data.items);
-                this.props.updateUsersFetching(false);
-            });
+        Api.Users.getUsers(this.props.pageSize, this.props.currentPage).then(data => {
+            if (data === null) {
+                return;
+            }
+
+            this.props.setUsers(data.items);
+            this.props.updateUsersFetching(false);
+        });
     }
 
     render() {
