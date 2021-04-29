@@ -6,21 +6,21 @@
 import React from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import axios from "axios";
 import {setProfile} from "../../reducers/profileReducer";
 import {withRouter} from 'react-router-dom';
+import {Api} from "../API/api";
 
 class ProfileContainer extends React.Component {
     componentDidMount() {
         let userId = this.props.match.params.userId || 2;
 
-        axios.get('https://social-network.samuraijs.com/api/1.0/profile/' + userId)
-            .then( response => {
-                if (response.data.length === 0) {
+       Api.Profile.getProfile(userId)
+            .then( data => {
+                if (data === null) {
                     return;
                 }
 
-                this.props.setProfile(response.data);
+                this.props.setProfile(data);
             });
     }
     render() {

@@ -46,5 +46,17 @@ export const Api = {
                 return null;
             });
         }
+    },
+    Profile: {
+        getProfile: (userId) => {
+            return defaultApi.get('profile/' + userId)
+                .then( response => {
+                    if (response.data.length === 0) {
+                        return null;
+                    }
+
+                    return response.data;
+                });
+        }
     }
 }
