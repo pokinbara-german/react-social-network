@@ -1,3 +1,5 @@
+import {Api} from "../components/API/api";
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET-USERS';
@@ -64,5 +66,45 @@ export const setUsers = (users) => ({type: SET_USERS, users});
 export const setNextPage = () => ({type: NEXT_PAGE});
 export const updateUsersFetching = (isUsersFetching) => ({type: UPDATE_IS_USERS_FETCHING, isUsersFetching});
 export const updateFollowingFetching = (isFetching, userId) => ({type: UPDATE_IS_FOLLOWING_FETCHING, isFetching, userId});
+
+export const getUsers = (pageSize, currentPage) => {
+    return (dispatch) => {
+        dispatch(updateUsersFetching(true));
+        dispatch(setNextPage());
+
+        Api.Users.getUsers(pageSize, currentPage).then(data => {
+            if (data === null) {
+                return;
+            }
+
+            dispatch(setUsers(data.items));
+            dispatch(updateUsersFetching(false));
+        });
+    }
+}
+
+export const follow = (userId) => {
+    return (dispatch) => {
+        dispatch(updateFollowingFetching(true, userId));
+        Api.Users.follow(userId).then(isSuccessful => {
+            if (isSuccessful) {
+                dispatch(followUser(userId));
+            }
+            dispatch(updateFollowingFetching(false, userId));
+        });
+    }
+}
+
+export const unfollow = (userId) => {
+    return (dispatch) => {
+        dispatch(updateFollowingFetching(true, userId));
+        Api.Users.unfollow(userId).then(isSuccessful => {
+            if (isSuccessful) {
+                dispatch(unfollowUser(userId));
+            }
+            dispatch(updateFollowingFetching(false, userId));
+        });
+    }
+}
 
 export default usersReducer;

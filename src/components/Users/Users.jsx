@@ -3,7 +3,6 @@ import styles from './Users.module.css';
 import userMale from "../../assets/images/user-male.png"
 import Preloader from "../../Common/Preloader/Preloader";
 import {NavLink} from "react-router-dom";
-import {Api} from "../API/api";
 
 /**
  * Returns list of users and one button for update it's list.
@@ -22,23 +21,9 @@ const Users = (props) => {
                 </NavLink>
                 <div>
                     {user.followed
-                        ? <button onClick={() => {
-                            props.updateFollowingFetching(true, user.id);
-                            Api.Users.unfollow(user.id).then(isSuccessful => {
-                                if (isSuccessful) {
-                                    props.unfollowUser(user.id);
-                                }
-                                props.updateFollowingFetching(false, user.id);
-                            });}}
+                        ? <button onClick={() => {props.unfollowUser(user.id)}}
                                   disabled={props.followingInProgress.some(id => id === user.id)}>Unfollow</button>
-                        : <button onClick={() => {
-                            props.updateFollowingFetching(true, user.id);
-                            Api.Users.follow(user.id).then(isSuccessful => {
-                                if (isSuccessful) {
-                                    props.followUser(user.id);
-                                }
-                                props.updateFollowingFetching(false, user.id);
-                            });}}
+                        : <button onClick={() => {props.followUser(user.id)}}
                                   disabled={props.followingInProgress.some(id => id === user.id)}>Follow</button>
                     }
                 </div>
