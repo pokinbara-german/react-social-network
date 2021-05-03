@@ -8,7 +8,8 @@ import {
     unfollowUser,
     setNextPage,
     setUsers,
-    updateUsersFetching
+    updateUsersFetching,
+    updateFollowingFetching
 } from "../../reducers/usersReducer";
 import {connect} from "react-redux";
 import Users from "./Users";
@@ -50,6 +51,8 @@ class UsersComponent extends React.Component {
             unfollowUser={this.props.unfollowUser}
             followUser={this.props.followUser}
             isUsersFetching={this.props.isUsersFetching}
+            followingInProgress={this.props.followingInProgress}
+            updateFollowingFetching={this.props.updateFollowingFetching}
         />;
     }
 }
@@ -65,7 +68,8 @@ let mapStateToProps = (state) => {
             usersPage: state.usersPage.users,
             currentPage: state.usersPage.currentPage,
             pageSize: state.usersPage.pageSize,
-            isUsersFetching: state.usersPage.isUsersFetching
+            isUsersFetching: state.usersPage.isUsersFetching,
+            followingInProgress: state.usersPage.followingInProgress
         }
     );
 };
@@ -75,7 +79,8 @@ const UsersContainer = connect(mapStateToProps, {
     unfollowUser,
     setUsers,
     setNextPage,
-    updateUsersFetching
+    updateUsersFetching,
+    updateFollowingFetching
 })(UsersComponent);
 
 export default UsersContainer;

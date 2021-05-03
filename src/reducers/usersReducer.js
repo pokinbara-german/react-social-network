@@ -3,12 +3,14 @@ const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET-USERS';
 const NEXT_PAGE = 'NEXT-PAGE';
 const UPDATE_IS_USERS_FETCHING = 'UPDATE-IS-USERS-FETCHING';
+const UPDATE_IS_FOLLOWING_FETCHING = 'UPDATE-IS-FOLLOWING-FETCHING';
 
 const initialStage = {
     users: [],
     currentPage: 0,
     pageSize: 4,
-    isUsersFetching: false
+    isUsersFetching: false,
+    followingInProgress: []
 };
 
 const usersReducer = (state = initialStage, action) => {
@@ -44,6 +46,13 @@ const usersReducer = (state = initialStage, action) => {
             return {...state, currentPage: ++state.currentPage}
         case UPDATE_IS_USERS_FETCHING:
             return {...state, isUsersFetching: action.isUsersFetching}
+        case UPDATE_IS_FOLLOWING_FETCHING:
+            return {...state,
+                followingInProgress:
+                    action.isFetching
+                    ? [...state.followingInProgress, action.userId]
+                    : [state.followingInProgress.filter( id => id !== action.userId)]
+            }
         default:
             return state;
     }
@@ -54,5 +63,6 @@ export const unfollowUser = (userId) => ({type: UNFOLLOW, userId});
 export const setUsers = (users) => ({type: SET_USERS, users});
 export const setNextPage = () => ({type: NEXT_PAGE});
 export const updateUsersFetching = (isUsersFetching) => ({type: UPDATE_IS_USERS_FETCHING, isUsersFetching});
+export const updateFollowingFetching = (isFetching, userId) => ({type: UPDATE_IS_FOLLOWING_FETCHING, isFetching, userId});
 
 export default usersReducer;

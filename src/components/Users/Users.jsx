@@ -13,7 +13,7 @@ import {Api} from "../API/api";
  */
 const Users = (props) => {
     //TODO: move it to component
-    let users = props.usersPage.map( (user, userIndex) =>
+    let users = props.usersPage.map((user, userIndex) =>
         <div key={'User' + userIndex} className={styles.user}>
             <span>
                 <NavLink to={'/profile/' + user.id}>
@@ -23,19 +23,23 @@ const Users = (props) => {
                 <div>
                     {user.followed
                         ? <button onClick={() => {
+                            props.updateFollowingFetching(true, user.id);
                             Api.Users.unfollow(user.id).then(isSuccessful => {
                                 if (isSuccessful) {
                                     props.unfollowUser(user.id);
                                 }
-                            });
-                        }}>Unfollow</button>
+                                props.updateFollowingFetching(false, user.id);
+                            });}}
+                                  disabled={props.followingInProgress.some(id => id === user.id)}>Unfollow</button>
                         : <button onClick={() => {
+                            props.updateFollowingFetching(true, user.id);
                             Api.Users.follow(user.id).then(isSuccessful => {
                                 if (isSuccessful) {
                                     props.followUser(user.id);
                                 }
-                            });
-                        }}>Follow</button>
+                                props.updateFollowingFetching(false, user.id);
+                            });}}
+                                  disabled={props.followingInProgress.some(id => id === user.id)}>Follow</button>
                     }
                 </div>
             </span>
