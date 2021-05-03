@@ -1,3 +1,5 @@
+import {Api} from "../components/API/api";
+
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST = 'UPDATE-NEW-POST';
 const SET_PROFILE = 'SET-PROFILE';
@@ -39,5 +41,18 @@ const profileReducer = (state = initialState, action) => {
 export const sendPost = () => ({type: ADD_POST});
 export const updatePostMessage = (text) => ({type: UPDATE_NEW_POST, text});
 export const setProfile = (profile) => ({type: SET_PROFILE, profile});
+
+export const getProfile = (userId) => (dispatch) => {
+    let id = userId || 2;
+
+    Api.Profile.getProfile(id)
+        .then( data => {
+            if (data === null) {
+                return;
+            }
+
+            dispatch(setProfile(data));
+        });
+}
 
 export default profileReducer;
