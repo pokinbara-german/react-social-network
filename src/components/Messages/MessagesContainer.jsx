@@ -6,6 +6,8 @@
 import {sendMessage, updateNewMessage} from "../../reducers/dialogsReducer";
 import {connect} from "react-redux";
 import Messages from "./Messages";
+import withAuthRedirect from "../../Hocs/withAuthRedirect";
+import {compose} from "redux";
 
 let mapStateToProps = (state) => {
     return (
@@ -13,6 +15,6 @@ let mapStateToProps = (state) => {
     );
 };
 
-const MessagesContainer = connect(mapStateToProps, {sendMessage, updateNewMessage})(Messages);
+let ComposedComponent = compose(withAuthRedirect)(Messages);
 
-export default MessagesContainer;
+export default connect(mapStateToProps, {sendMessage, updateNewMessage})(ComposedComponent);
