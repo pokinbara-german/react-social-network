@@ -7,6 +7,7 @@ import React from 'react';
 import styles from './ProfileInfo.module.css';
 import Preloader from "../../../Common/Preloader/Preloader";
 import userMale from "../../../assets/images/user-male.png"
+import ProfileStatus from "./ProfileStatus";
 
 const ProfileInfo = (props) => {
     if (!props.profile) {
@@ -22,7 +23,10 @@ const ProfileInfo = (props) => {
           </div>
           <div className={styles.profileDescription}>
               <img className={styles.avatar} alt='ava' src={profileAvatar}/>
-              <span className={styles.name}>{props.profile.fullName}</span>
+              <div className={styles.profileDescriptionWrapper}>
+                  <span className={styles.name}>{props.profile.fullName}</span>
+                  <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+              </div>
           </div>
         </div>
       );
