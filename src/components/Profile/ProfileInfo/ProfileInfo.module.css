@@ -20,7 +20,13 @@ and open the template in the editor.
     position: absolute;
     top: 60px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
+}
+
+.profileDescriptionWrapper {
+    margin: 0 30px;
+    display: grid;
+    grid-template-rows: 0fr 1fr;
 }
 
 .profileDescription .avatar {
@@ -31,5 +37,8 @@ and open the template in the editor.
 .profileDescription .name {
     font-size: xx-large;
     font-weight: 600;
-    margin: 0 30px;
+}
+
+.statusInput {
+    max-height: 20px;
 }
