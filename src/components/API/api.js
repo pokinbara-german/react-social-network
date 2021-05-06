@@ -57,6 +57,18 @@ export const Api = {
 
                     return response.data;
                 });
+        },
+        getStatus: (userId) => {
+            return defaultApi.get('profile/status/' + userId)
+                .then( response => {
+                    return response.data;
+                });
+        },
+        updateStatus: (status) => {
+            return defaultApi.put('profile/status', {status})
+                .then( response => {
+                    return response.data.resultCode === 0;
+                });
         }
     }
 }
