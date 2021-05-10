@@ -16,7 +16,7 @@ const initialStage = {
 const dialogReducer = (state = initialStage, action) => {
     switch (action.type) {
         case ADD_MESSAGE:
-            if (state.newMessageText === '') {
+            if (action.newMessage === undefined) {
                 return state;
             }
 
