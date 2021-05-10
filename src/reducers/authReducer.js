@@ -37,4 +37,14 @@ export const getAuth = () => (dispatch) => {
     });
 }
 
+export const getLogin = (email, password, rememberMe) => (dispatch) => {
+    Api.Auth.Login(email, password, rememberMe).then(data => {
+        if (data === null) {
+            return;
+        }
+
+        console.log(data);
+    });
+}
+
 export default authReducer;

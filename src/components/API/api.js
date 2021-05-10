@@ -45,6 +45,15 @@ export const Api = {
 
                 return null;
             });
+        },
+        Login: (email, password, rememberMe) => {
+            return defaultApi.post('auth/login/', {email, password, rememberMe}).then(response => {
+                if (response.data.resultCode === 0) {
+                    return response.data.data;
+                }
+
+                return null;
+            });
         }
     },
     Profile: {
