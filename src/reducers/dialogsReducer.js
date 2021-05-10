@@ -1,5 +1,4 @@
 const ADD_MESSAGE = 'ADD-MESSAGE';
-const UPDATE_NEW_MESSAGE = 'UPDATE-NEW-MESSAGE';
 
 const initialStage = {
     userList: [
@@ -11,8 +10,7 @@ const initialStage = {
         {id: 1, text: 'First!', userId: 1},
         {id: 2, text: 'Second!', userId: 2},
         {id: 3, text: 'Third!', userId: 1},
-    ],
-    newMessageText: ''
+    ]
 };
 
 const dialogReducer = (state = initialStage, action) => {
@@ -24,24 +22,13 @@ const dialogReducer = (state = initialStage, action) => {
 
             return {
                 ...state,
-                messageList: [...state.messageList, {id: 4, text: state.newMessageText, userId: 1}],
-                newMessageText: ''
-            };
-        case UPDATE_NEW_MESSAGE:
-            if (action.text === undefined) {
-                return state;
-            }
-
-            return {
-                ...state,
-                newMessageText: action.text
+                messageList: [...state.messageList, {id: 4, text: action.newMessage, userId: 1}]
             };
         default:
             return state;
     }
 }
 
-export const sendMessage = () => ({type: ADD_MESSAGE});
-export const updateNewMessage = (text) => ({type: UPDATE_NEW_MESSAGE, text: text});
+export const sendMessage = (newMessage) => ({type: ADD_MESSAGE, newMessage});
 
 export default dialogReducer;
