@@ -16,10 +16,6 @@ const initialStage = {
 const dialogReducer = (state = initialStage, action) => {
     switch (action.type) {
         case ADD_MESSAGE:
-            if (action.newMessage === undefined) {
-                return state;
-            }
-
             return {
                 ...state,
                 messageList: [...state.messageList, {id: 4, text: action.newMessage, userId: 1}]

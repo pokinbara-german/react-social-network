@@ -8,6 +8,10 @@ import styles from './Messages.module.css';
 import DialogsItem from "./DialogsItem/DialogsItem";
 import Message from "./Message/Message";
 import {Field, reduxForm} from "redux-form";
+import {maxLengthCreator, required} from "../../utils/validators";
+import TextArea from "../../Common/FormComponents/TextArea/TextArea";
+
+let maxLength10 = maxLengthCreator(10);
 
 const Messages = (props) => {
     let users = props.dialogsPage.userList.map( (user, userIndex) => {
@@ -38,7 +42,7 @@ const AddMessageForm = (props) => {
     return(
         <form onSubmit={props.handleSubmit}>
             <div>
-                <Field name='newMessage' component='textarea' placeholder='enter message'/>
+                <Field name='newMessage' component={TextArea} placeholder='enter message' validate={[required, maxLength10]}/>
             </div>
             <div>
                 <button>Send</button>
