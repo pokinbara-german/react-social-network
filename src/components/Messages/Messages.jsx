@@ -9,7 +9,7 @@ import DialogsItem from "./DialogsItem/DialogsItem";
 import Message from "./Message/Message";
 import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../utils/validators";
-import TextArea from "../../Common/FormComponents/TextArea/TextArea";
+import {TextArea} from "../../Common/FormComponents/FieldsComponents/FieldsComponents";
 
 let maxLength10 = maxLengthCreator(10);
 
