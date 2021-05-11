@@ -54,6 +54,11 @@ export const Api = {
 
                 return null;
             });
+        },
+        Logout: () => {
+            return defaultApi.delete('auth/login/').then(response => {
+                return response.data.resultCode === 0;
+            });
         }
     },
     Profile: {

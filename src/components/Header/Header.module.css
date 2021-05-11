@@ -21,3 +21,7 @@ and open the template in the editor.
     float: right;
     margin: 15px;
 }
+
+.logoutButton {
+    margin: 0 10px;
+}
