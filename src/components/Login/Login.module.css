@@ -16,3 +16,7 @@ and open the template in the editor.
 .loginForm .loginInput {
     margin: 5px 0;
 }
+
+.checkboxWrapper {
+    display: flex;
+}
