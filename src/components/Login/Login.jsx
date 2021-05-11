@@ -28,8 +28,19 @@ const Login = (props) => {
 const LoginForm = (props) => {
     return (
         <form className={styles.loginForm} onSubmit={props.handleSubmit}>
-            <Field className={styles.loginInput} placeholder={'Login'} name={'login'} component={Input} validate={[required, maxLength30]}/>
-            <Field className={styles.loginInput} placeholder={'Password'} name={'password'} component={Input} type={'password'} validate={[required, maxLength30]}/>
+            <Field className={styles.loginInput}
+                   placeholder={'Login'}
+                   name={'login'}
+                   component={Input}
+                   validate={[required, maxLength30]}
+            />
+            <Field className={styles.loginInput}
+                   placeholder={'Password'}
+                   name={'password'}
+                   component={Input}
+                   type={'password'}
+                   validate={[required, maxLength30]}
+            />
             <div className={styles.checkboxWrapper}>
                 <Field type={'checkbox'} name={'rememberMe'} component={Input}/>
                 <span>remember me</span>
