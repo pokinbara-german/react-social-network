@@ -49,7 +49,11 @@ export const Api = {
         Login: (email, password, rememberMe) => {
             return defaultApi.post('auth/login/', {email, password, rememberMe}).then(response => {
                 if (response.data.resultCode === 0) {
-                    return response.data.data;
+                    return {result: response.data.data};
+                } else if (response.data.resultCode === 1 || response.data.resultCode === 10) {
+                    let message = response.data.messages.length ? response.data.messages[0] : 'Unknown error';
+
+                    return {error: message};
                 }
 
                 return null;

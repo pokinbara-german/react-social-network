@@ -20,3 +20,7 @@ and open the template in the editor.
 .checkboxWrapper {
     display: flex;
 }
+
+.error {
+    color: red;
+}

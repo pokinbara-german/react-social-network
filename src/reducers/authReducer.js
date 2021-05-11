@@ -1,4 +1,5 @@
 import {Api} from "../components/API/api";
+import {stopSubmit} from "redux-form";
 
 const SET_AUTH = 'SET-AUTH';
 
@@ -38,8 +39,8 @@ export const getAuth = () => (dispatch) => {
 
 export const login = (email, password, rememberMe) => (dispatch) => {
     Api.Auth.Login(email, password, rememberMe).then(data => {
-        if (data === null) {
-            return;
+        if (data.error) {
+            return dispatch(stopSubmit('login', {_error: data.error}));
         }
 
         dispatch(getAuth());
