@@ -27,7 +27,7 @@ const authReducer = (state = initialStage, action) => {
 export const setAuth = (id, email, login, isAuth) => ({type: SET_AUTH, data: {id, email, login, isAuth}});
 
 export const getAuth = () => (dispatch) => {
-    Api.Auth.Me().then(data => {
+    return Api.Auth.Me().then(data => {
         if (data === null) {
             return;
         }
