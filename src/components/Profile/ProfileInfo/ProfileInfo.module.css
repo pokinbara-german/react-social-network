@@ -26,7 +26,7 @@ and open the template in the editor.
 .profileDescriptionWrapper {
     margin: 0 30px;
     display: grid;
-    grid-template-rows: 0fr 1fr;
+    grid-template-rows: 0fr 0fr 1fr;
 }
 
 .profileDescription .avatar {
