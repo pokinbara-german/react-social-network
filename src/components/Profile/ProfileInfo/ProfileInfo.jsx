@@ -8,6 +8,7 @@ import styles from './ProfileInfo.module.css';
 import Preloader from "../../../Common/Preloader/Preloader";
 import userMale from "../../../assets/images/user-male.png"
 import ProfileStatus from "./ProfileStatus";
+import ProfileStatusWithHook from "./ProfileStatusWithHook";
 
 const ProfileInfo = (props) => {
     if (!props.profile) {
@@ -25,7 +26,7 @@ const ProfileInfo = (props) => {
               <img className={styles.avatar} alt='ava' src={profileAvatar}/>
               <div className={styles.profileDescriptionWrapper}>
                   <span className={styles.name}>{props.profile.fullName}</span>
-                  <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+                  <ProfileStatusWithHook status={props.status} updateStatus={props.updateStatus} statusFetching={props.statusFetching}/>
               </div>
           </div>
         </div>

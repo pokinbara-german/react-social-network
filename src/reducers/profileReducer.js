@@ -3,6 +3,7 @@ import {Api} from "../components/API/api";
 const ADD_POST = 'ADD-POST';
 const SET_PROFILE = 'SET-PROFILE';
 const SET_STATUS = 'SET-STATUS';
+const TOGGLE_STATUS_FETCHING = 'TOGGLE-STATUS-FETCHING';
 
 const initialState = {
     postsData: [
@@ -10,6 +11,7 @@ const initialState = {
         {id: 2, text: 'First post!', likes: 15},
     ],
     profile: null,
+    statusFetching: false,
     status: ''
 };
 
@@ -28,6 +30,8 @@ const profileReducer = (state = initialState, action) => {
             return {...state, profile: action.profile};
         case SET_STATUS:
             return {...state, status: action.status};
+        case TOGGLE_STATUS_FETCHING:
+            return {...state, statusFetching: !state.statusFetching};
         default:
             return state;
     }
@@ -36,6 +40,7 @@ const profileReducer = (state = initialState, action) => {
 export const sendPost = (newPost) => ({type: ADD_POST, newPost});
 const setProfile = (profile) => ({type: SET_PROFILE, profile});
 const setStatus = (status) => ({type: SET_STATUS, status});
+const toggleStatusFetching = () => ({type: TOGGLE_STATUS_FETCHING});
 
 export const getStatus = (userId) => (dispatch) => {
     let id = userId || 16702;
@@ -51,6 +56,8 @@ export const getStatus = (userId) => (dispatch) => {
 }
 
 export const updateStatus = (status) => (dispatch) => {
+    dispatch(toggleStatusFetching());
+
     Api.Profile.updateStatus(status)
         .then( data => {
             if (!data) {
@@ -58,6 +65,7 @@ export const updateStatus = (status) => (dispatch) => {
             }
 
             dispatch(setStatus(status));
+            dispatch(toggleStatusFetching());
         });
 }
 
