@@ -1,12 +1,8 @@
 import React from "react";
-import {Redirect, withRouter} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 
-const StartPage = (props) => {
-    if (props.match && props.match.url === '/' && props.match.isExact) {
-        return <Redirect to={'/profile'}/>;
-    }
-
-    return <div/>;
+const StartPage = () => {
+    return <Redirect to={'/profile'}/>;
 }
 
-export default withRouter(StartPage);
+export default StartPage;
