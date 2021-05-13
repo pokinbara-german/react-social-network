@@ -13,6 +13,7 @@ import {Component} from "react";
 import {connect} from "react-redux";
 import {makeInit} from "./reducers/appReducer";
 import Preloader from "./Common/Preloader/Preloader";
+import StartPage from "./components/StartPage/StartPage";
 
 class App extends Component {
     componentDidMount() {
@@ -32,6 +33,7 @@ class App extends Component {
                 <HeaderContainer/>
                 <Navbar/>
                 <div className="content">
+                    <Route path="/" component={StartPage}/>
                     <Route path="/profile/:userId?" component={ProfileComponent}/>
                     <Route path="/messages" component={MessagesComponent}/>
                     <Route path="/news" component={News}/>
