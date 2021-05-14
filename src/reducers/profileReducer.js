@@ -28,9 +28,11 @@ const profileReducer = (state = initialState, action) => {
                 postsData: [...state.postsData, {id: 5, text: action.newPost, likes: 0}]
             };
         case DELETE_POST:
-            return {...state, postsData: state.postsData.filter(post => {
-                return post.id !== action.postId;
-                })};
+            return {
+                ...state, postsData: state.postsData.filter(post => {
+                    return post.id !== action.postId;
+                })
+            };
         case SET_PROFILE:
             return {...state, profile: action.profile};
         case SET_STATUS:
@@ -48,44 +50,41 @@ const setProfile = (profile) => ({type: SET_PROFILE, profile});
 const setStatus = (status) => ({type: SET_STATUS, status});
 const toggleStatusFetching = () => ({type: TOGGLE_STATUS_FETCHING});
 
-export const getStatus = (userId) => (dispatch) => {
+export const getStatus = (userId) => async (dispatch) => {
     let id = userId || 16702;
 
-    Api.Profile.getStatus(id)
-        .then( data => {
-            if (data === null) {
-                return;
-            }
+    let data = await Api.Profile.getStatus(id);
 
-            dispatch(setStatus(data));
-        });
+    if (data === null) {
+        return;
+    }
+
+    dispatch(setStatus(data));
 }
 
-export const updateStatus = (status) => (dispatch) => {
+export const updateStatus = (status) => async (dispatch) => {
     dispatch(toggleStatusFetching());
 
-    Api.Profile.updateStatus(status)
-        .then( data => {
-            if (!data) {
-                return;
-            }
+    let data = await Api.Profile.updateStatus(status);
 
-            dispatch(setStatus(status));
-            dispatch(toggleStatusFetching());
-        });
+    if (!data) {
+        return;
+    }
+
+    dispatch(setStatus(status));
+    dispatch(toggleStatusFetching());
 }
 
-export const getProfile = (userId) => (dispatch) => {
+export const getProfile = (userId) => async (dispatch) => {
     let id = userId || 16702;
 
-    Api.Profile.getProfile(id)
-        .then( data => {
-            if (data === null) {
-                return;
-            }
+    let data = await Api.Profile.getProfile(id);
 
-            dispatch(setProfile(data));
-        });
+    if (data === null) {
+        return;
+    }
+
+    dispatch(setProfile(data));
 }
 
 export default profileReducer;

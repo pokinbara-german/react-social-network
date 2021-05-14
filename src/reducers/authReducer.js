@@ -26,35 +26,35 @@ const authReducer = (state = initialStage, action) => {
 
 export const setAuth = (id, email, login, isAuth) => ({type: SET_AUTH, data: {id, email, login, isAuth}});
 
-export const getAuth = () => (dispatch) => {
-    return Api.Auth.Me().then(data => {
-        if (data === null) {
-            return;
-        }
+export const getAuth = () => async (dispatch) => {
+    let data = await Api.Auth.Me();
 
-        let {id, email, login} = data;
-        dispatch(setAuth(id, email, login, true));
-    });
+    if (data === null) {
+        return;
+    }
+
+    let {id, email, login} = data;
+    dispatch(setAuth(id, email, login, true));
 }
 
-export const login = (email, password, rememberMe) => (dispatch) => {
-    Api.Auth.Login(email, password, rememberMe).then(data => {
-        if (data.error) {
-            return dispatch(stopSubmit('login', {_error: data.error}));
-        }
+export const login = (email, password, rememberMe) => async (dispatch) => {
+    let data = await Api.Auth.Login(email, password, rememberMe);
 
-        dispatch(getAuth());
-    });
+    if (data.error) {
+        return dispatch(stopSubmit('login', {_error: data.error}));
+    }
+
+    dispatch(getAuth());
 }
 
-export const logout = () => (dispatch) => {
-    Api.Auth.Logout().then(data => {
-        if (!data) {
-            return;
-        }
+export const logout = () => async (dispatch) => {
+    let data = await Api.Auth.Logout();
 
-        dispatch(setAuth(null, null, null, false));
-    });
+    if (!data) {
+        return;
+    }
+
+    dispatch(setAuth(null, null, null, false));
 }
 
 export default authReducer;

@@ -10,10 +10,17 @@ const UPDATE_IS_FOLLOWING_FETCHING = 'UPDATE-IS-FOLLOWING-FETCHING';
 const initialStage = {
     users: [],
     currentPage: 0,
-    pageSize: 4,
+    pageSize: 10,
     isUsersFetching: false,
     followingInProgress: []
 };
+
+function mapUserFollowingStatus(userObject, userId, status) {
+        if (userObject.id === userId) {
+            return {...userObject, followed: status}
+        }
+        return userObject;
+}
 
 const usersReducer = (state = initialStage, action) => {
     switch (action.type) {
@@ -21,26 +28,12 @@ const usersReducer = (state = initialStage, action) => {
         case FOLLOW:
             return {
                 ...state,
-                users: state.users.map(
-                    user => {
-                        if (user.id === action.userId) {
-                            return {...user, followed: true}
-                        }
-                        return user;
-                    }
-                )
+                users: state.users.map(user => mapUserFollowingStatus(user, action.userId, true))
             }
         case UNFOLLOW:
             return {
                 ...state,
-                users: state.users.map(
-                    user => {
-                        if (user.id === action.userId) {
-                            return {...user, followed: false}
-                        }
-                        return user;
-                    }
-                )
+                users: state.users.map(user => mapUserFollowingStatus(user, action.userId, false))
             }
         case SET_USERS:
             return {...state, users: [...state.users, ...action.users]}
@@ -49,11 +42,12 @@ const usersReducer = (state = initialStage, action) => {
         case UPDATE_IS_USERS_FETCHING:
             return {...state, isUsersFetching: action.isUsersFetching}
         case UPDATE_IS_FOLLOWING_FETCHING:
-            return {...state,
+            return {
+                ...state,
                 followingInProgress:
                     action.isFetching
-                    ? [...state.followingInProgress, action.userId]
-                    : [state.followingInProgress.filter( id => id !== action.userId)]
+                        ? [...state.followingInProgress, action.userId]
+                        : [state.followingInProgress.filter(id => id !== action.userId)]
             }
         default:
             return state;
@@ -65,45 +59,48 @@ export const unfollowUser = (userId) => ({type: UNFOLLOW, userId});
 export const setUsers = (users) => ({type: SET_USERS, users});
 export const setNextPage = () => ({type: NEXT_PAGE});
 export const updateUsersFetching = (isUsersFetching) => ({type: UPDATE_IS_USERS_FETCHING, isUsersFetching});
-export const updateFollowingFetching = (isFetching, userId) => ({type: UPDATE_IS_FOLLOWING_FETCHING, isFetching, userId});
+export const updateFollowingFetching = (isFetching, userId) => ({
+    type: UPDATE_IS_FOLLOWING_FETCHING,
+    isFetching,
+    userId
+});
 
 export const getUsers = (pageSize, currentPage) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(updateUsersFetching(true));
         dispatch(setNextPage());
 
-        Api.Users.getUsers(pageSize, currentPage).then(data => {
-            if (data === null) {
-                return;
-            }
+        let data = await Api.Users.getUsers(pageSize, currentPage);
 
-            dispatch(setUsers(data.items));
-            dispatch(updateUsersFetching(false));
-        });
+        if (data === null) {
+            return;
+        }
+
+        dispatch(setUsers(data.items));
+        dispatch(updateUsersFetching(false));
     }
 }
 
+const processFollowUnfollow = async (userId, dispatch, apiMethod, actionCreator) => {
+    dispatch(updateFollowingFetching(true, userId));
+    let isSuccessful = await apiMethod(userId);
+
+    if (isSuccessful) {
+        dispatch(actionCreator(userId));
+    }
+
+    dispatch(updateFollowingFetching(false, userId));
+}
+
 export const follow = (userId) => {
-    return (dispatch) => {
-        dispatch(updateFollowingFetching(true, userId));
-        Api.Users.follow(userId).then(isSuccessful => {
-            if (isSuccessful) {
-                dispatch(followUser(userId));
-            }
-            dispatch(updateFollowingFetching(false, userId));
-        });
+    return async (dispatch) => {
+        await processFollowUnfollow(userId, dispatch, Api.Users.follow, followUser);
     }
 }
 
 export const unfollow = (userId) => {
-    return (dispatch) => {
-        dispatch(updateFollowingFetching(true, userId));
-        Api.Users.unfollow(userId).then(isSuccessful => {
-            if (isSuccessful) {
-                dispatch(unfollowUser(userId));
-            }
-            dispatch(updateFollowingFetching(false, userId));
-        });
+    return async (dispatch) => {
+        await processFollowUnfollow(userId, dispatch, Api.Users.unfollow, unfollowUser);
     }
 }
 
