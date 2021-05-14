@@ -21,4 +21,5 @@ and open the template in the editor.
 
 .item a.active {
     color: gold;
+    font-weight: 900;
 }
