@@ -7,8 +7,17 @@ and open the template in the editor.
     Created on : 01.04.2021, 16:08:52
     Author     : shadow
 */
+.user {
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+    margin: 15px 50px;
+    padding: 10px;
+    border: 1px solid #cbcbcb;
+    border-radius: 10px;
+}
 
-.moreUsersWrapper {
-    text-align: center;
-    margin: 20px;
+.photo {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
 }
