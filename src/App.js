@@ -1,11 +1,7 @@
+import React, {Suspense} from "react";
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import News from './components/News/News';
-import Music from './components/Music/Music';
-import Settings from './components/Settings/Settings';
 import {Route} from 'react-router-dom';
-import MessagesContainer from "./components/Messages/MessagesContainer";
-import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
@@ -14,6 +10,13 @@ import {connect} from "react-redux";
 import {makeInit} from "./reducers/appReducer";
 import Preloader from "./Common/Preloader/Preloader";
 import StartPage from "./components/StartPage/StartPage";
+import catchReason from "./Common/CatchReason/catchReason";
+
+const Settings = React.lazy(() => import('./components/Settings/Settings').catch(reason => catchReason(reason)));
+const Music = React.lazy(() => import('./components/Music/Music').catch(reason => catchReason(reason)));
+const News = React.lazy(() => import('./components/News/News').catch(reason => catchReason(reason)));
+const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer').catch(reason => catchReason(reason)));
+const MessagesContainer = React.lazy(() => import('./components/Messages/MessagesContainer').catch(reason => catchReason(reason)));
 
 class App extends Component {
     componentDidMount() {
@@ -21,7 +24,7 @@ class App extends Component {
     }
 
     render() {
-        let MessagesComponent = () => <MessagesContainer/>;
+        let MessagesComponent = () =>  <MessagesContainer/>;
         let ProfileComponent = () => <ProfileContainer/>;
 
         if (!this.props.isInitDone) {
@@ -33,14 +36,16 @@ class App extends Component {
                 <HeaderContainer/>
                 <Navbar/>
                 <div className="content">
-                    <Route path="/" component={StartPage}/>
-                    <Route path="/profile/:userId?" component={ProfileComponent}/>
-                    <Route path="/messages" component={MessagesComponent}/>
-                    <Route path="/news" component={News}/>
-                    <Route path="/music" component={Music}/>
-                    <Route path="/users" component={UsersContainer}/>
-                    <Route path="/settings" component={Settings}/>
-                    <Route path="/login" component={Login}/>
+                    <Suspense fallback={<div>Загрузка...</div>}>
+                        <Route path="/" component={StartPage}/>
+                        <Route path="/profile/:userId?" component={ProfileComponent}/>
+                        <Route path="/messages" component={MessagesComponent}/>
+                        <Route path="/news" component={News}/>
+                        <Route path="/music" component={Music}/>
+                        <Route path="/users" component={UsersContainer}/>
+                        <Route path="/settings" component={Settings}/>
+                        <Route path="/login" component={Login}/>
+                    </Suspense>
                 </div>
             </div>
         );
