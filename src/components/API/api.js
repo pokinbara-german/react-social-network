@@ -87,6 +87,19 @@ export const Api = {
                 .then( response => {
                     return response.data.resultCode === 0;
                 });
+        },
+        savePhoto: (file) => {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            return defaultApi.put('profile/photo', formData, {
+                headers: {'Content-Type': 'multipart/form-data'}
+            })
+                .then( response => {
+                    if (response.data.resultCode === 0) {
+                        return response.data.data.photos;
+                    }
+                });
         }
     }
 }
