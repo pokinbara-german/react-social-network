@@ -17,7 +17,7 @@ const ProfileStatus = (props) => {
         let newValue = !isStatusEditing;
         setStatusEditing(newValue);
 
-        if (!newValue && status) {
+        if (!newValue && status && (statusText !== status)) {
             props.updateStatus(status);
         }
     }
