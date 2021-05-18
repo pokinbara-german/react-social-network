@@ -7,7 +7,6 @@ import React from 'react';
 import styles from './ProfileInfo.module.css';
 import Preloader from "../../../Common/Preloader/Preloader";
 import userMale from "../../../assets/images/user-male.png"
-import ProfileStatus from "./ProfileStatus";
 import ProfileStatusWithHook from "./ProfileStatusWithHook";
 
 const ProfileInfo = (props) => {
@@ -17,13 +16,24 @@ const ProfileInfo = (props) => {
 
     let profileAvatar = props.profile.photos.large || userMale;
 
+    function onFileChange(event) {
+        if (!event.target.files.length) {
+            return;
+        }
+
+        props.savePhoto(event.target.files[0]);
+    }
+
     return (
         <div>
           <div>
                 <img className={styles.wallpaper} alt='wallpaper' src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
           </div>
           <div className={styles.profileDescription}>
-              <img className={styles.avatar} alt='ava' src={profileAvatar}/>
+              <div>
+                  <img className={styles.avatar} alt='ava' src={profileAvatar}/>
+                  {props.isOwner && <input type={'file'} onChange={onFileChange}/>}
+              </div>
               <div className={styles.profileDescriptionWrapper}>
                   <span className={styles.name}>{props.profile.fullName}</span>
                   <ProfileStatusWithHook status={props.status} updateStatus={props.updateStatus} statusFetching={props.statusFetching}/>

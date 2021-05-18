@@ -20,13 +20,15 @@ and open the template in the editor.
     position: absolute;
     top: 60px;
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 4fr;
 }
 
 .profileDescriptionWrapper {
     margin: 0 30px;
     display: grid;
     grid-template-rows: 0fr 0fr 1fr;
+    width: max-content;
+    min-width: 300px;
 }
 
 .profileDescription .avatar {
