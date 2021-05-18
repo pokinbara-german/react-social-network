@@ -56,7 +56,7 @@ export const getStatus = (userId) => async (dispatch) => {
     let data = await Api.Profile.getStatus(id);
 
     if (data === null) {
-        return;
+        return dispatch(setStatus(''));
     }
 
     dispatch(setStatus(data));
