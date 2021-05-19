@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./AdditionalInfo.module.css";
 
 const AdditionalInfo = (props) => {
-    return(
+    return (
         <div className={styles.additionalInfo}>
             {props.isOwner && <button onClick={props.setEditMode}>Редактировать</button>}
             <div><span>Обо мне: </span>{props.aboutMe || 'Пусто'}</div>

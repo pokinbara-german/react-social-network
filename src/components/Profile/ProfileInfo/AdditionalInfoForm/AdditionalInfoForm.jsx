@@ -2,11 +2,20 @@ import React from "react";
 import styles from "./AdditionalInfoForm.module.css";
 import {Input, TextArea} from "../../../../Common/FormComponents/FieldsComponents/FieldsComponents";
 import {Field, reduxForm} from "redux-form";
+import {required} from "../../../../utils/validators";
 
 const AdditionalInfoForm = (props) => {
     return(
         <form className={styles.additionalInfo} onSubmit={props.handleSubmit}>
             <button>Сохранить</button>
+            <div className={styles.row}>
+                <span>Полное имя: </span>
+                <Field placeholder={'Ваше имя'}
+                       name={'fullName'}
+                       component={Input}
+                       validate={[required]}
+                />
+            </div>
             <div className={styles.row}>
                 <span>Обо мне: </span>
                 <Field placeholder={'Расскажите о себе'}
