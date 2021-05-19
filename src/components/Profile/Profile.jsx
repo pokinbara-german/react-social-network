@@ -16,6 +16,7 @@ const Profile = (props) => {
                          statusFetching={props.statusFetching}
                          isOwner={props.isOwner}
                          savePhoto={props.savePhoto}
+                         saveProfile={props.saveProfile}
             />
             <MyPostsContainer/>
         </div>);
