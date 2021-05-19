@@ -16,3 +16,12 @@ and open the template in the editor.
 .additionalInfo span {
     font-weight: 600;
 }
+
+.additionalInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.additionalInfo span {
+    font-weight: 600;
+}
