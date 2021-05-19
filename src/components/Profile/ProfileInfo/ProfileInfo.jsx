@@ -14,7 +14,7 @@ const ProfileInfo = (props) => {
         return <Preloader/>
     }
 
-    let profileAvatar = props.profile.photos.large || userMale;
+    let profileAvatarLarge = props.profile.photos.large || userMale;
 
     function onFileChange(event) {
         if (!event.target.files.length) {
@@ -27,11 +27,11 @@ const ProfileInfo = (props) => {
     return (
         <div>
           <div>
-                <img className={styles.wallpaper} alt='wallpaper' src="https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png"/>
+                <img className={styles.wallpaper} alt='wallpaper' src={'https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png'}/>
           </div>
           <div className={styles.profileDescription}>
               <div>
-                  <img className={styles.avatar} alt='ava' src={profileAvatar}/>
+                  <img className={styles.avatar} alt='ava' src={profileAvatarLarge}/>
                   {props.isOwner && <input type={'file'} onChange={onFileChange}/>}
               </div>
               <div className={styles.profileDescriptionWrapper}>

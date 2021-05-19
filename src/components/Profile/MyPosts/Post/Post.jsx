@@ -5,11 +5,14 @@
  */
 import React from 'react';
 import styles from './Post.module.css';
+import userMale from "../../../../assets/images/user-male.png";
 
 const Post = (props) => {
+    let avatarSmall = props.avatar || userMale;
+
     return( 
         <div className={styles.item}>
-            <img alt='ava' src="https://png.pngtree.com/element_our/20190530/ourlarge/pngtree-520-couple-avatar-boy-avatar-little-dinosaur-cartoon-cute-image_1263411.jpg"/>
+            <img alt='ava' src={avatarSmall}/>
             <span>{props.message}</span>
             <div>like {props.likeCount}</div>
         </div>);

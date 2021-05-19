@@ -9,7 +9,10 @@ import MyPosts from "./MyPosts";
 
 let mapStateToProps = (state) => {
     return (
-        {postsData: state.profilePage.postsData}
+        {
+            postsData: state.profilePage.postsData,
+            avatar: state.profilePage.profile ? state.profilePage.profile.photos.small : ''
+        }
     );
 };
 

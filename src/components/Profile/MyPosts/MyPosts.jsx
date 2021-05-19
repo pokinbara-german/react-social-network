@@ -13,7 +13,7 @@ import {maxLengthCreator, required} from "../../../utils/validators";
 let maxLength20 = maxLengthCreator(20);
 
 const MyPosts = (props) => {
-    let posts = props.postsData.map( (post, postIndex) => <Post key={"MyPost" +postIndex} message={post.text} likeCount={post.likes}/>);
+    let posts = props.postsData.map( (post, postIndex) => <Post key={"MyPost" +postIndex} message={post.text} likeCount={post.likes}  avatar={props.avatar}/>);
 
     const addPost = (formData) => {
         props.sendPost(formData.newPost);
