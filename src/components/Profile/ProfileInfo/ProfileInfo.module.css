@@ -41,6 +41,18 @@ and open the template in the editor.
     font-weight: 600;
 }
 
+.statusDiv {
+    height: 34px;
+    display: grid;
+    align-content: center;
+    grid-template-columns: 1fr 5fr;
+}
+
+.statusSpan {
+    font-weight: 600;
+    margin-right: 5px;
+}
+
 .statusInput {
     max-height: 20px;
 }

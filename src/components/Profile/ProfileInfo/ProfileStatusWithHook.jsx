@@ -37,7 +37,7 @@ const ProfileStatus = (props) => {
                  className={styles.statusInput}
                  value={status}
         />
-        : <div onClick={toggleEditing}>{statusText}</div>;
+        : <div className={styles.statusDiv} onClick={toggleEditing}><span className={styles.statusSpan}>Статус: </span>{statusText}</div>;
 }
 
 export default ProfileStatus;
