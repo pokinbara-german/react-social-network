@@ -100,6 +100,12 @@ export const Api = {
                         return response.data.data.photos;
                     }
                 });
+        },
+        saveProfile: (profile) => {
+            return defaultApi.put('profile', profile)
+                .then(response => {
+                    return response.data.resultCode === 0;
+                });
         }
     }
 }
