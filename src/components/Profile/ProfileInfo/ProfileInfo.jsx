@@ -55,7 +55,7 @@ const ProfileInfo = (props) => {
                     <ProfileStatusWithHook status={props.status} updateStatus={props.updateStatus}
                                            statusFetching={props.statusFetching}/>
                     {isEditMode
-                            ? <AdditionalInfoForm profile={props.profile} onSubmit={onSubmit} initialValues={formInitialValues}/>
+                            ? <AdditionalInfoForm onChancel={() => setEditMode(false)} contacts={props.profile.contacts} onSubmit={onSubmit} initialValues={formInitialValues}/>
                             : <AdditionalInfo aboutMe={props.profile.aboutMe}
                                               lookingForAJob={props.profile.lookingForAJob}
                                               lookingForAJobDescription={props.profile.lookingForAJobDescription}

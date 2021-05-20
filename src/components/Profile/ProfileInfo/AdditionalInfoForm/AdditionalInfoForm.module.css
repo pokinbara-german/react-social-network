@@ -13,6 +13,17 @@ and open the template in the editor.
     flex-direction: column;
 }
 
+.additionalInfo .contact {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.contact span {
+    margin-right: 10px;
+}
+
 .additionalInfo span {
     font-weight: 600;
     margin-right: 10px;

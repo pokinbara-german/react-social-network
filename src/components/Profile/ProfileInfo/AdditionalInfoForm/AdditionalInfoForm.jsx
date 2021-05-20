@@ -5,9 +5,10 @@ import {Field, reduxForm} from "redux-form";
 import {required} from "../../../../utils/validators";
 
 const AdditionalInfoForm = (props) => {
-    return(
+    return (
         <form className={styles.additionalInfo} onSubmit={props.handleSubmit}>
             <button>Сохранить</button>
+            <button onClick={props.onChancel}>Отмена</button>
             <div className={styles.row}>
                 <span>Полное имя: </span>
                 <Field placeholder={'Ваше имя'}
@@ -39,6 +40,22 @@ const AdditionalInfoForm = (props) => {
                        component={TextArea}
                        validate={[]}
                 />
+            </div>
+            <div>
+                <span>Контакты: </span>
+                <div>
+                    {Object.keys(props.contacts).map(key => {
+                        return(
+                            <div className={styles.contact}><span>{key}:</span>
+                                <Field placeholder={key}
+                                       name={'contacts.' + key}
+                                       component={Input}
+                                       validate={[]}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </form>
     );
