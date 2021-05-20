@@ -5,10 +5,10 @@ const AdditionalInfo = (props) => {
     return (
         <div className={styles.additionalInfo}>
             {props.isOwner && <button onClick={props.setEditMode}>Редактировать</button>}
-            <div><span>Обо мне: </span>{props.aboutMe || 'Пусто'}</div>
-            <div><span>Ищет работу: </span>{props.lookingForAJob ? 'Да' : 'Нет'}</div>
+            <div className={styles.item}><span>Обо мне: </span>{props.aboutMe || 'Пусто'}</div>
+            <div className={styles.item}><span>Ищет работу: </span>{props.lookingForAJob ? 'Да' : 'Нет'}</div>
             {props.lookingForAJob && <div><span>Навыки: </span>{props.lookingForAJobDescription}</div>}
-            <div>
+            <div className={styles.item}>
                 <span>Контакты: </span>
                 {Object.keys(props.contacts).map(key => {
                     return <ProfileContact key={key} contactTitle={key} contactInfo={props.contacts[key]}/>

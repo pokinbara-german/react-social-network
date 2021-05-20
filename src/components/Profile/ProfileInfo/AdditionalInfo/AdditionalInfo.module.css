@@ -22,6 +22,14 @@ and open the template in the editor.
     flex-direction: column;
 }
 
+.additionalInfo .item {
+    margin-top: 5px;
+}
+
+.additionalInfo div {
+    margin-left: 10px;
+}
+
 .additionalInfo span {
     font-weight: 600;
 }
