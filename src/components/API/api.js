@@ -53,7 +53,7 @@ export const Api = {
                 } else if (response.data.resultCode === 1 || response.data.resultCode === 10) {
                     let message = response.data.messages.length ? response.data.messages[0] : 'Unknown error';
 
-                    return {error: message};
+                    return {error: message, resultCode: response.data.resultCode};
                 }
 
                 return null;
@@ -112,6 +112,18 @@ export const Api = {
                         return {error: message};
                     }
                 });
+        }
+    },
+    Security: {
+        getCaptcha: () => {
+            return defaultApi.get('security/get-captcha-url')
+                .then(response => {
+                    if (!response.data) {
+                        return;
+                    }
+
+                    return response.data;
+                })
         }
     }
 }
