@@ -35,3 +35,7 @@ and open the template in the editor.
     align-content: center;
     align-items: center;
 }
+
+.error {
+    color: red;
+}

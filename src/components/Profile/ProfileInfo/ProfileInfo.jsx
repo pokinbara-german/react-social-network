@@ -23,6 +23,7 @@ const ProfileInfo = (props) => {
         aboutMe: props.profile.aboutMe,
         lookingForAJob: props.profile.lookingForAJob,
         lookingForAJobDescription: props.profile.lookingForAJobDescription,
+        contacts: props.profile.contacts
     }
     let profileAvatarLarge = props.profile.photos.large || userMale;
 
@@ -35,9 +36,9 @@ const ProfileInfo = (props) => {
     }
 
     function onSubmit (formData) {
-        console.log(formData);
-        setEditMode(false);
-        props.saveProfile(formData);
+        props.saveProfile(formData).then(() => {
+            setEditMode(false);
+        });
     }
 
     return (

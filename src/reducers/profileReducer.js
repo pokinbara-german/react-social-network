@@ -1,4 +1,5 @@
 import {Api} from "../components/API/api";
+import {stopSubmit} from "redux-form";
 
 const ADD_POST = 'ADD-POST';
 const DELETE_POST = 'DELETE-POST';
@@ -38,7 +39,7 @@ const profileReducer = (state = initialState, action) => {
         case SET_PROFILE:
             return {...state, profile: action.profile};
         case UPDATE_PROFILE:
-            return {...state, profile: {...state.profile, ...action.profile}};
+            return {...state, profile: {...state.profile, ...action.profile, contacts: {...state.profile.contacts, ...action.profile.contacts}}};
         case SET_STATUS:
             return {...state, status: action.status};
         case TOGGLE_STATUS_FETCHING:
@@ -108,8 +109,9 @@ export const savePhoto = (file) => async (dispatch) => {
 export const saveProfile = (profile) => async (dispatch) => {
     let data = await Api.Profile.saveProfile(profile);
 
-    if (!data) {
-        return;
+    if (data.error) {
+        dispatch(stopSubmit('profileInfo', {_error: data.error}));
+        return Promise.reject(data.error);
     }
 
     dispatch(updateProfile(profile));

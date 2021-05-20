@@ -7,6 +7,9 @@ import {required} from "../../../../utils/validators";
 const AdditionalInfoForm = (props) => {
     return (
         <form className={styles.additionalInfo} onSubmit={props.handleSubmit}>
+            {props.error && <div className={styles.error}>{props.error.map(error => {
+                return <div>{error}</div>
+            })}</div>}
             <button>Сохранить</button>
             <button onClick={props.onChancel}>Отмена</button>
             <div className={styles.row}>
@@ -45,8 +48,8 @@ const AdditionalInfoForm = (props) => {
                 <span>Контакты: </span>
                 <div>
                     {Object.keys(props.contacts).map(key => {
-                        return(
-                            <div className={styles.contact}><span>{key}:</span>
+                        return (
+                            <div key={key} className={styles.contact}><span>{key}:</span>
                                 <Field placeholder={key}
                                        name={'contacts.' + key}
                                        component={Input}
@@ -58,7 +61,7 @@ const AdditionalInfoForm = (props) => {
                 </div>
             </div>
         </form>
-    );
+);
 }
 
 export default reduxForm({form: 'profileInfo'})(AdditionalInfoForm);

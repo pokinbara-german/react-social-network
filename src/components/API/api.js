@@ -104,7 +104,13 @@ export const Api = {
         saveProfile: (profile) => {
             return defaultApi.put('profile', profile)
                 .then(response => {
-                    return response.data.resultCode === 0;
+                    if (response.data.resultCode === 0) {
+                        return true;
+                    } else {
+                        let message = response.data.messages.length ? response.data.messages : 'Unknown error';
+
+                        return {error: message};
+                    }
                 });
         }
     }

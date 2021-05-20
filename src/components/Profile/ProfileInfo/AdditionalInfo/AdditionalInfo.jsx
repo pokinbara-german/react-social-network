@@ -21,7 +21,7 @@ const AdditionalInfo = (props) => {
 const ProfileContact = ({contactTitle, contactInfo}) => {
     return (
         <div>
-            <span>{contactTitle}:</span>{contactInfo}
+            <span>{contactTitle}:</span><a rel={'noreferrer'} href={contactInfo} target={'_blank'}>{contactInfo}</a>
         </div>
     );
 }
