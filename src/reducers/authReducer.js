@@ -45,8 +45,8 @@ export const getAuth = () => async (dispatch) => {
     dispatch(setAuth(id, email, login, true));
 }
 
-export const login = (email, password, rememberMe) => async (dispatch) => {
-    let data = await Api.Auth.Login(email, password, rememberMe);
+export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
+    let data = await Api.Auth.Login(email, password, rememberMe, captcha);
 
     if (data.error) {
         if (data.resultCode === 10) {
@@ -56,6 +56,7 @@ export const login = (email, password, rememberMe) => async (dispatch) => {
     }
 
     dispatch(getAuth());
+    dispatch(getCaptchaSuccess(null));
 }
 
 export const logout = () => async (dispatch) => {

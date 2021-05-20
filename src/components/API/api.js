@@ -46,8 +46,8 @@ export const Api = {
                 return null;
             });
         },
-        Login: (email, password, rememberMe) => {
-            return defaultApi.post('auth/login/', {email, password, rememberMe}).then(response => {
+        Login: (email, password, rememberMe, captcha) => {
+            return defaultApi.post('auth/login/', {email, password, rememberMe, captcha}).then(response => {
                 if (response.data.resultCode === 0) {
                     return {result: response.data.data};
                 } else if (response.data.resultCode === 1 || response.data.resultCode === 10) {
