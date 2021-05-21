@@ -74,13 +74,19 @@ export const getStatus = (userId) => async (dispatch) => {
 export const updateStatus = (status) => async (dispatch) => {
     dispatch(toggleStatusFetching());
 
-    let data = await Api.Profile.updateStatus(status);
+    try {
+        let data = await Api.Profile.updateStatus(status);
 
-    if (!data) {
-        return;
+        if (!data) {
+            return;
+        }
+
+        dispatch(setStatus(status));
+    } catch (reason) {
+        //TODO: переписать на нормальный вывод ошибки
+        alert('Не удалось сохранить статус, попробуйте позже!');
     }
 
-    dispatch(setStatus(status));
     dispatch(toggleStatusFetching());
 }
 

@@ -19,8 +19,19 @@ const UsersContainer = React.lazy(() => import('./components/Users/UsersContaine
 const MessagesContainer = React.lazy(() => import('./components/Messages/MessagesContainer').catch(reason => catchReason(reason)));
 
 class App extends Component {
+    catchAllUncatchedErrors(reason) {
+        let response = reason.reason.response;
+        //TODO: переписать на нормальный вывод ошибки
+        alert('ERROR: сервер вернул ответ ' + response.status + ' ' + response.statusText);
+    }
+
     componentDidMount() {
+        window.addEventListener('unhandledrejection', this.catchAllUncatchedErrors);
         this.props.makeInit();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('unhandledrejection', this.catchAllUncatchedErrors);
     }
 
     render() {
@@ -37,7 +48,7 @@ class App extends Component {
                 <Navbar/>
                 <div className="content">
                     <Suspense fallback={<div>Загрузка...</div>}>
-                        <Route path="/" component={StartPage}/>
+                        <Route exact path="/" component={StartPage}/>
                         <Route path="/profile/:userId?" component={ProfileComponent}/>
                         <Route path="/messages" component={MessagesComponent}/>
                         <Route path="/news" component={News}/>
