@@ -19,19 +19,19 @@ const UsersContainer = React.lazy(() => import('./components/Users/UsersContaine
 const MessagesContainer = React.lazy(() => import('./components/Messages/MessagesContainer').catch(reason => catchReason(reason)));
 
 class App extends Component {
-    catchAllUncatchedErrors(reason) {
+    catchGenericError(reason) {
         let response = reason.reason.response;
         //TODO: переписать на нормальный вывод ошибки
         alert('ERROR: сервер вернул ответ ' + response.status + ' ' + response.statusText);
     }
 
     componentDidMount() {
-        window.addEventListener('unhandledrejection', this.catchAllUncatchedErrors);
+        window.addEventListener('unhandledrejection', this.catchGenericError);
         this.props.makeInit();
     }
 
     componentWillUnmount() {
-        window.removeEventListener('unhandledrejection', this.catchAllUncatchedErrors);
+        window.removeEventListener('unhandledrejection', this.catchGenericError);
     }
 
     render() {
