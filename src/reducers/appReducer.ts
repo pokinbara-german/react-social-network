@@ -2,11 +2,19 @@ import {getAuth} from "./authReducer";
 
 const SET_INIT_DONE = 'SET-INIT-DONE';
 
-const initialStage = {
+export type initialStageType = {
+    initDone: boolean
+}
+
+type setInitDoneActionType = {
+    type: typeof SET_INIT_DONE
+}
+
+const initialStage: initialStageType = {
     initDone: false
 };
 
-const authReducer = (state = initialStage, action) => {
+const authReducer = (state = initialStage, action: any): initialStageType => {
     switch (action.type) {
 
         case SET_INIT_DONE:
@@ -19,9 +27,9 @@ const authReducer = (state = initialStage, action) => {
     }
 }
 
-export const setInitDone = () => ({type: SET_INIT_DONE});
+export const setInitDone = (): setInitDoneActionType => ({type: SET_INIT_DONE});
 
-export const makeInit = () => (dispatch) => {
+export const makeInit = () => (dispatch: any) => {
     let promise = dispatch(getAuth());
 
     Promise.all([promise]).then(() => {
