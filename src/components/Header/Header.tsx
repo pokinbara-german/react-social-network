@@ -6,8 +6,9 @@
 import React from 'react';
 import styles from './Header.module.css';
 import {NavLink} from "react-router-dom";
+import {propsType} from "./HeaderContainer";
 
-const Header = (props) => {
+const Header: React.FC<propsType> = (props) => {
     return <header className={styles.header}>
         <img
             src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Spb_metro_logo.svg/600px-Spb_metro_logo.svg.png'

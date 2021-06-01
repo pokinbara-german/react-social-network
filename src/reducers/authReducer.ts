@@ -1,10 +1,9 @@
 import {Api} from "../components/API/api";
 import {stopSubmit} from "redux-form";
+import {stringOrNull} from "./types/types";
 
 const SET_AUTH = 'SET-AUTH';
 const GET_CAPTCHA_SUCCESS = 'GET-CAPTCHA-SUCCESS';
-
-type stringOrNull = string | null;
 
 export type initialStageType = {
     id: number | null,

@@ -1,3 +1,5 @@
+export type stringOrNull = string | null;
+
 export type profileType = {
     userId: number,
     lookingForAJob: boolean,

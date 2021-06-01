@@ -7,7 +7,13 @@ import React from 'react';
 import styles from './Post.module.css';
 import userMale from "../../../../assets/images/user-male.png";
 
-const Post = (props) => {
+type postPropsType = {
+    message: string,
+    likeCount: number,
+    avatar: string
+}
+
+const Post: React.FC<postPropsType> = (props) => {
     let avatarSmall = props.avatar || userMale;
 
     return( 

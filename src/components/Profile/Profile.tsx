@@ -6,8 +6,19 @@
 import React from 'react';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
+import {profileType} from "../../reducers/types/types";
 
-const Profile = (props) => {
+type profilePropsType = {
+    profile: profileType | null,
+    status: string,
+    isOwner: boolean,
+    statusFetching: boolean,
+    updateStatus: (status: string) => void,
+    savePhoto: (file: File) => void,
+    saveProfile: (profile: profileType) => void,
+}
+
+const Profile: React.FC<profilePropsType> = (props) => {
     return (
         <div>
             <ProfileInfo profile={props.profile}
