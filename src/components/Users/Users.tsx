@@ -2,14 +2,24 @@ import React from "react";
 import styles from './Users.module.css';
 import Preloader from "../../Common/Preloader/Preloader";
 import User from "./User/User";
+import {followingInProgressType, usersType} from "../../reducers/types/types";
+
+type usersPropsType = {
+    usersPage: Array<usersType>,
+    isUsersFetching: boolean,
+    followingInProgress: followingInProgressType,
+    followUser: (userId: number) => void,
+    unfollowUser: (userId: number) => void,
+    onPageChanged: () => void
+}
 
 /**
  * Returns list of users and one button for update it's list.
- * @param {Object} props
+ * @param {usersPropsType} props
  * @returns {JSX.Element}
  * @constructor
  */
-const Users = (props) => {
+const Users: React.FC<usersPropsType> = (props) => {
     let users = props.usersPage.map((user) =>
         <User key={'User' + user.id}
               user={user}

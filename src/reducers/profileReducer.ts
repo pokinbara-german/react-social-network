@@ -34,7 +34,7 @@ const initialState = {
 };
 
 const profileReducer = (
-    state = initialState,
+    state: initialStateType = initialState,
     action: sendPostActionType
         | deletePostActionType
         | setProfileActionType
@@ -166,7 +166,7 @@ export const getProfile = (userId: number) => async (dispatch: any) => {
     dispatch(setProfile(data));
 }
 
-export const savePhoto = (file: any) => async (dispatch: any) => {
+export const savePhoto = (file: File) => async (dispatch: any) => {
     let data = await Api.Profile.savePhoto(file);
 
     if (data === null) {

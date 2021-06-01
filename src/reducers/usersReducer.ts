@@ -1,5 +1,5 @@
 import {Api} from "../components/API/api";
-import {usersType} from "./types/types";
+import {followingInProgressType, usersType} from "./types/types";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -13,7 +13,7 @@ export type initialStageType = {
     currentPage: number,
     pageSize: number,
     isUsersFetching: boolean,
-    followingInProgress: Array<number>
+    followingInProgress: followingInProgressType
 }
 
 const initialStage = {
@@ -31,7 +31,7 @@ function mapUserFollowingStatus(userObject: usersType, userId: number, status: b
         return userObject;
 }
 
-const usersReducer = (state = initialStage, action: any): initialStageType => {
+const usersReducer = (state:initialStageType = initialStage, action: any): initialStageType => {
     switch (action.type) {
         case FOLLOW:
             return {

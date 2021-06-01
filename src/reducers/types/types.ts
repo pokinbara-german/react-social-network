@@ -30,3 +30,9 @@ export type usersType = {
     photos: photosType,
     followed: boolean
 }
+
+export interface MatchParams {
+    userId: string;
+}
+
+export type followingInProgressType = Array<number>;
