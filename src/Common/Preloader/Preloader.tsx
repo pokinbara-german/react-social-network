@@ -2,9 +2,13 @@ import React from "react";
 import styles from './Preloader.module.css';
 import preloader from "../../assets/images/preloader-spinner.svg";
 
-const Preloader = (props) => {
+type preloaderPropsType = {
+    notCentered?: boolean
+}
+
+const Preloader: React.FC<preloaderPropsType> = (props) => {
     return (
-        <div className={!props.notCentered ? styles.preloaderWrapper : null}>
+        <div className={!props.notCentered ? styles.preloaderWrapper : undefined}>
             <img alt='preloader' className={styles.preloader} src={preloader}/>
         </div>
     );
