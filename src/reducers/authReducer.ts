@@ -77,7 +77,7 @@ export const getAuth = (): thunkType => async (dispatch) => {
     dispatch(setAuth(id, email, login, true));
 }
 
-export const login = (email: string, password: string, rememberMe: string, captcha: string) => async (dispatch: any) => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string) => async (dispatch: any) => {
     let data:any = await Api.Auth.Login(email, password, rememberMe, captcha);
 
     if (data.error) {
@@ -102,13 +102,13 @@ export const logout = (): thunkType => async (dispatch) => {
 }
 
 export const getCaptcha = (): thunkType => async (dispatch) => {
-    let data = await Api.Security.getCaptcha();
+    let url = await Api.Security.getCaptcha();
 
-    if (!data.url) {
+    if (!url) {
         return;
     }
 
-    dispatch(getCaptchaSuccess(data.url));
+    dispatch(getCaptchaSuccess(url));
 }
 
 export default authReducer;

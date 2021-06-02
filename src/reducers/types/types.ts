@@ -6,7 +6,8 @@ export type profileType = {
     lookingForAJobDescription: string,
     fullName: string,
     contacts: contactsType,
-    photos: photosType
+    photos: photosType,
+    aboutMe: string
 }
 
 export type contactsType = {
@@ -38,3 +39,18 @@ export interface MatchParams {
 }
 
 export type followingInProgressType = Array<number>;
+
+export enum resultCodesType {
+    Success = 0,
+    Error = 1
+}
+
+export enum captchaResultCodeType {
+    captchaRequired = 10
+}
+
+export type basicResponseType = {
+    data: {},
+    resultCode: resultCodesType,
+    messages: Array<string>
+};

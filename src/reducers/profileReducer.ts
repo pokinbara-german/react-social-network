@@ -172,7 +172,7 @@ export const getProfile = (userId: number): thunkType => async (dispatch) => {
 export const savePhoto = (file: File): thunkType => async (dispatch) => {
     let data = await Api.Profile.savePhoto(file);
 
-    if (data === null) {
+    if (data === undefined) {
         return;
     }
 
@@ -180,11 +180,11 @@ export const savePhoto = (file: File): thunkType => async (dispatch) => {
 }
 
 export const saveProfile = (profile: profileType): thunkType => async (dispatch) => {
-    let data: any = await Api.Profile.saveProfile(profile);
+    let data = await Api.Profile.saveProfile(profile);
 
-    if (data.error) {
-        dispatch(stopSubmit('profileInfo', {_error: data.error}));
-        return Promise.reject(data.error);
+    if (data.length) {
+        dispatch(stopSubmit('profileInfo', {_error: data}));
+        return Promise.reject(data);
     }
 
     dispatch(updateProfile(profile));
