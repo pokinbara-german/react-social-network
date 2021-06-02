@@ -1,6 +1,9 @@
 const ADD_MESSAGE = 'ADD-MESSAGE';
 
-export type initialStageType = typeof initialStage;
+export type initialStageType = {
+    userList: Array<userListType>,
+    messageList: Array<messageListType>
+};
 
 type userListType = {
     id: number,
@@ -18,17 +21,17 @@ type sendMessageActionType = {
     newMessage: string
 }
 
-const initialStage = {
+const initialStage: initialStageType = {
     userList: [
         {id:1, name: 'Andrey'},
         {id:2, name: 'Sergey'},
         {id:3, name: 'Misha'}
-    ] as Array<userListType>,
+    ],
     messageList: [
         {id: 1, text: 'First!', userId: 1},
         {id: 2, text: 'Second!', userId: 2},
         {id: 3, text: 'Third!', userId: 1},
-    ] as Array<messageListType>
+    ]
 };
 
 const dialogReducer = (state = initialStage, action: sendMessageActionType): initialStageType => {
