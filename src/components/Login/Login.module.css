@@ -21,6 +21,10 @@ and open the template in the editor.
     display: flex;
 }
 
+.checkboxWrapper .checkboxSpan{
+    margin-left: 5px;
+}
+
 .error {
     color: red;
 }
