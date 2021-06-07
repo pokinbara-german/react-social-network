@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {sendPost} from "../../../reducers/profileReducer";
+import {profileActions} from "../../../reducers/profileReducer";
 import {connect} from "react-redux";
 import MyPosts from "./MyPosts";
 
@@ -16,6 +16,6 @@ let mapStateToProps = (state) => {
     );
 };
 
-const MyPostsContainer = connect(mapStateToProps, {sendPost})(MyPosts);
+const MyPostsContainer = connect(mapStateToProps, {sendPost: profileActions.sendPost})(MyPosts);
 
 export default MyPostsContainer;
