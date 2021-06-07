@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {getUsers, follow, unfollow} from "../../reducers/usersReducer";
-import {connect} from "react-redux";
-import Users from "./Users";
-import React from "react";
-import {followingInProgressType, usersType} from "../../reducers/types/types";
-import {appStateType} from "../../redux/reduxStore";
+import {getUsers, follow, unfollow} from '../../reducers/usersReducer';
+import {connect} from 'react-redux';
+import Users from './Users';
+import React from 'react';
+import {arrayOfNumbers, usersType} from '../../reducers/types/types';
+import {appStateType} from '../../redux/reduxStore';
 
 type mapStatePropsType = {
     usersPage: Array<usersType>,
     currentPage: number,
     pageSize: number,
     isUsersFetching: boolean,
-    followingInProgress: followingInProgressType
+    followingInProgress: arrayOfNumbers
 };
 
 type mapDispatchPropsType = {

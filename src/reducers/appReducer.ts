@@ -1,13 +1,13 @@
-import {getAuth} from "./authReducer";
-import {ThunkAction} from "redux-thunk";
-import {appStateType, inferActionsType} from "../redux/reduxStore";
+import {getAuth} from './authReducer';
+import {inferActionsType} from '../redux/reduxStore';
+import {baseThunkType} from './types/types';
 
 export type initialStageType = {
     initDone: boolean
 }
 
 type actionsType = inferActionsType<typeof appActions>;
-type thunkType = ThunkAction<void, appStateType, any, actionsType>;
+type thunkType = baseThunkType<actionsType, void>;
 
 const initialStage: initialStageType = {
     initDone: false

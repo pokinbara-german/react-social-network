@@ -1,8 +1,7 @@
-import {Api} from "../components/API/api";
-import {stopSubmit} from "redux-form";
-import {contactsType, photosType, profileType} from "./types/types";
-import {ThunkAction} from "redux-thunk";
-import {appStateType, inferActionsType} from "../redux/reduxStore";
+import {Api} from '../components/API/api';
+import {stopSubmit} from 'redux-form';
+import {baseThunkType, contactsType, photosType, profileType} from './types/types';
+import {inferActionsType} from '../redux/reduxStore';
 
 type postsDataType = {
     id: number,
@@ -18,7 +17,7 @@ export type initialStateType = {
 }
 
 type actionsType = inferActionsType<typeof profileActions>;
-type thunkType = ThunkAction<Promise<void>, appStateType, any, actionsType>;
+type thunkType = baseThunkType<actionsType>;
 
 const initialState: initialStateType = {
     postsData: [
@@ -79,13 +78,14 @@ export const profileActions = {
     savePhotoSuccess: (photos: photosType) => ({type: 'SN/PROFILE/SAVE_PHOTO_SUCCESS', photos} as const)
 }
 
-export const getStatus = (userId: number) => async (dispatch: any) => {
+export const getStatus = (userId: number): thunkType => async (dispatch) => {
     let id = userId || 16702;
 
     let data = await Api.Profile.getStatus(id);
 
     if (data === null) {
-        return dispatch(profileActions.setStatus(''));
+        dispatch(profileActions.setStatus(''));
+        return;
     }
 
     dispatch(profileActions.setStatus(data));

@@ -1,3 +1,7 @@
+import {Action} from 'redux';
+import {ThunkAction} from 'redux-thunk';
+import {appStateType} from '../../redux/reduxStore';
+
 export type stringOrNull = string | null;
 
 export type profileType = {
@@ -38,7 +42,7 @@ export interface MatchParams {
     userId: string;
 }
 
-export type followingInProgressType = Array<number>;
+export type arrayOfNumbers = Array<number>;
 
 export enum resultCodesType {
     Success = 0,
@@ -54,3 +58,5 @@ export type basicResponseType = {
     resultCode: resultCodesType,
     messages: Array<string>
 };
+
+export type baseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, appStateType, any, A>;

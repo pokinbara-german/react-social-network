@@ -1,8 +1,8 @@
 import {Api} from '../components/API/api';
-import {stopSubmit} from 'redux-form';
-import {stringOrNull} from './types/types';
-import {ThunkAction} from 'redux-thunk';
-import {appStateType, inferActionsType} from '../redux/reduxStore';
+import {FormAction, stopSubmit} from 'redux-form';
+import {baseThunkType, stringOrNull} from './types/types';
+import {inferActionsType} from '../redux/reduxStore';
+import {Action} from 'redux';
 
 export type initialStageType = {
     id: number | null,
@@ -14,7 +14,7 @@ export type initialStageType = {
 }
 
 type actionsType = inferActionsType<typeof authActions>;
-type thunkType = ThunkAction<Promise<void>, appStateType, any, actionsType>;
+type thunkType = baseThunkType<actionsType | Action<actionsType> | Action<ReturnType<typeof stopSubmit>>, Promise<void | FormAction>>;
 
 const initialStage: initialStageType = {
     id: null,
@@ -61,17 +61,18 @@ export const getAuth = (): thunkType => async (dispatch) => {
     dispatch(authActions.setAuth(id, email, login, true));
 }
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string) => async (dispatch: any) => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string): thunkType => async (dispatch) => {
     let data:any = await Api.Auth.Login(email, password, rememberMe, captcha);
 
     if (data.error) {
         if (data.resultCode === 10) {
-            dispatch(getCaptcha());
+            await dispatch(getCaptcha());
         }
+
         return dispatch(stopSubmit('login', {_error: data.error}));
     }
 
-    dispatch(getAuth());
+    await dispatch(getAuth());
     dispatch(authActions.getCaptchaSuccess(null));
 }
 

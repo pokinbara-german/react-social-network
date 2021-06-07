@@ -1,7 +1,6 @@
 import {Api} from '../components/API/api';
-import {followingInProgressType, usersType} from './types/types';
-import {ThunkAction} from 'redux-thunk';
-import {appStateType, inferActionsType} from '../redux/reduxStore';
+import {baseThunkType, arrayOfNumbers, usersType} from './types/types';
+import {inferActionsType} from '../redux/reduxStore';
 import {Dispatch} from 'redux';
 
 export type initialStageType = {
@@ -9,11 +8,11 @@ export type initialStageType = {
     currentPage: number,
     pageSize: number,
     isUsersFetching: boolean,
-    followingInProgress: followingInProgressType
+    followingInProgress: arrayOfNumbers
 }
 
 type actionsType = inferActionsType<typeof userActions>;
-type thunkType = ThunkAction<Promise<void>, appStateType, any, actionsType>;
+type thunkType = baseThunkType<actionsType>;
 
 const initialStage: initialStageType = {
     users: [],
