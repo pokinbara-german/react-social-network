@@ -18,6 +18,7 @@ export type initialStateType = {
 }
 
 type actionsType = inferActionsType<typeof profileActions>;
+type thunkType = ThunkAction<Promise<void>, appStateType, any, actionsType>;
 
 const initialState: initialStateType = {
     postsData: [
@@ -31,7 +32,7 @@ const initialState: initialStateType = {
 
 const profileReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
-        case 'ADD_POST':
+        case 'SN/PROFILE/ADD_POST':
             if (action.newPost === undefined) {
                 return state;
             }
@@ -40,15 +41,15 @@ const profileReducer = (state = initialState, action: actionsType): initialState
                 ...state,
                 postsData: [...state.postsData, {id: 5, text: action.newPost, likes: 0}]
             };
-        case 'DELETE_POST':
+        case 'SN/PROFILE/DELETE_POST':
             return {
                 ...state, postsData: state.postsData.filter(post => {
                     return post.id !== action.postId;
                 })
             };
-        case 'SET_PROFILE':
+        case 'SN/PROFILE/SET_PROFILE':
             return {...state, profile: action.profile};
-        case 'UPDATE_PROFILE':
+        case 'SN/PROFILE/UPDATE_PROFILE':
             return {
                 ...state,
                 profile: {
@@ -57,27 +58,25 @@ const profileReducer = (state = initialState, action: actionsType): initialState
                     contacts: {...(state.profile!["contacts"] as contactsType), ...action.profile.contacts}
                 }
             };
-        case 'SET_STATUS':
+        case 'SN/PROFILE/SET_STATUS':
             return {...state, status: action.status};
-        case 'TOGGLE_STATUS_FETCHING':
+        case 'SN/PROFILE/TOGGLE_STATUS_FETCHING':
             return {...state, statusFetching: !state.statusFetching};
-        case 'SAVE_PHOTO_SUCCESS':
+        case 'SN/PROFILE/SAVE_PHOTO_SUCCESS':
             return {...state, profile: {...(state.profile! as profileType), photos: action.photos}};
         default:
             return state;
     }
 }
 
-type thunkType = ThunkAction<Promise<void>, appStateType, any, actionsType>;
-
 export const profileActions = {
-    sendPost: (newPost: string) => ({type: 'ADD_POST', newPost} as const),
-    deletePost: (postId: number) => ({type: 'DELETE_POST', postId} as const),
-    setProfile: (profile: profileType) => ({type: 'SET_PROFILE', profile} as const),
-    updateProfile: (profile: profileType) => ({type: 'UPDATE_PROFILE', profile} as const),
-    setStatus: (status: string) => ({type: 'SET_STATUS', status} as const),
-    toggleStatusFetching: () => ({type: 'TOGGLE_STATUS_FETCHING'} as const),
-    savePhotoSuccess: (photos: photosType) => ({type: 'SAVE_PHOTO_SUCCESS', photos} as const)
+    sendPost: (newPost: string) => ({type: 'SN/PROFILE/ADD_POST', newPost} as const),
+    deletePost: (postId: number) => ({type: 'SN/PROFILE/DELETE_POST', postId} as const),
+    setProfile: (profile: profileType) => ({type: 'SN/PROFILE/SET_PROFILE', profile} as const),
+    updateProfile: (profile: profileType) => ({type: 'SN/PROFILE/UPDATE_PROFILE', profile} as const),
+    setStatus: (status: string) => ({type: 'SN/PROFILE/SET_STATUS', status} as const),
+    toggleStatusFetching: () => ({type: 'SN/PROFILE/TOGGLE_STATUS_FETCHING'} as const),
+    savePhotoSuccess: (photos: photosType) => ({type: 'SN/PROFILE/SAVE_PHOTO_SUCCESS', photos} as const)
 }
 
 export const getStatus = (userId: number) => async (dispatch: any) => {

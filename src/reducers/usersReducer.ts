@@ -1,8 +1,8 @@
-import {Api} from "../components/API/api";
-import {followingInProgressType, usersType} from "./types/types";
-import {ThunkAction} from "redux-thunk";
-import {appStateType, inferActionsType} from "../redux/reduxStore";
-import {Dispatch} from "redux";
+import {Api} from '../components/API/api';
+import {followingInProgressType, usersType} from './types/types';
+import {ThunkAction} from 'redux-thunk';
+import {appStateType, inferActionsType} from '../redux/reduxStore';
+import {Dispatch} from 'redux';
 
 export type initialStageType = {
     users: Array<usersType>,
@@ -11,6 +11,9 @@ export type initialStageType = {
     isUsersFetching: boolean,
     followingInProgress: followingInProgressType
 }
+
+type actionsType = inferActionsType<typeof userActions>;
+type thunkType = ThunkAction<Promise<void>, appStateType, any, actionsType>;
 
 const initialStage: initialStageType = {
     users: [],
@@ -29,23 +32,23 @@ function mapUserFollowingStatus(userObject: usersType, userId: number, status: b
 
 const usersReducer = (state = initialStage, action: actionsType): initialStageType => {
     switch (action.type) {
-        case 'FOLLOW':
+        case 'SN/USERS/FOLLOW':
             return {
                 ...state,
                 users: state.users.map(user => mapUserFollowingStatus(user, action.userId, true))
             }
-        case 'UNFOLLOW':
+        case 'SN/USERS/UNFOLLOW':
             return {
                 ...state,
                 users: state.users.map(user => mapUserFollowingStatus(user, action.userId, false))
             }
-        case 'SET_USERS':
+        case 'SN/USERS/SET_USERS':
             return {...state, users: [...state.users, ...action.users]}
-        case 'NEXT_PAGE':
+        case 'SN/USERS/NEXT_PAGE':
             return {...state, currentPage: ++state.currentPage}
-        case 'UPDATE_IS_USERS_FETCHING':
+        case 'SN/USERS/UPDATE_IS_USERS_FETCHING':
             return {...state, isUsersFetching: action.isUsersFetching}
-        case 'UPDATE_IS_FOLLOWING_FETCHING':
+        case 'SN/USERS/UPDATE_IS_FOLLOWING_FETCHING':
             return {
                 ...state,
                 followingInProgress:
@@ -58,25 +61,21 @@ const usersReducer = (state = initialStage, action: actionsType): initialStageTy
     }
 }
 
-type actionsType = inferActionsType<typeof userActions>;
-
 export const userActions = {
-    followUser: (userId: number) => ({type: 'FOLLOW', userId} as const),
-    unfollowUser: (userId: number) => ({type: 'UNFOLLOW', userId} as const),
-    setUsers: (users: Array<usersType>) => ({type: 'SET_USERS', users} as const),
-    setNextPage: () => ({type: 'NEXT_PAGE'} as const),
+    followUser: (userId: number) => ({type: 'SN/USERS/FOLLOW', userId} as const),
+    unfollowUser: (userId: number) => ({type: 'SN/USERS/UNFOLLOW', userId} as const),
+    setUsers: (users: Array<usersType>) => ({type: 'SN/USERS/SET_USERS', users} as const),
+    setNextPage: () => ({type: 'SN/USERS/NEXT_PAGE'} as const),
     updateUsersFetching: (isUsersFetching: boolean) => ({
-        type: 'UPDATE_IS_USERS_FETCHING',
+        type: 'SN/USERS/UPDATE_IS_USERS_FETCHING',
         isUsersFetching
     } as const),
     updateFollowingFetching: (isFetching: boolean, userId: number) => ({
-        type: 'UPDATE_IS_FOLLOWING_FETCHING',
+        type: 'SN/USERS/UPDATE_IS_FOLLOWING_FETCHING',
         isFetching,
         userId
     } as const)
 }
-
-type thunkType = ThunkAction<Promise<void>, appStateType, any, actionsType>;
 
 export const getUsers = (pageSize: number, currentPage: number): thunkType => {
     return async (dispatch) => {

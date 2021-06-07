@@ -1,8 +1,8 @@
-import {Api} from "../components/API/api";
-import {stopSubmit} from "redux-form";
-import {stringOrNull} from "./types/types";
-import {ThunkAction} from "redux-thunk";
-import {appStateType, inferActionsType} from "../redux/reduxStore";
+import {Api} from '../components/API/api';
+import {stopSubmit} from 'redux-form';
+import {stringOrNull} from './types/types';
+import {ThunkAction} from 'redux-thunk';
+import {appStateType, inferActionsType} from '../redux/reduxStore';
 
 export type initialStageType = {
     id: number | null,
@@ -13,8 +13,8 @@ export type initialStageType = {
     captchaUrl: stringOrNull
 }
 
-type thunkType = ThunkAction<Promise<void>, appStateType, any, actionsType>;
 type actionsType = inferActionsType<typeof authActions>;
+type thunkType = ThunkAction<Promise<void>, appStateType, any, actionsType>;
 
 const initialStage: initialStageType = {
     id: null,
@@ -28,12 +28,12 @@ const initialStage: initialStageType = {
 const authReducer = (state = initialStage, action: actionsType): initialStageType => {
     switch (action.type) {
 
-        case 'SET_AUTH':
+        case 'SN/AUTH/SET_AUTH':
             return {
                 ...state,
                 ...action.data
             }
-        case 'GET_CAPTCHA_SUCCESS':
+        case 'SN/AUTH/GET_CAPTCHA_SUCCESS':
             return {
                 ...state,
                 captchaUrl: action.url
@@ -45,9 +45,9 @@ const authReducer = (state = initialStage, action: actionsType): initialStageTyp
 
 export const authActions = {
     setAuth: (id: number | null, email: stringOrNull, login: stringOrNull, isAuth:boolean) => ({
-        type: 'SET_AUTH',
+        type: 'SN/AUTH/SET_AUTH',
         data: {id, email, login, isAuth}} as const),
-    getCaptchaSuccess: (url: stringOrNull) => ({type: 'GET_CAPTCHA_SUCCESS', url} as const)
+    getCaptchaSuccess: (url: stringOrNull) => ({type: 'SN/AUTH/GET_CAPTCHA_SUCCESS', url} as const)
 }
 
 export const getAuth = (): thunkType => async (dispatch) => {

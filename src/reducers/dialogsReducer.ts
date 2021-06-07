@@ -1,4 +1,4 @@
-const ADD_MESSAGE = 'ADD-MESSAGE';
+import {inferActionsType} from '../redux/reduxStore';
 
 export type initialStageType = {
     userList: Array<userListType>,
@@ -16,10 +16,7 @@ type messageListType = {
     userId: number
 }
 
-type sendMessageActionType = {
-    type: typeof ADD_MESSAGE,
-    newMessage: string
-}
+type actionsType = inferActionsType<typeof dialogsActions>;
 
 const initialStage: initialStageType = {
     userList: [
@@ -34,9 +31,9 @@ const initialStage: initialStageType = {
     ]
 };
 
-const dialogReducer = (state = initialStage, action: sendMessageActionType): initialStageType => {
+const dialogReducer = (state = initialStage, action: actionsType): initialStageType => {
     switch (action.type) {
-        case ADD_MESSAGE:
+        case 'SN/DIALOGS/ADD_MESSAGE':
             return {
                 ...state,
                 messageList: [...state.messageList, {id: 4, text: action.newMessage, userId: 1}]
@@ -46,6 +43,8 @@ const dialogReducer = (state = initialStage, action: sendMessageActionType): ini
     }
 }
 
-export const sendMessage = (newMessage: string):sendMessageActionType => ({type: ADD_MESSAGE, newMessage});
+export const dialogsActions = {
+    sendMessage: (newMessage: string) => ({type: 'SN/DIALOGS/ADD_MESSAGE', newMessage} as const)
+}
 
 export default dialogReducer;

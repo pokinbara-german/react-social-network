@@ -1,19 +1,12 @@
 import {getAuth} from "./authReducer";
 import {ThunkAction} from "redux-thunk";
-import {appStateType} from "../redux/reduxStore";
-
-const SET_INIT_DONE = 'SET-INIT-DONE';
+import {appStateType, inferActionsType} from "../redux/reduxStore";
 
 export type initialStageType = {
     initDone: boolean
 }
 
-type setInitDoneActionType = {
-    type: typeof SET_INIT_DONE
-}
-
-type actionsType = setInitDoneActionType;
-
+type actionsType = inferActionsType<typeof appActions>;
 type thunkType = ThunkAction<void, appStateType, any, actionsType>;
 
 const initialStage: initialStageType = {
@@ -23,7 +16,7 @@ const initialStage: initialStageType = {
 const authReducer = (state = initialStage, action: actionsType): initialStageType => {
     switch (action.type) {
 
-        case SET_INIT_DONE:
+        case 'SN/APP/SET_INIT_DONE':
             return {
                 ...state,
                 initDone: true
@@ -33,13 +26,15 @@ const authReducer = (state = initialStage, action: actionsType): initialStageTyp
     }
 }
 
-export const setInitDone = (): setInitDoneActionType => ({type: SET_INIT_DONE});
+export const appActions = {
+    setInitDone: () => ({type: 'SN/APP/SET_INIT_DONE'} as const)
+}
 
 export const makeInit = (): thunkType => (dispatch) => {
     let promise = dispatch(getAuth());
 
     Promise.all([promise]).then(() => {
-        dispatch(setInitDone());
+        dispatch(appActions.setInitDone());
     })
 }
 
