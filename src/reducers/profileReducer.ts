@@ -78,8 +78,12 @@ export const profileActions = {
     savePhotoSuccess: (photos: photosType) => ({type: 'SN/PROFILE/SAVE_PHOTO_SUCCESS', photos} as const)
 }
 
-export const getStatus = (userId: number): thunkType => async (dispatch) => {
-    let id = userId || 16702;
+export const getStatus = (userId: number): thunkType => async (dispatch, getState) => {
+    let id = userId || getState().auth.id;
+
+    if (!id) {
+        return;
+    }
 
     let data = await Api.Profile.getStatus(id);
 
@@ -110,8 +114,12 @@ export const updateStatus = (status: string): thunkType => async (dispatch) => {
     dispatch(profileActions.toggleStatusFetching());
 }
 
-export const getProfile = (userId: number): thunkType => async (dispatch) => {
-    let id = userId || 16702;
+export const getProfile = (userId: number): thunkType => async (dispatch, getState) => {
+    let id = userId || getState().auth.id;
+
+    if (!id) {
+        return;
+    }
 
     let data = await Api.Profile.getProfile(id);
 
