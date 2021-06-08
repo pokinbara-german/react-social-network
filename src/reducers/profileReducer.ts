@@ -1,13 +1,7 @@
 import {Api} from '../components/API/api';
 import {stopSubmit} from 'redux-form';
-import {baseThunkType, contactsType, photosType, profileType} from './types/types';
+import {baseThunkType, contactsType, photosType, postsDataType, profileType} from './types/types';
 import {inferActionsType} from '../redux/reduxStore';
-
-type postsDataType = {
-    id: number,
-    text: string,
-    likes: number
-}
 
 export type initialStateType = {
     postsData: Array<postsDataType>,

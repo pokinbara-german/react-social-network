@@ -62,7 +62,7 @@ const AddMessageForm: React.FC<InjectedFormProps<formDataType>> = (props) => {
         <form onSubmit={props.handleSubmit}>
             <div>
                 {createField<fieldNamesType>(
-                    styles.loginInput,
+                    undefined,
                     'Введите сообщение',
                     'newMessage',
                     TextArea,
