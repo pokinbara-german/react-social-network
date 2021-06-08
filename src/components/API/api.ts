@@ -148,9 +148,9 @@ export const Api = {
             return defaultApi.put<updateProfileResponseType>('profile', profile)
                 .then(response => {
                     if (response.data.resultCode === resultCodesType.Success) {
-                        return [];
+                        return;
                     } else {
-                        return response.data.messages.length ? response.data.messages : ['Unknown error'];
+                        return response.data.messages.length ? response.data.messages[0] : 'Unknown error';
                     }
                 });
         }

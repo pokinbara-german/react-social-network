@@ -60,3 +60,9 @@ export type basicResponseType = {
 };
 
 export type baseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, appStateType, any, A>;
+
+export type postsDataType = {
+    id: number,
+    text: string,
+    likes: number
+}

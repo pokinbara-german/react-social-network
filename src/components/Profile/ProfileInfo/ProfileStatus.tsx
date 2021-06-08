@@ -1,53 +1,49 @@
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import styles from './ProfileInfo.module.css';
+import Preloader from "../../../Common/Preloader/Preloader";
 
 type propsType = {
     status: string,
+    statusFetching: boolean,
     updateStatus: (status: string) => void
-}
+};
 
-type stateType = {
-    isStatusEditing: boolean,
-    status: string
-}
+const ProfileStatus: React.FC<propsType> = (props) => {
 
-class ProfileStatus extends React.Component<propsType, stateType> {
-    state = {
-        isStatusEditing: false,
-        status: this.props.status
-    }
+    let statusText = props.status || 'No status';
 
-    componentDidUpdate(prevProps: propsType, prevState: stateType, snapshot: any) {
-        if (prevProps.status !== this.props.status) {
-            this.setState({status: this.props.status});
+    let [isStatusEditing, setStatusEditing] = useState(false);
+    let [status, setStatus] = useState(props.status);
+
+    useEffect(() => {
+        setStatus(props.status);
+    }, [props.status]);
+
+    const toggleEditing = () => {
+        let newValue = !isStatusEditing;
+        setStatusEditing(newValue);
+
+        if (!newValue && status && (statusText !== status)) {
+            props.updateStatus(status);
         }
     }
 
-    toggleEditing = () => {
-        let newValue = !this.state.isStatusEditing;
-        this.setState({isStatusEditing: newValue});
-
-        if (!newValue) {
-            this.props.updateStatus(this.state.status);
-        }
+    const onStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setStatus(event.target.value);
     }
 
-    onStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
-        this.setState({status: event.target.value});
+    if (props.statusFetching) {
+        return <Preloader notCentered={true}/>
     }
 
-    render() {
-        let statusText = this.props.status || 'No status';
-
-        return this.state.isStatusEditing
-            ? <input autoFocus={true}
-                     onBlur={this.toggleEditing}
-                     onChange={this.onStatusChange}
-                     className={styles.statusInput}
-                     value={this.state.status}
-            />
-            : <div onClick={this.toggleEditing}>{statusText}</div>;
-    }
+    return isStatusEditing
+        ? <input autoFocus={true}
+                 onBlur={toggleEditing}
+                 onChange={onStatusChange}
+                 className={styles.statusInput}
+                 value={status}
+        />
+        : <div className={styles.statusDiv} onClick={toggleEditing}><span className={styles.statusSpan}>Статус: </span>{statusText}</div>;
 }
 
 export default ProfileStatus;

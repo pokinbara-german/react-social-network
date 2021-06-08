@@ -4,18 +4,22 @@
  * and open the template in the editor.
  */
 import React from 'react';
-import styles from './DialogsItem.module.css';
-import {NavLink} from 'react-router-dom';
+import styles from './Message.module.css';
 
-const DialogsItem = (props) => {
-    let path = "/messages/" + props.id;
+type propsType = {
+    message: string,
+    userId: number
+}
+
+const Message: React.FC<propsType> = (props) => {
+    let isMe = (props.userId === 1) ? ` ${styles.me}` : '';
 
     return (
-        <div className={styles.dialog}>
+        <div className={styles.message_wrapper + isMe}>
             <img alt='ava' src="https://png.pngtree.com/element_our/20190530/ourlarge/pngtree-520-couple-avatar-boy-avatar-little-dinosaur-cartoon-cute-image_1263411.jpg"/>
-            <NavLink to={path}>{props.name}</NavLink>
+            <div className={styles.message}>{props.message}</div>
         </div>
     );
 }
 
-export default DialogsItem;
+export default Message;

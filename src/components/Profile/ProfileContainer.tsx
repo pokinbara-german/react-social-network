@@ -12,8 +12,7 @@ import withAuthRedirect from "../../Hocs/withAuthRedirect";
 import {MatchParams, profileType} from "../../reducers/types/types";
 import {appStateType} from "../../redux/reduxStore";
 
-interface matchType extends RouteComponentProps<MatchParams> {
-}
+type matchType = RouteComponentProps<MatchParams>;
 
 type mapStatePropsType = {
     profile: profileType | null,

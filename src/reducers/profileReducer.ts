@@ -1,13 +1,7 @@
 import {Api} from '../components/API/api';
 import {stopSubmit} from 'redux-form';
-import {baseThunkType, contactsType, photosType, profileType} from './types/types';
+import {baseThunkType, contactsType, photosType, postsDataType, profileType} from './types/types';
 import {inferActionsType} from '../redux/reduxStore';
-
-type postsDataType = {
-    id: number,
-    text: string,
-    likes: number
-}
 
 export type initialStateType = {
     postsData: Array<postsDataType>,
@@ -143,12 +137,13 @@ export const savePhoto = (file: File): thunkType => async (dispatch) => {
 export const saveProfile = (profile: profileType): thunkType => async (dispatch) => {
     let data = await Api.Profile.saveProfile(profile);
 
-    if (data.length) {
+    if (data) {
         dispatch(stopSubmit('profileInfo', {_error: data}));
         return Promise.reject(data);
     }
 
     dispatch(profileActions.updateProfile(profile));
+    return Promise.resolve();
 }
 
 export default profileReducer;
