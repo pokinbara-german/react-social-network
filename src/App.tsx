@@ -5,21 +5,32 @@ import {Route} from 'react-router-dom';
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
-import {Component} from "react";
 import {connect} from "react-redux";
 import {makeInit} from "./reducers/appReducer";
 import Preloader from "./Common/Preloader/Preloader";
 import StartPage from "./components/StartPage/StartPage";
-import catchReason from "./Common/CatchReason/catchReason";
+import {appStateType} from './redux/reduxStore';
 
-const Settings = React.lazy(() => import('./components/Settings/Settings').catch(reason => catchReason(reason)));
-const Music = React.lazy(() => import('./components/Music/Music').catch(reason => catchReason(reason)));
-const News = React.lazy(() => import('./components/News/News').catch(reason => catchReason(reason)));
-const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer').catch(reason => catchReason(reason)));
-const MessagesContainer = React.lazy(() => import('./components/Messages/MessagesContainer').catch(reason => catchReason(reason)));
+const Settings = React.lazy(() => import('./components/Settings/Settings'));
+const Music = React.lazy(() => import('./components/Music/Music'));
+const News = React.lazy(() => import('./components/News/News'));
+const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
+const MessagesContainer = React.lazy(() => import('./components/Messages/MessagesContainer'));
 
-class App extends Component {
-    catchGenericError(reason) {
+type mapStatePropsType = {
+    isInitDone: boolean
+}
+
+type mapDispatchPropsType = {
+    makeInit: () => void
+}
+
+type ownPropsType = {};
+
+type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType;
+
+class App extends React.Component<propsType> {
+    catchGenericError(reason: PromiseRejectionEvent) {
         let response = reason.reason.response;
         //TODO: переписать на нормальный вывод ошибки
         alert('ERROR: сервер вернул ответ ' + response.status + ' ' + response.statusText);
@@ -63,7 +74,7 @@ class App extends Component {
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: appStateType) => {
     return {isInitDone: state.app.initDone}
 }
 
