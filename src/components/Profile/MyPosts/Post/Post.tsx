@@ -6,11 +6,12 @@
 import React from 'react';
 import styles from './Post.module.css';
 import userMale from "../../../../assets/images/user-male.png";
+import {stringOrNull} from '../../../../reducers/types/types';
 
 type postPropsType = {
     message: string,
     likeCount: number,
-    avatar: string
+    avatar: stringOrNull
 }
 
 const Post: React.FC<postPropsType> = (props) => {

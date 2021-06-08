@@ -6,8 +6,9 @@
 import {profileActions} from "../../../reducers/profileReducer";
 import {connect} from "react-redux";
 import MyPosts from "./MyPosts";
+import {appStateType} from '../../../redux/reduxStore';
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: appStateType) => {
     return (
         {
             postsData: state.profilePage.postsData,
