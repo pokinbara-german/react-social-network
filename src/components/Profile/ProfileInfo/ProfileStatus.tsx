@@ -1,8 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import styles from './ProfileInfo.module.css';
 import Preloader from "../../../Common/Preloader/Preloader";
 
-const ProfileStatus = (props) => {
+type propsType = {
+    status: string,
+    statusFetching: boolean,
+    updateStatus: (status: string) => void
+};
+
+const ProfileStatus: React.FC<propsType> = (props) => {
 
     let statusText = props.status || 'No status';
 
@@ -22,7 +28,7 @@ const ProfileStatus = (props) => {
         }
     }
 
-    const onStatusChange = (event) => {
+    const onStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
         setStatus(event.target.value);
     }
 

@@ -137,12 +137,13 @@ export const savePhoto = (file: File): thunkType => async (dispatch) => {
 export const saveProfile = (profile: profileType): thunkType => async (dispatch) => {
     let data = await Api.Profile.saveProfile(profile);
 
-    if (data.length) {
+    if (data) {
         dispatch(stopSubmit('profileInfo', {_error: data}));
         return Promise.reject(data);
     }
 
     dispatch(profileActions.updateProfile(profile));
+    return Promise.resolve();
 }
 
 export default profileReducer;
