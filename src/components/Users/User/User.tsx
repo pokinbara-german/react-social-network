@@ -1,12 +1,12 @@
-import React from "react";
-import styles from "./User.module.css";
-import {NavLink} from "react-router-dom";
-import userMale from "../../../assets/images/user-male.png";
-import {followingInProgressType, usersType} from "../../../reducers/types/types";
+import React from 'react';
+import styles from './User.module.css';
+import {NavLink} from 'react-router-dom';
+import userMale from '../../../assets/images/user-male.png';
+import {arrayOfNumbers, usersType} from '../../../reducers/types/types';
 
 type userPropsType = {
     user: usersType,
-    followingInProgress: followingInProgressType,
+    followingInProgress: arrayOfNumbers,
     followUser: (userId: number) => void,
     unfollowUser: (userId: number) => void,
 }

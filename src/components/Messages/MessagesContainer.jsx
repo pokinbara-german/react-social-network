@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {sendMessage} from "../../reducers/dialogsReducer";
-import {connect} from "react-redux";
-import Messages from "./Messages";
-import withAuthRedirect from "../../Hocs/withAuthRedirect";
-import {compose} from "redux";
+import {dialogsActions} from '../../reducers/dialogsReducer';
+import {connect} from 'react-redux';
+import Messages from './Messages';
+import withAuthRedirect from '../../Hocs/withAuthRedirect';
+import {compose} from 'redux';
 
 let mapStateToProps = (state) => {
     return (
@@ -17,4 +17,4 @@ let mapStateToProps = (state) => {
 
 let ComposedComponent = compose(withAuthRedirect)(Messages);
 
-export default connect(mapStateToProps, {sendMessage})(ComposedComponent);
+export default connect(mapStateToProps, {sendMessage: dialogsActions.sendMessage})(ComposedComponent);

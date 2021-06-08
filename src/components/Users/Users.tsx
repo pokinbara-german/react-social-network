@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 import styles from './Users.module.css';
-import Preloader from "../../Common/Preloader/Preloader";
-import User from "./User/User";
-import {followingInProgressType, usersType} from "../../reducers/types/types";
+import Preloader from '../../Common/Preloader/Preloader';
+import User from './User/User';
+import {arrayOfNumbers, usersType} from '../../reducers/types/types';
 
 type usersPropsType = {
     usersPage: Array<usersType>,
     isUsersFetching: boolean,
-    followingInProgress: followingInProgressType,
+    followingInProgress: arrayOfNumbers,
     followUser: (userId: number) => void,
     unfollowUser: (userId: number) => void,
     onPageChanged: () => void
