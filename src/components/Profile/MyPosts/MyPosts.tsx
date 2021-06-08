@@ -11,12 +11,12 @@ import {createField, TextArea} from "../../../Common/FormComponents/FieldsCompon
 import {maxLengthCreator, required} from "../../../utils/validators";
 import {postsDataType, stringOrNull} from '../../../reducers/types/types';
 
-type mapStatePropsType = {
+export type mapStatePropsType = {
     postsData: Array<postsDataType>,
     avatar: stringOrNull
 }
 
-type mapDispatchPropsType = {
+export type mapDispatchPropsType = {
     sendPost: (newPost: string) => void
 }
 

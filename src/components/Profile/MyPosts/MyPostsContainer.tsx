@@ -5,7 +5,7 @@
  */
 import {profileActions} from "../../../reducers/profileReducer";
 import {connect} from "react-redux";
-import MyPosts from "./MyPosts";
+import MyPosts, {mapDispatchPropsType, mapStatePropsType} from "./MyPosts";
 import {appStateType} from '../../../redux/reduxStore';
 
 let mapStateToProps = (state: appStateType) => {
@@ -17,6 +17,9 @@ let mapStateToProps = (state: appStateType) => {
     );
 };
 
-const MyPostsContainer = connect(mapStateToProps, {sendPost: profileActions.sendPost})(MyPosts);
+const MyPostsContainer = connect<mapStatePropsType, mapDispatchPropsType, {}, appStateType>(
+    mapStateToProps,
+    {sendPost: profileActions.sendPost}
+)(MyPosts);
 
 export default MyPostsContainer;

@@ -12,11 +12,11 @@ import {maxLengthCreator, required} from "../../utils/validators";
 import {createField, TextArea} from "../../Common/FormComponents/FieldsComponents/FieldsComponents";
 import {initialStageType} from '../../reducers/dialogsReducer';
 
-type mapStatePropsType = {
+export type mapStatePropsType = {
     dialogsPage: initialStageType
 };
 
-type mapDispatchPropsType = {
+export type mapDispatchPropsType = {
     sendMessage: (newMessage: string) => void
 };
 

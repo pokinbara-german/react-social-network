@@ -74,8 +74,11 @@ class App extends React.Component<propsType> {
     }
 }
 
-let mapStateToProps = (state: appStateType) => {
+let mapStateToProps = (state: appStateType): mapStatePropsType => {
     return {isInitDone: state.app.initDone}
 }
 
-export default connect(mapStateToProps, {makeInit})(App);
+export default connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, appStateType>(
+    mapStateToProps,
+    {makeInit}
+)(App);
