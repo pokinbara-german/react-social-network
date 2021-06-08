@@ -8,8 +8,9 @@ import {connect} from 'react-redux';
 import Messages from './Messages';
 import withAuthRedirect from '../../Hocs/withAuthRedirect';
 import {compose} from 'redux';
+import {appStateType} from '../../redux/reduxStore';
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: appStateType) => {
     return (
         {dialogsPage: state.dialogsPage}
     );
