@@ -1,6 +1,6 @@
 import {Api} from '../components/API/api';
 import {FormAction, stopSubmit} from 'redux-form';
-import {baseThunkType, stringOrNull} from './types/types';
+import {baseThunkType, captchaResultCodeType, stringOrNull} from './types/types';
 import {inferActionsType} from '../redux/reduxStore';
 import {Action} from 'redux';
 
@@ -62,10 +62,10 @@ export const getAuth = (): thunkType => async (dispatch) => {
 }
 
 export const login = (email: string, password: string, rememberMe: boolean, captcha: string): thunkType => async (dispatch) => {
-    let data:any = await Api.Auth.Login(email, password, rememberMe, captcha);
+    let data = await Api.Auth.Login(email, password, rememberMe, captcha);
 
     if (data.error) {
-        if (data.resultCode === 10) {
+        if (data.resultCode === captchaResultCodeType.captchaRequired) {
             await dispatch(getCaptcha());
         }
 

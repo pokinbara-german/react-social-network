@@ -59,7 +59,7 @@ export type basicResponseType = {
     messages: Array<string>
 };
 
-export type baseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, appStateType, any, A>;
+export type baseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, appStateType, unknown, A>;
 
 export type postsDataType = {
     id: number,
