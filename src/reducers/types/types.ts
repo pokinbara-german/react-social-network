@@ -33,9 +33,10 @@ export type photosType = {
 export type usersType = {
     id: number,
     name: string,
-    status: string,
+    status: stringOrNull,
     photos: photosType,
-    followed: boolean
+    followed: boolean,
+    uniqueUrlName: stringOrNull
 }
 
 export interface MatchParams {

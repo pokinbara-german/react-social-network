@@ -10,10 +10,10 @@ import Message from "./Message/Message";
 import {InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../utils/validators";
 import {createField, TextArea} from "../../Common/FormComponents/FieldsComponents/FieldsComponents";
-import {initialStageType} from '../../reducers/dialogsReducer';
+import {initialStateType} from '../../reducers/dialogsReducer';
 
 export type mapStatePropsType = {
-    dialogsPage: initialStageType
+    dialogsPage: initialStateType
 };
 
 export type mapDispatchPropsType = {
