@@ -90,16 +90,12 @@ export const Api = {
             return defaultApi.post<loginResponseType>('auth/login/', {email, password, rememberMe, captcha}).then(response => {
                 if (response.data.resultCode === resultCodesType.Success) {
                     return {result: response.data.data};
-                } else if (
-                    response.data.resultCode === resultCodesType.Error
-                    || response.data.resultCode === captchaResultCodeType.captchaRequired
-                ) {
-                    let message = response.data.messages.length ? response.data.messages[0] : 'Unknown error';
-
-                    return {error: message, resultCode: response.data.resultCode};
                 }
 
-                return null;
+                let message = response.data.messages.length ? response.data.messages[0] : 'Unknown error';
+                let resultCode = response.data.resultCode || -1;
+
+                return {error: message, resultCode: resultCode};
             });
         },
         Logout: () => {

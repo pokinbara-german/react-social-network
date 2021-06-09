@@ -14,6 +14,8 @@ export type initialStageType = {
 type actionsType = inferActionsType<typeof userActions>;
 type thunkType = baseThunkType<actionsType>;
 
+type apiMethodType = typeof Api.Users.follow | typeof Api.Users.unfollow;
+
 const initialStage: initialStageType = {
     users: [],
     currentPage: 0,
@@ -95,7 +97,7 @@ export const getUsers = (pageSize: number, currentPage: number): thunkType => {
 const processFollowUnfollow = async (
     userId: number,
     dispatch: Dispatch<actionsType>,
-    apiMethod: any,
+    apiMethod: apiMethodType,
     actionCreator: (userId: number) => actionsType
 ) => {
     dispatch(userActions.updateFollowingFetching(true, userId));
