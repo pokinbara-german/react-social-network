@@ -3,7 +3,7 @@ import {baseThunkType, arrayOfNumbers, usersType} from './types/types';
 import {inferActionsType} from '../redux/reduxStore';
 import {Dispatch} from 'redux';
 
-export type initialStageType = {
+export type initialStateType = {
     users: Array<usersType>,
     currentPage: number,
     pageSize: number,
@@ -16,7 +16,7 @@ type thunkType = baseThunkType<actionsType>;
 
 type apiMethodType = typeof Api.Users.follow | typeof Api.Users.unfollow;
 
-const initialStage: initialStageType = {
+const initialState: initialStateType = {
     users: [],
     currentPage: 0,
     pageSize: 10,
@@ -31,7 +31,7 @@ function mapUserFollowingStatus(userObject: usersType, userId: number, status: b
         return userObject;
 }
 
-const usersReducer = (state = initialStage, action: actionsType): initialStageType => {
+const usersReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
         case 'SN/USERS/FOLLOW':
             return {

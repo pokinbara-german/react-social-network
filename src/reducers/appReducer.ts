@@ -2,18 +2,18 @@ import {getAuth} from './authReducer';
 import {inferActionsType} from '../redux/reduxStore';
 import {baseThunkType} from './types/types';
 
-export type initialStageType = {
+export type initialStateType = {
     initDone: boolean
 }
 
 type actionsType = inferActionsType<typeof appActions>;
 type thunkType = baseThunkType<actionsType, void>;
 
-const initialStage: initialStageType = {
+const initialState: initialStateType = {
     initDone: false
 };
 
-const authReducer = (state = initialStage, action: actionsType): initialStageType => {
+const authReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
 
         case 'SN/APP/SET_INIT_DONE':

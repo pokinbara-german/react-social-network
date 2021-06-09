@@ -4,7 +4,7 @@ import {baseThunkType, captchaResultCodeType, stringOrNull} from './types/types'
 import {inferActionsType} from '../redux/reduxStore';
 import {Action} from 'redux';
 
-export type initialStageType = {
+export type initialStateType = {
     id: number | null,
     email: stringOrNull,
     login: stringOrNull,
@@ -16,7 +16,7 @@ export type initialStageType = {
 type actionsType = inferActionsType<typeof authActions>;
 type thunkType = baseThunkType<actionsType | Action<actionsType> | Action<ReturnType<typeof stopSubmit>>, Promise<void | FormAction>>;
 
-const initialStage: initialStageType = {
+const initialState: initialStateType = {
     id: null,
     email: null,
     login: null,
@@ -25,7 +25,7 @@ const initialStage: initialStageType = {
     captchaUrl: null
 };
 
-const authReducer = (state = initialStage, action: actionsType): initialStageType => {
+const authReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
 
         case 'SN/AUTH/SET_AUTH':

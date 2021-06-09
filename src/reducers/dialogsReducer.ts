@@ -1,6 +1,6 @@
 import {inferActionsType} from '../redux/reduxStore';
 
-export type initialStageType = {
+export type initialStateType = {
     userList: Array<userListType>,
     messageList: Array<messageListType>
 };
@@ -18,7 +18,7 @@ type messageListType = {
 
 type actionsType = inferActionsType<typeof dialogsActions>;
 
-const initialStage: initialStageType = {
+const initialState: initialStateType = {
     userList: [
         {id:1, name: 'Andrey'},
         {id:2, name: 'Sergey'},
@@ -31,7 +31,7 @@ const initialStage: initialStageType = {
     ]
 };
 
-const dialogReducer = (state = initialStage, action: actionsType): initialStageType => {
+const dialogReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
         case 'SN/DIALOGS/ADD_MESSAGE':
             return {
