@@ -81,16 +81,17 @@ export const userActions = {
 export const getUsers = (pageSize: number, currentPage: number): thunkType => {
     return async (dispatch) => {
         dispatch(userActions.updateUsersFetching(true));
-        dispatch(userActions.setNextPage());
 
         let data = await Api.Users.getUsers(pageSize, currentPage);
+
+        dispatch(userActions.updateUsersFetching(false));
 
         if (data === null) {
             return;
         }
 
         dispatch(userActions.setUsers(data.items));
-        dispatch(userActions.updateUsersFetching(false));
+        dispatch(userActions.setNextPage());
     }
 }
 
