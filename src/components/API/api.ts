@@ -6,6 +6,7 @@ import {
     profileType,
     resultCodesType, usersType
 } from "../../reducers/types/types";
+import {filterType} from '../../reducers/usersReducer';
 
 const defaultApi = axios.create({
     withCredentials: true,
@@ -53,9 +54,9 @@ type getUsersResponseType = {
 
 export const Api = {
     Users: {
-        getUsers: (pageSize = 4, currentPage = 0) => {
+        getUsers: (pageSize = 4, currentPage = 0, filter: filterType) => {
             return defaultApi.get<getUsersResponseType>('users',
-                {params: {count: pageSize, page: currentPage + 1}}
+                {params: {count: pageSize, page: currentPage + 1, term: filter.searchTerm, friend: filter.friend}}
             ).then(response => {
                 if (response.data.items.length === 0) {
                     return null;

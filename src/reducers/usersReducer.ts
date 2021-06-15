@@ -1,5 +1,5 @@
 import {Api} from '../components/API/api';
-import {baseThunkType, arrayOfNumbers, usersType} from './types/types';
+import {baseThunkType, arrayOfNumbers, usersType, stringOrNull} from './types/types';
 import {inferActionsType} from '../redux/reduxStore';
 import {Dispatch} from 'redux';
 
@@ -8,9 +8,14 @@ export type initialStateType = {
     currentPage: number,
     pageSize: number,
     isUsersFetching: boolean,
-    followingInProgress: arrayOfNumbers
+    followingInProgress: arrayOfNumbers,
+    filter: filterType
 }
 
+export type filterType = {
+    searchTerm: stringOrNull,
+    friend: null | boolean
+}
 type actionsType = inferActionsType<typeof userActions>;
 type thunkType = baseThunkType<actionsType>;
 
@@ -21,7 +26,11 @@ const initialState: initialStateType = {
     currentPage: 0,
     pageSize: 10,
     isUsersFetching: false,
-    followingInProgress: []
+    followingInProgress: [],
+    filter: {
+        searchTerm: null,
+        friend: null
+    }
 };
 
 function mapUserFollowingStatus(userObject: usersType, userId: number, status: boolean) {
@@ -43,6 +52,10 @@ const usersReducer = (state = initialState, action: actionsType): initialStateTy
                 ...state,
                 users: state.users.map(user => mapUserFollowingStatus(user, action.userId, false))
             }
+        case 'SN/USERS/ZERO_NEXT_PAGE':
+            return {...state, currentPage: 0};
+        case 'SN/USERS/SET_SEARCH_TERM':
+            return {...state, filter: {...action.filter}, users: []};
         case 'SN/USERS/SET_USERS':
             return {...state, users: [...state.users, ...action.users]}
         case 'SN/USERS/NEXT_PAGE':
@@ -65,6 +78,8 @@ const usersReducer = (state = initialState, action: actionsType): initialStateTy
 export const userActions = {
     followUser: (userId: number) => ({type: 'SN/USERS/FOLLOW', userId} as const),
     unfollowUser: (userId: number) => ({type: 'SN/USERS/UNFOLLOW', userId} as const),
+    zeroNextPage: () => ({type: 'SN/USERS/ZERO_NEXT_PAGE'} as const),
+    setSearchFilter: (filter: filterType) => ({type: 'SN/USERS/SET_SEARCH_TERM', filter} as const),
     setUsers: (users: Array<usersType>) => ({type: 'SN/USERS/SET_USERS', users} as const),
     setNextPage: () => ({type: 'SN/USERS/NEXT_PAGE'} as const),
     updateUsersFetching: (isUsersFetching: boolean) => ({
@@ -78,11 +93,16 @@ export const userActions = {
     } as const)
 }
 
-export const getUsers = (pageSize: number, currentPage: number): thunkType => {
-    return async (dispatch) => {
+export const getUsers = (pageSize: number, currentPage: number, filter: filterType): thunkType => {
+    return async (dispatch, getState) => {
         dispatch(userActions.updateUsersFetching(true));
+        if (filter !== getState().usersPage.filter) {
+            dispatch(userActions.setSearchFilter(filter));
+            dispatch(userActions.zeroNextPage());
+        }
 
-        let data = await Api.Users.getUsers(pageSize, currentPage);
+        //TODO: хранить currentPage в стейте и оттуда же доставать
+        let data = await Api.Users.getUsers(pageSize, currentPage, filter);
 
         dispatch(userActions.updateUsersFetching(false));
 

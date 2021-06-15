@@ -3,6 +3,8 @@ import styles from './Users.module.css';
 import Preloader from '../../Common/Preloader/Preloader';
 import User from './User/User';
 import {arrayOfNumbers, usersType} from '../../reducers/types/types';
+import {filterType} from '../../reducers/usersReducer';
+import UsersSearchForm from './UsersSearchForm/UsersSearchForm';
 
 type usersPropsType = {
     usersPage: Array<usersType>,
@@ -10,7 +12,7 @@ type usersPropsType = {
     followingInProgress: arrayOfNumbers,
     followUser: (userId: number) => void,
     unfollowUser: (userId: number) => void,
-    onPageChanged: () => void
+    onPageChanged: (filter?: filterType) => void
 }
 
 /**
@@ -39,6 +41,7 @@ const Users: React.FC<usersPropsType> = (props) => {
 
     return (
         <div>
+            <UsersSearchForm onPageChanged={props.onPageChanged}/>
             {users}
             {props.isUsersFetching ? <Preloader/> : <MoreUsersComponent/>}
         </div>

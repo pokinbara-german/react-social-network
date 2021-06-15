@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {getUsers, follow, unfollow} from '../../reducers/usersReducer';
+import {getUsers, follow, unfollow, filterType} from '../../reducers/usersReducer';
 import {connect} from 'react-redux';
 import Users from './Users';
 import React from 'react';
@@ -15,11 +15,12 @@ type mapStatePropsType = {
     currentPage: number,
     pageSize: number,
     isUsersFetching: boolean,
-    followingInProgress: arrayOfNumbers
+    followingInProgress: arrayOfNumbers,
+    filter: filterType
 };
 
 type mapDispatchPropsType = {
-    getUsers: (pageSize: number, currentPage: number) => void,
+    getUsers: (pageSize: number, currentPage: number, filter: filterType) => void,
     follow: (userId: number) => void,
     unfollow: (userId: number) => void
 };
@@ -38,8 +39,16 @@ class UsersComponent extends React.Component<propsType> {
     }
 
     /** Gets data from ajax on call and append it to state field */
-    onPageChanged() {
-        this.props.getUsers(this.props.pageSize, this.props.currentPage);
+    onPageChanged(filter?: filterType) {
+        let actualFilter = this.props.filter;
+        let actualPage = this.props.currentPage;
+
+        if (filter) {
+            actualFilter = filter;
+            actualPage = 0;
+        }
+
+        this.props.getUsers(this.props.pageSize, actualPage, actualFilter);
     }
 
     render() {
@@ -66,7 +75,8 @@ let mapStateToProps = (state: appStateType): mapStatePropsType => {
             currentPage: state.usersPage.currentPage,
             pageSize: state.usersPage.pageSize,
             isUsersFetching: state.usersPage.isUsersFetching,
-            followingInProgress: state.usersPage.followingInProgress
+            followingInProgress: state.usersPage.followingInProgress,
+            filter: state.usersPage.filter
         }
     );
 };
