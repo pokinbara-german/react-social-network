@@ -2,16 +2,16 @@ import React from 'react';
 import styles from './Users.module.css';
 import Preloader from '../../Common/Preloader/Preloader';
 import User from './User/User';
-import {arrayOfNumbers, usersType} from '../../reducers/types/types';
-import {filterType} from '../../reducers/usersReducer';
+import {filterType, follow, unfollow} from '../../reducers/usersReducer';
 import UsersSearchForm from './UsersSearchForm/UsersSearchForm';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+    getFollowingInProgressSelector,
+    getIsUsersFetchingSelector,
+    getUsersSelector
+} from '../../Common/Selectors/Selectors';
 
 type usersPropsType = {
-    usersPage: Array<usersType>,
-    isUsersFetching: boolean,
-    followingInProgress: arrayOfNumbers,
-    followUser: (userId: number) => void,
-    unfollowUser: (userId: number) => void,
     onPageChanged: (filter?: filterType) => void
 }
 
@@ -22,12 +22,26 @@ type usersPropsType = {
  * @constructor
  */
 const Users: React.FC<usersPropsType> = (props) => {
-    let users = props.usersPage.map((user) =>
+    let usersPage = useSelector(getUsersSelector);
+    let isUsersFetching = useSelector(getIsUsersFetchingSelector);
+    let followingInProgress = useSelector(getFollowingInProgressSelector);
+
+    let dispatch = useDispatch();
+
+    let followUser = (userId: number) => {
+        dispatch(follow(userId));
+    }
+
+    let unfollowUser = (userId: number) => {
+        dispatch(unfollow(userId));
+    }
+
+    let users = usersPage.map((user) =>
         <User key={'User' + user.id}
               user={user}
-              unfollowUser={props.unfollowUser}
-              followUser={props.followUser}
-              followingInProgress={props.followingInProgress}
+              unfollowUser={unfollowUser}
+              followUser={followUser}
+              followingInProgress={followingInProgress}
         />
     );
 
@@ -43,7 +57,7 @@ const Users: React.FC<usersPropsType> = (props) => {
         <div>
             <UsersSearchForm onPageChanged={props.onPageChanged}/>
             {users}
-            {props.isUsersFetching ? <Preloader/> : <MoreUsersComponent/>}
+            {isUsersFetching ? <Preloader/> : <MoreUsersComponent/>}
         </div>
     );
 }

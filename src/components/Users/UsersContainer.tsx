@@ -3,26 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {getUsers, follow, unfollow, filterType} from '../../reducers/usersReducer';
+import {getUsers, filterType} from '../../reducers/usersReducer';
 import {connect} from 'react-redux';
 import Users from './Users';
 import React from 'react';
-import {arrayOfNumbers, usersType} from '../../reducers/types/types';
+import {usersType} from '../../reducers/types/types';
 import {appStateType} from '../../redux/reduxStore';
+import {
+    getCurrentPageSelector,
+    getPageSizeSelector, getUsersFilterSelector,
+    getUsersSelector
+} from '../../Common/Selectors/Selectors';
 
 type mapStatePropsType = {
     usersPage: Array<usersType>,
     currentPage: number,
     pageSize: number,
-    isUsersFetching: boolean,
-    followingInProgress: arrayOfNumbers,
     filter: filterType
 };
 
 type mapDispatchPropsType = {
     getUsers: (pageSize: number, currentPage: number, filter: filterType) => void,
-    follow: (userId: number) => void,
-    unfollow: (userId: number) => void
 };
 
 type ownPropsType = {
@@ -53,12 +54,7 @@ class UsersComponent extends React.Component<propsType> {
 
     render() {
         return <Users
-            usersPage={this.props.usersPage}
             onPageChanged={this.onPageChanged.bind(this)}
-            unfollowUser={this.props.unfollow}
-            followUser={this.props.follow}
-            isUsersFetching={this.props.isUsersFetching}
-            followingInProgress={this.props.followingInProgress}
         />;
     }
 }
@@ -71,20 +67,16 @@ class UsersComponent extends React.Component<propsType> {
 let mapStateToProps = (state: appStateType): mapStatePropsType => {
     return (
         {
-            usersPage: state.usersPage.users,
-            currentPage: state.usersPage.currentPage,
-            pageSize: state.usersPage.pageSize,
-            isUsersFetching: state.usersPage.isUsersFetching,
-            followingInProgress: state.usersPage.followingInProgress,
-            filter: state.usersPage.filter
+            usersPage: getUsersSelector(state),
+            currentPage: getCurrentPageSelector(state),
+            pageSize: getPageSizeSelector(state),
+            filter: getUsersFilterSelector(state)
         }
     );
 };
 
 const mapDispatchToProps: mapDispatchPropsType =  {
     getUsers,
-    follow,
-    unfollow
 }
 
 const UsersContainer = connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, appStateType>(mapStateToProps, mapDispatchToProps)(UsersComponent);
