@@ -18,7 +18,7 @@ const formValidate = () => {
 export const UsersSearchForm: React.FC<propsType> = (props) => {
     function onSubmit(values: formFieldsType, {setSubmitting}: FormikHelpers<formFieldsType>) {
         const filter: filterType = {
-            searchTerm: values.searchTerm,
+            searchTerm: values.searchTerm || null,
             friend: values.friend === 'null' ? null : values.friend === 'true'
         }
         props.onPageChanged(filter);

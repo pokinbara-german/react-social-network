@@ -4,81 +4,40 @@
  * and open the template in the editor.
  */
 import {getUsers, filterType} from '../../reducers/usersReducer';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Users from './Users';
-import React from 'react';
-import {usersType} from '../../reducers/types/types';
-import {appStateType} from '../../redux/reduxStore';
+import React, {useEffect} from 'react';
 import {
     getCurrentPageSelector,
-    getPageSizeSelector, getUsersFilterSelector,
-    getUsersSelector
+    getPageSizeSelector,
+    getUsersFilterSelector
 } from '../../Common/Selectors/Selectors';
 
-type mapStatePropsType = {
-    usersPage: Array<usersType>,
-    currentPage: number,
-    pageSize: number,
-    filter: filterType
-};
+const UsersContainer: React.FC = () => {
+    const currentPage = useSelector(getCurrentPageSelector);
+    const pageSize = useSelector(getPageSizeSelector);
+    const filter = useSelector(getUsersFilterSelector);
 
-type mapDispatchPropsType = {
-    getUsers: (pageSize: number, currentPage: number, filter: filterType) => void,
-};
+    const dispatch = useDispatch();
 
-type ownPropsType = {
-};
-
-type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType;
-
-class UsersComponent extends React.Component<propsType> {
-    /** Gets data for page on component first render */
-    componentDidMount() {
-        if (this.props.usersPage.length === 0) {
-            this.onPageChanged();
-        }
-    }
+    useEffect(() => {
+        onPageChanged();
+    }, []);
 
     /** Gets data from ajax on call and append it to state field */
-    onPageChanged(filter?: filterType) {
-        let actualFilter = this.props.filter;
-        let actualPage = this.props.currentPage;
+    function onPageChanged(newFilter?: filterType) {
+        let actualFilter = filter;
+        let actualPage = currentPage;
 
-        if (filter) {
-            actualFilter = filter;
+        if (newFilter) {
+            actualFilter = newFilter;
             actualPage = 0;
         }
 
-        this.props.getUsers(this.props.pageSize, actualPage, actualFilter);
+        dispatch(getUsers(pageSize, actualPage, actualFilter));
     }
 
-    render() {
-        return <Users
-            onPageChanged={this.onPageChanged.bind(this)}
-        />;
-    }
+    return <Users onPageChanged={onPageChanged}/>;
 }
-
-/**
- * Returns state fields for connect.
- * @param {appStateType} state - redux state
- * @returns {{usersPage: ([]|*), pageSize: (number|*), currentPage: (number|*)}}
- */
-let mapStateToProps = (state: appStateType): mapStatePropsType => {
-    return (
-        {
-            usersPage: getUsersSelector(state),
-            currentPage: getCurrentPageSelector(state),
-            pageSize: getPageSizeSelector(state),
-            filter: getUsersFilterSelector(state)
-        }
-    );
-};
-
-const mapDispatchToProps: mapDispatchPropsType =  {
-    getUsers,
-}
-
-const UsersContainer = connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, appStateType>(mapStateToProps, mapDispatchToProps)(UsersComponent);
 
 export default UsersContainer;
