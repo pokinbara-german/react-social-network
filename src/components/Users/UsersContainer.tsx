@@ -3,90 +3,41 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {getUsers, follow, unfollow, filterType} from '../../reducers/usersReducer';
-import {connect} from 'react-redux';
+import {getUsers, filterType} from '../../reducers/usersReducer';
+import {useDispatch, useSelector} from 'react-redux';
 import Users from './Users';
-import React from 'react';
-import {arrayOfNumbers, usersType} from '../../reducers/types/types';
-import {appStateType} from '../../redux/reduxStore';
+import React, {useEffect} from 'react';
+import {
+    getCurrentPageSelector,
+    getPageSizeSelector,
+    getUsersFilterSelector
+} from '../../Common/Selectors/Selectors';
 
-type mapStatePropsType = {
-    usersPage: Array<usersType>,
-    currentPage: number,
-    pageSize: number,
-    isUsersFetching: boolean,
-    followingInProgress: arrayOfNumbers,
-    filter: filterType
-};
+const UsersContainer: React.FC = () => {
+    const currentPage = useSelector(getCurrentPageSelector);
+    const pageSize = useSelector(getPageSizeSelector);
+    const filter = useSelector(getUsersFilterSelector);
 
-type mapDispatchPropsType = {
-    getUsers: (pageSize: number, currentPage: number, filter: filterType) => void,
-    follow: (userId: number) => void,
-    unfollow: (userId: number) => void
-};
+    const dispatch = useDispatch();
 
-type ownPropsType = {
-};
-
-type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType;
-
-class UsersComponent extends React.Component<propsType> {
-    /** Gets data for page on component first render */
-    componentDidMount() {
-        if (this.props.usersPage.length === 0) {
-            this.onPageChanged();
-        }
-    }
+    useEffect(() => {
+        onPageChanged();
+    }, []);
 
     /** Gets data from ajax on call and append it to state field */
-    onPageChanged(filter?: filterType) {
-        let actualFilter = this.props.filter;
-        let actualPage = this.props.currentPage;
+    function onPageChanged(newFilter?: filterType) {
+        let actualFilter = filter;
+        let actualPage = currentPage;
 
-        if (filter) {
-            actualFilter = filter;
+        if (newFilter) {
+            actualFilter = newFilter;
             actualPage = 0;
         }
 
-        this.props.getUsers(this.props.pageSize, actualPage, actualFilter);
+        dispatch(getUsers(pageSize, actualPage, actualFilter));
     }
 
-    render() {
-        return <Users
-            usersPage={this.props.usersPage}
-            onPageChanged={this.onPageChanged.bind(this)}
-            unfollowUser={this.props.unfollow}
-            followUser={this.props.follow}
-            isUsersFetching={this.props.isUsersFetching}
-            followingInProgress={this.props.followingInProgress}
-        />;
-    }
+    return <Users onPageChanged={onPageChanged}/>;
 }
-
-/**
- * Returns state fields for connect.
- * @param {appStateType} state - redux state
- * @returns {{usersPage: ([]|*), pageSize: (number|*), currentPage: (number|*)}}
- */
-let mapStateToProps = (state: appStateType): mapStatePropsType => {
-    return (
-        {
-            usersPage: state.usersPage.users,
-            currentPage: state.usersPage.currentPage,
-            pageSize: state.usersPage.pageSize,
-            isUsersFetching: state.usersPage.isUsersFetching,
-            followingInProgress: state.usersPage.followingInProgress,
-            filter: state.usersPage.filter
-        }
-    );
-};
-
-const mapDispatchToProps: mapDispatchPropsType =  {
-    getUsers,
-    follow,
-    unfollow
-}
-
-const UsersContainer = connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, appStateType>(mapStateToProps, mapDispatchToProps)(UsersComponent);
 
 export default UsersContainer;

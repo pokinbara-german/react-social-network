@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import {Route} from 'react-router-dom';
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from "./components/Login/Login";
+import {Login} from "./components/Login/Login";
 import {connect} from "react-redux";
 import {makeInit} from "./reducers/appReducer";
 import Preloader from "./Common/Preloader/Preloader";
