@@ -10,6 +10,7 @@ import {
     getIsUsersFetchingSelector,
     getUsersSelector
 } from '../../Common/Selectors/Selectors';
+import {Button} from 'antd';
 
 type usersPropsType = {
     onPageChanged: (filter?: filterType) => void
@@ -48,7 +49,7 @@ const Users: React.FC<usersPropsType> = (props) => {
     let MoreUsersComponent = () => {
         return (
             <div className={styles.moreUsersWrapper}>
-                <button onClick={() => props.onPageChanged()}>More Users</button>
+                <Button type={'primary'} onClick={() => props.onPageChanged()}>More Users</Button>
             </div>
         );
     }

@@ -4,11 +4,15 @@
  * and open the template in the editor.
  */
 import React from 'react';
-import styles from './Post.module.css';
 import userMale from "../../../../assets/images/user-male.png";
 import {stringOrNull} from '../../../../reducers/types/types';
+import {Comment, Tooltip, Avatar, Divider} from 'antd';
+import {LikeOutlined, LikeFilled} from '@ant-design/icons';
+import {useDispatch} from 'react-redux';
+import {profileActions} from '../../../../reducers/profileReducer';
 
 type postPropsType = {
+    postId: number,
     message: string,
     likeCount: number,
     avatar: stringOrNull
@@ -17,12 +21,40 @@ type postPropsType = {
 const Post: React.FC<postPropsType> = (props) => {
     let avatarSmall = props.avatar || userMale;
 
-    return( 
-        <div className={styles.item}>
-            <img alt='ava' src={avatarSmall}/>
-            <span>{props.message}</span>
-            <div>like {props.likeCount}</div>
-        </div>);
+    const dispatch = useDispatch();
+
+    /**
+     * Add like to post
+     * @param {React.MouseEvent<HTMLSpanElement>} event - sets automatically, not need to put it
+     */
+    const like = (event: React.MouseEvent<HTMLSpanElement>) => {
+        let targetId = event.currentTarget.id;
+        let postId = targetId.substr(5);
+
+        if (postId) {
+            dispatch(profileActions.addLike(Number(postId)));
+        }
+    };
+
+    const actions = [
+        <Tooltip key="comment-basic-like" title="Like">
+          <span onClick={like} id={'post-' + props.postId}>
+            {React.createElement(props.likeCount ? LikeFilled : LikeOutlined)}
+              <span className="comment-action">{props.likeCount}</span>
+          </span>
+        </Tooltip>
+    ];
+
+    return(
+        <div>
+            <Comment
+                actions={actions}
+                content={props.message}
+                avatar={<Avatar src={avatarSmall} alt="ava"/>}
+            />
+            <Divider />
+        </div>
+    );
 };
 
 export default Post;

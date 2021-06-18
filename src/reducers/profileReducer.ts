@@ -57,6 +57,10 @@ const profileReducer = (state = initialState, action: actionsType): initialState
             return {...state, statusFetching: !state.statusFetching};
         case 'SN/PROFILE/SAVE_PHOTO_SUCCESS':
             return {...state, profile: {...(state.profile! as profileType), photos: action.photos}};
+        case 'SN/PROFILE/ADD_LIKE':
+            return {...state, postsData: state.postsData.map((post) => {
+                return post.id === action.postId ? {...post, likes: post.likes+1} : post;
+                })}
         default:
             return state;
     }
@@ -69,7 +73,8 @@ export const profileActions = {
     updateProfile: (profile: profileType) => ({type: 'SN/PROFILE/UPDATE_PROFILE', profile} as const),
     setStatus: (status: string) => ({type: 'SN/PROFILE/SET_STATUS', status} as const),
     toggleStatusFetching: () => ({type: 'SN/PROFILE/TOGGLE_STATUS_FETCHING'} as const),
-    savePhotoSuccess: (photos: photosType) => ({type: 'SN/PROFILE/SAVE_PHOTO_SUCCESS', photos} as const)
+    savePhotoSuccess: (photos: photosType) => ({type: 'SN/PROFILE/SAVE_PHOTO_SUCCESS', photos} as const),
+    addLike: (postId: number) => ({type: 'SN/PROFILE/ADD_LIKE', postId} as const),
 }
 
 export const getStatus = (userId: number): thunkType => async (dispatch, getState) => {

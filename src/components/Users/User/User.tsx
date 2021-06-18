@@ -3,6 +3,7 @@ import styles from './User.module.css';
 import {NavLink} from 'react-router-dom';
 import userMale from '../../../assets/images/user-male.png';
 import {arrayOfNumbers, usersType} from '../../../reducers/types/types';
+import {Avatar, Button} from 'antd';
 
 type userPropsType = {
     user: usersType,
@@ -19,15 +20,14 @@ const User: React.FC<userPropsType> = (props) => {
         <div className={styles.user}>
             <span>
                 <NavLink to={'/profile/' + user.id}>
-                    <img className={styles.photo} alt='ava'
-                         src={user.photos.small || userMale}/>
+                    <Avatar className={styles.photo} size={40} alt='ava' src={user.photos.small || userMale}/>
                 </NavLink>
                 <div>
                     {user.followed
-                        ? <button onClick={() => {props.unfollowUser(user.id)}}
-                                  disabled={props.followingInProgress.some(id => id === user.id)}>Unfollow</button>
-                        : <button onClick={() => {props.followUser(user.id)}}
-                                  disabled={props.followingInProgress.some(id => id === user.id)}>Follow</button>
+                        ? <Button onClick={() => {props.unfollowUser(user.id)}}
+                                  disabled={props.followingInProgress.some(id => id === user.id)}>Unfollow</Button>
+                        : <Button onClick={() => {props.followUser(user.id)}}
+                                  disabled={props.followingInProgress.some(id => id === user.id)}>Follow</Button>
                     }
                 </div>
             </span>
