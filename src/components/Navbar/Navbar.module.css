@@ -9,14 +9,7 @@ and open the template in the editor.
 */
 
 .nav {
-    grid-area: nav;
-    background-color: #00f;
-    padding: 20px;
-}
-
-.item a {
-    color: white;
-    text-decoration: none;
+    height: 100%;
 }
 
 .item a.active {

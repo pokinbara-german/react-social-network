@@ -10,6 +10,8 @@ import Preloader from "./Common/Preloader/Preloader";
 import StartPage from "./components/StartPage/StartPage";
 import {appStateType} from './redux/reduxStore';
 import {AppHeader} from './components/Header/AppHeader';
+import "antd/dist/antd.css";
+import {Layout} from 'antd';
 
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
 const Music = React.lazy(() => import('./components/Music/Music'));
@@ -53,23 +55,30 @@ class App extends React.Component<propsType> {
             return <Preloader/>
         }
 
+        const {Sider, Content, Footer} = Layout;
+
         return (
-            <div className="app-wrapper">
+            <Layout>
                 <AppHeader/>
-                <Navbar/>
-                <div className="content">
-                    <Suspense fallback={<div>Загрузка...</div>}>
-                        <Route exact path="/" component={StartPage}/>
-                        <Route path="/profile/:userId?" component={ProfileComponent}/>
-                        <Route path="/messages" component={MessagesComponent}/>
-                        <Route path="/news" component={News}/>
-                        <Route path="/music" component={Music}/>
-                        <Route path="/users" component={UsersContainer}/>
-                        <Route path="/settings" component={Settings}/>
-                        <Route path="/login" component={Login}/>
-                    </Suspense>
-                </div>
-            </div>
+                <Layout>
+                    <Sider trigger={null} collapsible collapsed={false}>
+                        <Navbar/>
+                    </Sider>
+                    <Content style={{padding: '0 10px'}}>
+                        <Suspense fallback={<div>Загрузка...</div>}>
+                            <Route exact path="/" component={StartPage}/>
+                            <Route path="/profile/:userId?" component={ProfileComponent}/>
+                            <Route path="/messages" component={MessagesComponent}/>
+                            <Route path="/news" component={News}/>
+                            <Route path="/music" component={Music}/>
+                            <Route path="/users" component={UsersContainer}/>
+                            <Route path="/settings" component={Settings}/>
+                            <Route path="/login" component={Login}/>
+                        </Suspense>
+                    </Content>
+                </Layout>
+                <Footer style={{textAlign: 'center'}}>Social Network ©2021 Created by Shadowmaster</Footer>
+            </Layout>
         );
     }
 }
