@@ -1,6 +1,8 @@
 import {filterType} from '../../../reducers/usersReducer';
 import React from 'react';
 import {ErrorMessage, Field, Form, Formik, FormikHelpers} from 'formik';
+import {useSelector} from 'react-redux';
+import {getUsersFilterSelector} from '../../../Common/Selectors/Selectors';
 
 type propsType = {
     onPageChanged: (filter?: filterType) => void
@@ -16,6 +18,8 @@ const formValidate = () => {
 }
 
 export const UsersSearchForm: React.FC<propsType> = (props) => {
+    const filter = useSelector(getUsersFilterSelector);
+
     function onSubmit(values: formFieldsType, {setSubmitting}: FormikHelpers<formFieldsType>) {
         const filter: filterType = {
             searchTerm: values.searchTerm || null,
@@ -29,7 +33,8 @@ export const UsersSearchForm: React.FC<propsType> = (props) => {
         <div>
             <h1>Anywhere in your app!</h1>
             <Formik
-                initialValues={{searchTerm: '', friend: "null"} as formFieldsType}
+                enableReinitialize={true}
+                initialValues={{searchTerm: filter.searchTerm, friend: String(filter.friend)} as formFieldsType}
                 validate={formValidate}
                 onSubmit={onSubmit}
             >
