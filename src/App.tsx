@@ -3,13 +3,13 @@ import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import {Route} from 'react-router-dom';
 import ProfileContainer from "./components/Profile/ProfileContainer";
-import HeaderContainer from "./components/Header/HeaderContainer";
 import {Login} from "./components/Login/Login";
 import {connect} from "react-redux";
 import {makeInit} from "./reducers/appReducer";
 import Preloader from "./Common/Preloader/Preloader";
 import StartPage from "./components/StartPage/StartPage";
 import {appStateType} from './redux/reduxStore';
+import {AppHeader} from './components/Header/AppHeader';
 
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
 const Music = React.lazy(() => import('./components/Music/Music'));
@@ -55,7 +55,7 @@ class App extends React.Component<propsType> {
 
         return (
             <div className="app-wrapper">
-                <HeaderContainer/>
+                <AppHeader/>
                 <Navbar/>
                 <div className="content">
                     <Suspense fallback={<div>Загрузка...</div>}>

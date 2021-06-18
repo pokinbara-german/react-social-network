@@ -6,9 +6,20 @@
 import React from 'react';
 import styles from './Header.module.css';
 import {NavLink} from "react-router-dom";
-import {propsType} from "./HeaderContainer";
+import {useDispatch, useSelector} from 'react-redux';
+import {getIsAuthSelector, getLoginSelector} from '../../Common/Selectors/Selectors';
+import {logout} from '../../reducers/authReducer';
 
-const Header: React.FC<propsType> = (props) => {
+export const AppHeader: React.FC = () => {
+    const isAuth = useSelector(getIsAuthSelector);
+    const login = useSelector(getLoginSelector);
+
+    const dispatch = useDispatch();
+
+    const logoutCallback = () => {
+        dispatch(logout());
+    }
+
     return <header className={styles.header}>
         <img
             src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Spb_metro_logo.svg/600px-Spb_metro_logo.svg.png'
@@ -16,15 +27,13 @@ const Header: React.FC<propsType> = (props) => {
 
         <div className={styles.loginBlock}>
             {
-                props.isAuth
+                isAuth
                     ? <div>
-                        {props.login}
-                        <button className={styles.logoutButton} onClick={props.logout}>logout</button>
+                        {login}
+                        <button className={styles.logoutButton} onClick={logoutCallback}>logout</button>
                       </div>
                     : <NavLink to='/login'>Login</NavLink>
             }
         </div>
     </header>
 };
-
-export default Header;

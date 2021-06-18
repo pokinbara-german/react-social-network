@@ -31,3 +31,7 @@ export function getIsAuthSelector (state: appStateType) {
 export function getCaptchaUrlSelector (state: appStateType) {
     return state.auth.captchaUrl;
 }
+
+export function getLoginSelector (state: appStateType) {
+    return state.auth.login;
+}
