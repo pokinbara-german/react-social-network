@@ -8,18 +8,17 @@ and open the template in the editor.
     Author     : shadow
 */
 
-.header {
-    grid-area: header;
-    background-color: green;
+.headerLogo {
+    width: 40px;
+    margin: 10px;
 }
 
-.header img {
-    width: 40px;
+.headerLogin {
+    margin: 0 10px;
 }
 
 .loginBlock {
     float: right;
-    margin: 15px;
 }
 
 .logoutButton {

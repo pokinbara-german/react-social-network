@@ -35,7 +35,7 @@ let maxLength20 = maxLengthCreator(20);
 
 const MyPosts: React.FC<propsType> = (props) => {
     let posts = props.postsData.map( (post, postIndex) =>
-        <Post key={"MyPost" +postIndex} message={post.text} likeCount={post.likes}  avatar={props.avatar}/>
+        <Post key={"MyPost" +postIndex} postId={post.id} message={post.text} likeCount={post.likes}  avatar={props.avatar}/>
     );
 
     const addPost = (formData: formDataType) => {

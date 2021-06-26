@@ -5,29 +5,35 @@
  */
 import React from 'react';
 import styles from './Navbar.module.css';
-import {NavLink} from 'react-router-dom';
+import {NavLink, useHistory} from 'react-router-dom';
+import {Menu} from 'antd';
+import {ProfileOutlined, UserOutlined, MessageOutlined, BarsOutlined, CustomerServiceOutlined, ControlOutlined} from '@ant-design/icons';
 
 const Navbar = () => {
-    return <nav className={styles.nav}>
-        <div className={styles.item}>
-          <NavLink to="/profile" activeClassName={styles.active}>Profile</NavLink>
-        </div>
-        <div className={styles.item}>
-          <NavLink to="/messages" activeClassName={styles.active}>Messages</NavLink>
-        </div>
-        <div className={styles.item}>
-          <NavLink to="/news" activeClassName={styles.active}>News</NavLink>
-        </div>
-        <div className={styles.item}>
-          <NavLink to="/music" activeClassName={styles.active}>Music</NavLink>
-        </div>
-        <div className={styles.item}>
-            <NavLink to="/users" activeClassName={styles.active}>Users</NavLink>
-        </div>
-        <div className={styles.item}>
-          <NavLink to="/settings" activeClassName={styles.active}>Settings</NavLink>
-        </div>
-      </nav>
+    const history = useHistory();
+
+    return(
+        <Menu theme='light' mode='inline' defaultSelectedKeys={[history.location.pathname]} className={styles.nav}>
+            <Menu.Item key='/profile' icon={<ProfileOutlined/>}>
+                <NavLink to='/profile' activeClassName={styles.active}>Profile</NavLink>
+            </Menu.Item>
+            <Menu.Item key='/messages' icon={<MessageOutlined/>}>
+                <NavLink to='/messages' activeClassName={styles.active}>Messages</NavLink>
+            </Menu.Item>
+            <Menu.Item key='/news' icon={<BarsOutlined/>}>
+                <NavLink to="/news" activeClassName={styles.active}>News</NavLink>
+            </Menu.Item>
+            <Menu.Item key='/music' icon={<CustomerServiceOutlined/>}>
+                <NavLink to='/music' activeClassName={styles.active}>Music</NavLink>
+            </Menu.Item>
+            <Menu.Item key='/users' icon={<UserOutlined/>}>
+                <NavLink to='/users' activeClassName={styles.active}>Users</NavLink>
+            </Menu.Item>
+            <Menu.Item key='/settings' icon={<ControlOutlined/>}>
+                <NavLink to='/settings' activeClassName={styles.active}>Settings</NavLink>
+            </Menu.Item>
+        </Menu>
+    );
 };
 
 export default Navbar;
