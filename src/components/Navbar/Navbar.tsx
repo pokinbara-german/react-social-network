@@ -7,7 +7,15 @@ import React from 'react';
 import styles from './Navbar.module.css';
 import {NavLink, useHistory} from 'react-router-dom';
 import {Menu} from 'antd';
-import {ProfileOutlined, UserOutlined, MessageOutlined, BarsOutlined, CustomerServiceOutlined, ControlOutlined} from '@ant-design/icons';
+import {
+    ProfileOutlined,
+    UserOutlined,
+    MessageOutlined,
+    BarsOutlined,
+    CustomerServiceOutlined,
+    ControlOutlined,
+    WechatOutlined
+} from '@ant-design/icons';
 
 const Navbar = () => {
     const history = useHistory();
@@ -25,6 +33,9 @@ const Navbar = () => {
             </Menu.Item>
             <Menu.Item key='/music' icon={<CustomerServiceOutlined/>}>
                 <NavLink to='/music' activeClassName={styles.active}>Music</NavLink>
+            </Menu.Item>
+            <Menu.Item key='/chat' icon={<WechatOutlined/>}>
+                <NavLink to='/chat' activeClassName={styles.active}>Chat</NavLink>
             </Menu.Item>
             <Menu.Item key='/users' icon={<UserOutlined/>}>
                 <NavLink to='/users' activeClassName={styles.active}>Users</NavLink>
