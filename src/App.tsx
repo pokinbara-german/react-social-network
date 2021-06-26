@@ -12,6 +12,7 @@ import {appStateType} from './redux/reduxStore';
 import {AppHeader} from './components/Header/AppHeader';
 import "antd/dist/antd.css";
 import {Layout} from 'antd';
+import {NotFound} from './components/NotFound';
 
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
 const Music = React.lazy(() => import('./components/Music/Music'));
@@ -74,6 +75,7 @@ class App extends React.Component<propsType> {
                             <Route path="/users" component={UsersContainer}/>
                             <Route path="/settings" component={Settings}/>
                             <Route path="/login" component={Login}/>
+                            <Route path="*" component={NotFound}/>
                         </Suspense>
                     </Content>
                 </Layout>
