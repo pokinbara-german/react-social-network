@@ -22,13 +22,19 @@ const chatReducer = (state = initialState, action: actionsType): initialStateTyp
                 ...state,
                 messages: [...state.messages, ...action.payload]
             };
+        case 'SN/CHAT/CHAT_CLEARED':
+            return {
+                ...state,
+                messages: []
+            }
         default:
             return state;
     }
 }
 
 export const chatActions = {
-    messagesReceived: (messages: Array<messageType>) => ({type: 'SN/CHAT/MESSAGES_RECEIVED', payload: messages} as const)
+    messagesReceived: (messages: Array<messageType>) => ({type: 'SN/CHAT/MESSAGES_RECEIVED', payload: messages} as const),
+    chatCleared: () => ({type: 'SN/CHAT/CHAT_CLEARED'} as const)
 }
 
 let _messageHandler: ((messages: Array<messageType>) => void) | null = null;
@@ -50,6 +56,7 @@ export const startMessagesListening = (): thunkType => (dispatch) => {
 
 export const stopMessagesListening = (): thunkType => (dispatch) => {
     chatApi.unsubscribe(messageHandlerCreator(dispatch));
+    dispatch(chatActions.chatCleared());
     chatApi.disconnect();
 }
 
