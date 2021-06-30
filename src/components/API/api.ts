@@ -1,7 +1,7 @@
 import axios from "axios";
 import {
     basicResponseType,
-    captchaResultCodeType,
+    captchaResultCodeType, Override,
     photosType,
     profileType,
     resultCodesType, usersType
@@ -13,8 +13,6 @@ const defaultApi = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
     headers: {'API-KEY': '4b793204-e0f1-45c5-b96a-007d58f175b3'}
 });
-
-type Override<T1, T2> = Omit<T1, keyof T2> & T2;
 
 type meResponseType = Override<basicResponseType, {
     data: {
