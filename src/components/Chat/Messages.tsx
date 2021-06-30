@@ -17,7 +17,7 @@ export const Messages: React.FC = () => {
     }, [messages, isAutoscroll]);
 
     /**
-     * Detects scroll end and set autoscroll to true.
+     * Detects scroll end and set autoscroll to true or false.
      * @param event
      */
     function scrollHandler(event: React.UIEvent<HTMLDivElement, UIEvent>) {
@@ -32,12 +32,13 @@ export const Messages: React.FC = () => {
 
     return (
         <div style={{height: '74vh', overflowY: 'auto'}} onScroll={scrollHandler}>
-            {messages.map((messageItem, index) => <Message key={index} message={messageItem}/>)}
+            {messages.map((messageItem) => <Message key={messageItem.id} message={messageItem}/>)}
             <div  ref={messagesRef}/>
         </div>
     );
-}
-const Message: React.FC<{ message: messageType }> = React.memo(({message}) => {
+};
+
+const Message: React.FC<{message: messageType}> = React.memo(({message}) => {
     return (
         <div>
             <div><img alt={'ava'} src={message.photo}/>{message.userName}</div>

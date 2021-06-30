@@ -3,6 +3,9 @@ import {baseThunkType} from './types/types';
 import {chatApi, messageType} from '../components/API/chat-api';
 import {Dispatch} from 'redux';
 
+/** @constant {number} Maximal number of posts in chat */
+const MAX_CHAT_MESSAGES = 100;
+
 export type initialStateType = {
     messages: Array<messageType>
 };
@@ -20,7 +23,7 @@ const chatReducer = (state = initialState, action: actionsType): initialStateTyp
         case 'SN/CHAT/MESSAGES_RECEIVED':
             return {
                 ...state,
-                messages: [...state.messages, ...action.payload]
+                messages: [...state.messages, ...action.payload].slice(-MAX_CHAT_MESSAGES)
             };
         case 'SN/CHAT/CHAT_CLEARED':
             return {
@@ -60,7 +63,7 @@ export const stopMessagesListening = (): thunkType => (dispatch) => {
     chatApi.disconnect();
 }
 
-export const sendMessage = (message: string): thunkType => (dispatch) => {
+export const sendMessage = (message: string): thunkType => () => {
     chatApi.sendMessage(message);
 }
 

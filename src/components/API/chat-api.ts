@@ -1,12 +1,19 @@
-export type messageType = {
+import { nanoid } from 'nanoid'
+
+type ApiMessageType = {
     message: string,
     photo: string,
     userId: number,
     userName: string
+};
+
+export interface messageType extends ApiMessageType {
+    id: string
 }
 
-type subscriberType = (messages:Array<messageType>) => void;
+type subscriberType = (messages: Array<messageType>) => void;
 
+/** @constant {string} URL to websocket end-point */
 const BASE_URL = 'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx';
 
 let subscribers: Array<subscriberType> = [];
@@ -20,12 +27,21 @@ function closeHandler() {
 
 function messageHandler(event: MessageEvent) {
     const newMessages = JSON.parse(event.data);
+    newMessages.forEach((message: messageType) => message.id = nanoid())
     subscribers.forEach(subscriber => subscriber(newMessages));
 }
 
-function createChanel() {
+/**
+ * Clean WebSocket object from listeners and closes connection.
+ */
+function cleanUpWs() {
     ws?.removeEventListener('close', closeHandler);
+    ws?.removeEventListener('message', messageHandler);
     ws?.close();
+}
+
+function createChanel() {
+    cleanUpWs();
     ws = new WebSocket(BASE_URL);
     ws.addEventListener('close', closeHandler);
     ws.addEventListener('message', messageHandler);
@@ -46,9 +62,7 @@ export const chatApi = {
         createChanel();
     },
     disconnect() {
-        ws?.removeEventListener('close', closeHandler);
-        ws?.removeEventListener('message', messageHandler);
-        ws?.close();
+        cleanUpWs();
         subscribers = [];
     }
 }
