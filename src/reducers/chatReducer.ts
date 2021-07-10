@@ -7,14 +7,16 @@ import {Dispatch} from 'redux';
 const MAX_CHAT_MESSAGES = 100;
 
 export type initialStateType = {
-    messages: Array<messageType>
+    messages: Array<messageType>,
+    isConnected: boolean
 };
 
 type actionsType = inferActionsType<typeof chatActions>;
 type thunkType = baseThunkType<actionsType, void>;
 
 const initialState: initialStateType = {
-    messages: []
+    messages: [],
+    isConnected: false
 };
 
 const chatReducer = (state = initialState, action: actionsType): initialStateType => {
@@ -29,7 +31,12 @@ const chatReducer = (state = initialState, action: actionsType): initialStateTyp
             return {
                 ...state,
                 messages: []
-            }
+            };
+        case 'SN/CHAT/CONNECTION_CHANGED':
+            return {
+                ...state,
+                isConnected: action.payload
+            };
         default:
             return state;
     }
@@ -37,7 +44,8 @@ const chatReducer = (state = initialState, action: actionsType): initialStateTyp
 
 export const chatActions = {
     messagesReceived: (messages: Array<messageType>) => ({type: 'SN/CHAT/MESSAGES_RECEIVED', payload: messages} as const),
-    chatCleared: () => ({type: 'SN/CHAT/CHAT_CLEARED'} as const)
+    chatCleared: () => ({type: 'SN/CHAT/CHAT_CLEARED'} as const),
+    connectionChanged: (isConnected: boolean) => ({type: 'SN/CHAT/CONNECTION_CHANGED', payload: isConnected} as const)
 }
 
 let _messageHandler: ((messages: Array<messageType>) => void) | null = null;
@@ -52,13 +60,27 @@ let messageHandlerCreator = (dispatch: Dispatch) => {
     return _messageHandler;
 };
 
+let _connectionHandler: ((status: boolean) => void) | null = null;
+
+let connectionHandlerCreator = (dispatch: Dispatch) => {
+    if (_connectionHandler === null) {
+        _connectionHandler = (status) => {
+            dispatch(chatActions.connectionChanged(status));
+        }
+    }
+
+    return _connectionHandler;
+};
+
 export const startMessagesListening = (): thunkType => (dispatch) => {
     chatApi.connect();
-    chatApi.subscribe(messageHandlerCreator(dispatch));
+    chatApi.subscribe('message-received', messageHandlerCreator(dispatch));
+    chatApi.subscribe('connection-changed', connectionHandlerCreator(dispatch));
 }
 
 export const stopMessagesListening = (): thunkType => (dispatch) => {
-    chatApi.unsubscribe(messageHandlerCreator(dispatch));
+    chatApi.unsubscribe('message-received', messageHandlerCreator(dispatch));
+    chatApi.unsubscribe('connection-changed', connectionHandlerCreator(dispatch));
     dispatch(chatActions.chatCleared());
     chatApi.disconnect();
 }

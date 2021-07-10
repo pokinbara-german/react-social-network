@@ -7,7 +7,7 @@ import {Login} from "./components/Login/Login";
 import {connect} from "react-redux";
 import {makeInit} from "./reducers/appReducer";
 import Preloader from "./Common/Preloader/Preloader";
-import StartPage from "./components/StartPage/StartPage";
+import StartPage from "./Pages/StartPage";
 import {appStateType} from './redux/reduxStore';
 import {AppHeader} from './components/Header/AppHeader';
 import "antd/dist/antd.css";

@@ -1,9 +1,12 @@
 import React, {ChangeEvent, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {sendMessage} from '../../reducers/chatReducer';
+import {appStateType} from '../../redux/reduxStore';
 
 export const AddMessage: React.FC = () => {
     const [message, setMessage] = useState('');
+
+    const isConnected = useSelector((state: appStateType) => state.chat.isConnected);
 
     const dispatch = useDispatch();
 
@@ -26,7 +29,7 @@ export const AddMessage: React.FC = () => {
                 <textarea onChange={messageChange} value={message}/>
             </div>
             <div>
-                <button disabled={false} onClick={sendMessageHandler}>Send</button>
+                <button disabled={!isConnected} onClick={sendMessageHandler}>Send</button>
             </div>
         </div>
     );
