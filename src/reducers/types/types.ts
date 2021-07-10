@@ -2,6 +2,8 @@ import {Action} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {appStateType} from '../../redux/reduxStore';
 
+export type Override<T1, T2> = Omit<T1, keyof T2> & T2;
+
 export type stringOrNull = string | null;
 
 export type profileType = {

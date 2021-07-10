@@ -35,3 +35,7 @@ export function getCaptchaUrlSelector (state: appStateType) {
 export function getLoginSelector (state: appStateType) {
     return state.auth.login;
 }
+
+export function getChatMessages (state: appStateType) {
+    return state.chat.messages;
+}
