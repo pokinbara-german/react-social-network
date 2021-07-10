@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import {messageType} from '../API/chat-api';
 import {useSelector} from 'react-redux';
 import {getChatMessages} from '../../Common/Selectors/Selectors';
+import userMale from '../../assets/images/user-male.png';
+import styles from './ChatMessages.module.css';
 
 export const Messages: React.FC = () => {
     const messages = useSelector(getChatMessages);
@@ -41,7 +43,7 @@ export const Messages: React.FC = () => {
 const Message: React.FC<{message: messageType}> = React.memo(({message}) => {
     return (
         <div>
-            <div><img alt={'ava'} src={message.photo}/>{message.userName}</div>
+            <div><img  className={styles.chatAvatar} alt={'ava'} src={message.photo || userMale}/>{message.userName}</div>
             <div>{message.message}</div>
             <hr/>
         </div>
