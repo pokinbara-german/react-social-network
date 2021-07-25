@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Users.module.css';
 import Preloader from '../../Common/Preloader/Preloader';
 import User from './User/User';
 import {filterType, follow, unfollow} from '../../reducers/usersReducer';
@@ -10,7 +9,8 @@ import {
     getIsUsersFetchingSelector,
     getUsersSelector
 } from '../../Common/Selectors/Selectors';
-import {Button} from 'antd';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 
 type usersPropsType = {
     onPageChanged: (filter?: filterType) => void
@@ -48,9 +48,9 @@ const Users: React.FC<usersPropsType> = (props) => {
 
     let MoreUsersComponent = () => {
         return (
-            <div className={styles.moreUsersWrapper}>
-                <Button type={'primary'} onClick={() => props.onPageChanged()}>More Users</Button>
-            </div>
+            <Box textAlign={'center'} padding={'20px'}>
+                <Button variant='contained' color='primary' onClick={() => props.onPageChanged()}>More Users</Button>
+            </Box>
         );
     }
 
