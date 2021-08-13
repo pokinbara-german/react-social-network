@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid'
+import {nanoid} from 'nanoid';
 
 type ApiMessageType = {
     message: string,
@@ -38,7 +38,7 @@ function closeHandler() {
 
 function messageHandler(event: MessageEvent) {
     const newMessages = JSON.parse(event.data);
-    newMessages.forEach((message: messageType) => message.id = nanoid())
+    newMessages.forEach((message: messageType) => message.id = nanoid());
     subscribers['message-received'].forEach(subscriber => subscriber(newMessages));
 }
 
