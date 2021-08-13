@@ -2,6 +2,7 @@ import {Api} from '../components/API/api';
 import {stopSubmit} from 'redux-form';
 import {baseThunkType, contactsType, photosType, postsDataType, profileType} from './types/types';
 import {inferActionsType} from '../redux/reduxStore';
+import {nanoid} from 'nanoid';
 
 export type initialStateType = {
     postsData: Array<postsDataType>,
@@ -15,8 +16,8 @@ type thunkType = baseThunkType<actionsType>;
 
 const initialState: initialStateType = {
     postsData: [
-        {id: 1, text: 'Second post!', likes: 20},
-        {id: 2, text: 'First post!', likes: 15},
+        {id: nanoid(), text: 'Second post!', likes: 20},
+        {id: nanoid(), text: 'First post!', likes: 15},
     ],
     profile: null,
     statusFetching: false,
@@ -32,7 +33,7 @@ const profileReducer = (state = initialState, action: actionsType): initialState
 
             return {
                 ...state,
-                postsData: [...state.postsData, {id: 5, text: action.newPost, likes: 0}]
+                postsData: [...state.postsData, {id: nanoid(), text: action.newPost, likes: 0}]
             };
         case 'SN/PROFILE/DELETE_POST':
             return {
@@ -68,13 +69,13 @@ const profileReducer = (state = initialState, action: actionsType): initialState
 
 export const profileActions = {
     sendPost: (newPost: string) => ({type: 'SN/PROFILE/ADD_POST', newPost} as const),
-    deletePost: (postId: number) => ({type: 'SN/PROFILE/DELETE_POST', postId} as const),
+    deletePost: (postId: string) => ({type: 'SN/PROFILE/DELETE_POST', postId} as const),
     setProfile: (profile: profileType) => ({type: 'SN/PROFILE/SET_PROFILE', profile} as const),
     updateProfile: (profile: profileType) => ({type: 'SN/PROFILE/UPDATE_PROFILE', profile} as const),
     setStatus: (status: string) => ({type: 'SN/PROFILE/SET_STATUS', status} as const),
     toggleStatusFetching: () => ({type: 'SN/PROFILE/TOGGLE_STATUS_FETCHING'} as const),
     savePhotoSuccess: (photos: photosType) => ({type: 'SN/PROFILE/SAVE_PHOTO_SUCCESS', photos} as const),
-    addLike: (postId: number) => ({type: 'SN/PROFILE/ADD_LIKE', postId} as const),
+    addLike: (postId: string) => ({type: 'SN/PROFILE/ADD_LIKE', postId} as const),
 }
 
 export const getStatus = (userId: number): thunkType => async (dispatch, getState) => {

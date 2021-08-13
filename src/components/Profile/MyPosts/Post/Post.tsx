@@ -12,7 +12,7 @@ import {useDispatch} from 'react-redux';
 import {profileActions} from '../../../../reducers/profileReducer';
 
 type postPropsType = {
-    postId: number,
+    postId: string,
     message: string,
     likeCount: number,
     avatar: stringOrNull
@@ -32,7 +32,7 @@ const Post: React.FC<postPropsType> = (props) => {
         let postId = targetId.substr(5);
 
         if (postId) {
-            dispatch(profileActions.addLike(Number(postId)));
+            dispatch(profileActions.addLike(postId));
         }
     };
 
