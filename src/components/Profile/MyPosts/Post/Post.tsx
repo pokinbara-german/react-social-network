@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Post: React.FC<postPropsType> = (props) => {
     let avatarSmall = props.avatar || userMale;
 
-    const actions = [<LikesBlock postId={props.postId} likeCount={props.likeCount}/>];
+    const actions = [<LikesBlock postId={props.postId} likeCount={props.likeCount} key={props.postId}/>];
 
     return(
         <React.Fragment>
@@ -84,12 +84,12 @@ const LikesBlock: React.FC<likesBlockPropsType> = (props) => {
     };
 
     return(
-        <span onClick={likeHandler} id={'post-' + props.postId} className={classes.root}  key={props.postId}>
-               <Tooltip arrow title='Like' aria-label='like'>
+        <span onClick={likeHandler} id={'post-' + props.postId} className={classes.root}>
+            <Tooltip arrow title='Like' aria-label='like'>
                 {props.likeCount ? <ThumbUpIcon fontSize={iconSize}/> : <ThumbUpOutlinedIcon fontSize={iconSize}/>}
-               </Tooltip>
-              <span>{props.likeCount}</span>
-          </span>
+            </Tooltip>
+            <span>{props.likeCount}</span>
+        </span>
     );
 };
 
