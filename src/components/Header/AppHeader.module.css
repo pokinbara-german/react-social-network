@@ -9,18 +9,9 @@ and open the template in the editor.
 */
 
 .headerLogo {
-    width: 40px;
-    margin: 10px;
+    width: 60px;
 }
 
-.headerLogin {
-    margin: 0 10px;
-}
-
-.loginBlock {
-    float: right;
-}
-
-.logoutButton {
-    margin: 0 10px;
+.loginLink {
+    color: white;
 }

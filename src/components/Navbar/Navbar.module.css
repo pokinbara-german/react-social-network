@@ -8,11 +8,6 @@ and open the template in the editor.
     Author     : shadow
 */
 
-.nav {
-    height: 100%;
-}
-
-.item a.active {
-    color: gold;
-    font-weight: 900;
+.drawerContainer {
+    overflow: auto;
 }
