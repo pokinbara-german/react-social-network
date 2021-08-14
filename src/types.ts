@@ -1,8 +1,6 @@
 import {Action} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {appStateType} from './redux/reduxStore';
-import {OverridableComponent} from '@material-ui/core/OverridableComponent';
-import {SvgIconTypeMap} from '@material-ui/core';
 
 export type Override<T1, T2> = Omit<T1, keyof T2> & T2;
 
@@ -71,13 +69,3 @@ export type postsDataType = {
     text: string,
     likes: number
 }
-
-export type routesVariants = 'profile' | 'messages' | 'news' | 'music' | 'chat' | 'users' | 'settings';
-
-export type routesType = {
-    [key in routesVariants]: {
-        id: number,
-        name: string,
-        icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>
-    };
-};
