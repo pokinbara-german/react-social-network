@@ -9,7 +9,7 @@ import Post from './Post/Post';
 import {InjectedFormProps, reduxForm} from "redux-form";
 import {createField, TextArea} from "../../../Common/FormComponents/FieldsComponents/FieldsComponents";
 import {maxLengthCreator, required} from "../../../utils/validators";
-import {postsDataType, stringOrNull} from '../../../reducers/types/types';
+import {postsDataType, stringOrNull} from '../../../types';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import {createStyles, Theme, makeStyles} from '@material-ui/core/styles';

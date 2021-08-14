@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import userMale from "../../../../assets/images/user-male.png";
-import {stringOrNull} from '../../../../reducers/types/types';
+import {stringOrNull} from '../../../../types';
 import {useDispatch} from 'react-redux';
 import {profileActions} from '../../../../reducers/profileReducer';
 import Avatar from '@material-ui/core/Avatar';

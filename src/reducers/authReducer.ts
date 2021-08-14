@@ -1,6 +1,6 @@
 import {Api} from '../components/API/api';
 import {FormAction, stopSubmit} from 'redux-form';
-import {baseThunkType, captchaResultCodeType, stringOrNull} from './types/types';
+import {baseThunkType, captchaResultCodeType, stringOrNull} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
 import {Action} from 'redux';
 

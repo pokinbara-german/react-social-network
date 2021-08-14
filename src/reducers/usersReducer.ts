@@ -1,5 +1,5 @@
 import {Api} from '../components/API/api';
-import {baseThunkType, arrayOfNumbers, usersType, stringOrNull} from './types/types';
+import {baseThunkType, arrayOfNumbers, usersType, stringOrNull} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
 import {Dispatch} from 'redux';
 

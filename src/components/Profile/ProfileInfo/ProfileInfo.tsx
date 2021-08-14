@@ -10,7 +10,7 @@ import userMale from "../../../assets/images/user-male.png"
 import ProfileStatus from "./ProfileStatus";
 import AdditionalInfo from "./AdditionalInfo/AdditionalInfo";
 import AdditionalInfoForm from "./AdditionalInfoForm/AdditionalInfoForm";
-import {profileType} from '../../../reducers/types/types';
+import {profileType} from '../../../types';
 
 export type propsType = {
     profile: profileType | null,

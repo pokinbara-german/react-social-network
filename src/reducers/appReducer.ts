@@ -1,6 +1,6 @@
 import {getAuth} from './authReducer';
 import {inferActionsType} from '../redux/reduxStore';
-import {baseThunkType} from './types/types';
+import {baseThunkType} from '../types';
 
 export type initialStateType = {
     initDone: boolean

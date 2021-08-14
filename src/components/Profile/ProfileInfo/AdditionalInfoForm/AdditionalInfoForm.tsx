@@ -3,7 +3,7 @@ import styles from "./AdditionalInfoForm.module.css";
 import {createField, Input, TextArea} from "../../../../Common/FormComponents/FieldsComponents/FieldsComponents";
 import {InjectedFormProps, reduxForm} from "redux-form";
 import {required} from "../../../../utils/validators";
-import {contactsType, profileType} from '../../../../reducers/types/types';
+import {contactsType, profileType} from '../../../../types';
 
 type formOwnPropsType = {
     contacts: contactsType,

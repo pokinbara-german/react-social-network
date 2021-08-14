@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './User.module.css';
 import {NavLink} from 'react-router-dom';
 import userMale from '../../../assets/images/user-male.png';
-import {arrayOfNumbers, stringOrNull, usersType} from '../../../reducers/types/types';
+import {arrayOfNumbers, stringOrNull, usersType} from '../../../types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';

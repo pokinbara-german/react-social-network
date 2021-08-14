@@ -1,6 +1,6 @@
 import {Api} from '../components/API/api';
 import {stopSubmit} from 'redux-form';
-import {baseThunkType, contactsType, photosType, postsDataType, profileType} from './types/types';
+import {baseThunkType, contactsType, photosType, postsDataType, profileType} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
 import {nanoid} from 'nanoid';
 

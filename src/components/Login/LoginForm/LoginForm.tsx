@@ -1,5 +1,5 @@
 import {InjectedFormProps, reduxForm} from 'redux-form';
-import {stringOrNull} from '../../../reducers/types/types';
+import {stringOrNull} from '../../../types';
 import {maxLengthCreator, required} from '../../../utils/validators';
 import React from 'react';
 import styles from '../Login.module.css';

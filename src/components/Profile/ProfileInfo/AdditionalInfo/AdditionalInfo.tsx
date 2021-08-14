@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./AdditionalInfo.module.css";
-import {contactsType} from '../../../../reducers/types/types';
+import {contactsType} from '../../../../types';
 import {ProfileContact} from './ProfileContact/ProfileContact';
 
 type propsType = {
