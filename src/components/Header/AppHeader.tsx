@@ -9,7 +9,7 @@ import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
 import {getIsAuthSelector, getLoginSelector} from '../../Common/Selectors/Selectors';
 import {logout} from '../../reducers/authReducer';
-import logo from '../../logo.svg';
+import logo from '../../assets/images/logo.svg';
 import userMale from "../../assets/images/user-male.png";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
