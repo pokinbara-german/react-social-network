@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             padding: theme.spacing(2),
             margin: theme.spacing(2, 6),
+            flexBasis: '25%'
         }
     }),
 );

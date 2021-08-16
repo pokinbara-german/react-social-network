@@ -24,7 +24,7 @@ type apiMethodType = typeof Api.Users.follow | typeof Api.Users.unfollow;
 const initialState: initialStateType = {
     users: [],
     currentPage: 0,
-    pageSize: 10,
+    pageSize: 12,
     isUsersFetching: false,
     followingInProgress: [],
     filter: {
