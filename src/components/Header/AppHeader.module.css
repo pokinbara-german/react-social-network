@@ -4,11 +4,14 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : 01.04.2021, 16:08:52
+    Created on : 01.04.2021, 16:04:54
     Author     : shadow
 */
 
-.moreUsersWrapper {
-    text-align: center;
-    margin: 20px;
+.headerLogo {
+    width: 60px;
+}
+
+.loginLink {
+    color: white;
 }

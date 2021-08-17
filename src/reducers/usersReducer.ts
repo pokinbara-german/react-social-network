@@ -1,5 +1,5 @@
 import {Api} from '../components/API/api';
-import {baseThunkType, arrayOfNumbers, usersType, stringOrNull} from './types/types';
+import {baseThunkType, arrayOfNumbers, usersType, stringOrNull} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
 import {Dispatch} from 'redux';
 
@@ -24,7 +24,7 @@ type apiMethodType = typeof Api.Users.follow | typeof Api.Users.unfollow;
 const initialState: initialStateType = {
     users: [],
     currentPage: 0,
-    pageSize: 10,
+    pageSize: 12,
     isUsersFetching: false,
     followingInProgress: [],
     filter: {

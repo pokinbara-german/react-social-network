@@ -5,7 +5,7 @@ import {
     photosType,
     profileType,
     resultCodesType, usersType
-} from "../../reducers/types/types";
+} from "../../types";
 import {filterType} from '../../reducers/usersReducer';
 
 const defaultApi = axios.create({

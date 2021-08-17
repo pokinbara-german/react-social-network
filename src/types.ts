@@ -1,6 +1,6 @@
 import {Action} from 'redux';
 import {ThunkAction} from 'redux-thunk';
-import {appStateType} from '../../redux/reduxStore';
+import {appStateType} from './redux/reduxStore';
 
 export type Override<T1, T2> = Omit<T1, keyof T2> & T2;
 
@@ -65,7 +65,7 @@ export type basicResponseType = {
 export type baseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, appStateType, unknown, A>;
 
 export type postsDataType = {
-    id: number,
+    id: string,
     text: string,
     likes: number
 }

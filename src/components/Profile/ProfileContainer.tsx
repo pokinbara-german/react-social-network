@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import {getProfile, getStatus, savePhoto, saveProfile, updateStatus} from "../../reducers/profileReducer";
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import withAuthRedirect from "../../Hocs/withAuthRedirect";
-import {MatchParams, profileType} from "../../reducers/types/types";
+import {MatchParams, profileType} from "../../types";
 import {appStateType} from "../../redux/reduxStore";
 
 type matchType = RouteComponentProps<MatchParams>;

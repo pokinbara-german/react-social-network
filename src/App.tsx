@@ -1,4 +1,4 @@
-import React, {Suspense} from "react";
+import React, {Suspense, useEffect} from "react";
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import {Route, Switch} from 'react-router-dom';
@@ -10,9 +10,11 @@ import Preloader from "./Common/Preloader/Preloader";
 import StartPage from "./Pages/StartPage";
 import {appStateType} from './redux/reduxStore';
 import {AppHeader} from './components/Header/AppHeader';
-import "antd/dist/antd.css";
-import {Layout} from 'antd';
 import {NotFound} from './components/NotFound';
+import {createStyles, makeStyles, Theme} from '@material-ui/core';
+import Drawer from '@material-ui/core/Drawer';
+import Toolbar from '@material-ui/core/Toolbar';
+import {getRouteNameById, routes} from './Common/Routes';
 
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
 const Music = React.lazy(() => import('./components/Music/Music'));
@@ -33,60 +35,99 @@ type ownPropsType = {};
 
 type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType;
 
-class App extends React.Component<propsType> {
-    catchGenericError(reason: PromiseRejectionEvent) {
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+        },
+        drawer: {
+            width: drawerWidth,
+            flexShrink: 0,
+        },
+        drawerPaper: {
+            width: drawerWidth,
+        },
+        drawerContainer: {
+            overflow: 'auto',
+        },
+        content: {
+            flexGrow: 1,
+            padding: theme.spacing(3),
+        },
+    }),
+);
+
+/**
+ * Returns whole app (header, menu and needed page).
+ * @param {propsType} props
+ * @constructor
+ */
+const App: React.FC<propsType> = (props) => {
+    const catchGenericError = (reason: PromiseRejectionEvent) => {
         let response = reason.reason.response;
         //TODO: переписать на нормальный вывод ошибки
         alert('ERROR: сервер вернул ответ ' + response.status + ' ' + response.statusText);
-    }
+    };
 
-    componentDidMount() {
-        window.addEventListener('unhandledrejection', this.catchGenericError);
-        this.props.makeInit();
-    }
+    useEffect(() => {
+        window.addEventListener('unhandledrejection', catchGenericError);
+        props.makeInit();
 
-    componentWillUnmount() {
-        window.removeEventListener('unhandledrejection', this.catchGenericError);
-    }
-
-    render() {
-        let MessagesComponent = () =>  <MessagesContainer/>;
-        let ProfileComponent = () => <ProfileContainer/>;
-
-        if (!this.props.isInitDone) {
-            return <Preloader/>
+        // returned function will be called on component unmount
+        return () => {
+            window.removeEventListener('unhandledrejection', catchGenericError);
         }
+    }, []);
 
-        const {Sider, Content, Footer} = Layout;
+    const classes = useStyles();
 
-        return (
-            <Layout>
-                <AppHeader/>
-                <Layout>
-                    <Sider trigger={null} collapsible collapsed={false}>
-                        <Navbar/>
-                    </Sider>
-                    <Content style={{padding: '0 10px'}}>
-                        <Suspense fallback={<div>Загрузка...</div>}>
-                            <Switch>
-                                <Route exact path="/" component={StartPage}/>
-                                <Route path="/profile/:userId?" component={ProfileComponent}/>
-                                <Route path="/messages" component={MessagesComponent}/>
-                                <Route path="/news" component={News}/>
-                                <Route path="/music" component={Music}/>
-                                <Route path="/users" component={UsersContainer}/>
-                                <Route path="/settings" component={Settings}/>
-                                <Route path="/login" component={Login}/>
-                                <Route path="/chat" component={ChatPage}/>
-                                <Route path="*" component={NotFound}/>
-                            </Switch>
-                        </Suspense>
-                    </Content>
-                </Layout>
-                <Footer style={{textAlign: 'center'}}>Social Network ©2021 Created by Shadowmaster</Footer>
-            </Layout>
-        );
+    if (!props.isInitDone) {
+        return <Preloader/>
     }
+
+    return (
+        <div className={classes.root}>
+            <AppHeader/>
+            <Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}>
+                <Toolbar />
+                <Navbar/>
+            </Drawer>
+            <Content/>
+        </div>
+    );
+}
+
+/**
+ * Returns correct page depends on route, uses suspend for lazy-load.
+ * @constructor
+ */
+const Content = () => {
+    const classes = useStyles();
+
+    let MessagesComponent = () =>  <MessagesContainer/>;
+    let ProfileComponent = () => <ProfileContainer/>;
+
+    return(
+        <main className={classes.content}>
+            <Toolbar />
+            <Suspense fallback={<div>Загрузка...</div>}>
+                <Switch>
+                    <Route exact path="/" component={StartPage}/>
+                    <Route path="/profile/:userId?" component={ProfileComponent}/>
+                    <Route path={'/' + getRouteNameById(routes.messages.id)} component={MessagesComponent}/>
+                    <Route path={'/' + getRouteNameById(routes.news.id)} component={News}/>
+                    <Route path={'/' + getRouteNameById(routes.music.id)} component={Music}/>
+                    <Route path={'/' + getRouteNameById(routes.users.id)} component={UsersContainer}/>
+                    <Route path={'/' + getRouteNameById(routes.settings.id)} component={Settings}/>
+                    <Route path="/login" component={Login}/>
+                    <Route path={'/' + getRouteNameById(routes.chat.id)} component={ChatPage}/>
+                    <Route path="*" component={NotFound}/>
+                </Switch>
+            </Suspense>
+        </main>
+    );
 }
 
 let mapStateToProps = (state: appStateType): mapStatePropsType => {

@@ -9,7 +9,10 @@ import Post from './Post/Post';
 import {InjectedFormProps, reduxForm} from "redux-form";
 import {createField, TextArea} from "../../../Common/FormComponents/FieldsComponents/FieldsComponents";
 import {maxLengthCreator, required} from "../../../utils/validators";
-import {postsDataType, stringOrNull} from '../../../reducers/types/types';
+import {postsDataType, stringOrNull} from '../../../types';
+import List from '@material-ui/core/List';
+import Button from '@material-ui/core/Button';
+import {createStyles, Theme, makeStyles} from '@material-ui/core/styles';
 
 export type mapStatePropsType = {
     postsData: Array<postsDataType>,
@@ -29,13 +32,25 @@ type formDataType = {
     newPost: string
 }
 
-type fieldNamesType = keyof formDataType
+type fieldNamesType = keyof formDataType;
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            width: '100%',
+            maxWidth: '36ch',
+            backgroundColor: theme.palette.background.paper,
+        }
+    }),
+);
 
 let maxLength20 = maxLengthCreator(20);
 
 const MyPosts: React.FC<propsType> = (props) => {
-    let posts = props.postsData.map( (post, postIndex) =>
-        <Post key={"MyPost" +postIndex} postId={post.id} message={post.text} likeCount={post.likes}  avatar={props.avatar}/>
+    const classes = useStyles();
+
+    let posts = props.postsData.map( (post) =>
+        <Post key={'MyPost' +post.id} postId={post.id} message={post.text} likeCount={post.likes}  avatar={props.avatar}/>
     );
 
     const addPost = (formData: formDataType) => {
@@ -46,9 +61,9 @@ const MyPosts: React.FC<propsType> = (props) => {
         <div className={styles.postBlock}>
             <h3>Posts</h3>
             <AddPostReduxForm onSubmit={addPost}/>
-            <div className={styles.posts}>
+            <List className={classes.root}>
                 {posts}
-            </div>
+            </List>
         </div>
     );
 };
@@ -66,7 +81,7 @@ const AddPostForm: React.FC<InjectedFormProps<formDataType>> = (props) => {
                 )}
             </div>
             <div>
-                <button>Add Post</button>
+                <Button variant='contained' color='primary' type='submit'>Add Post</Button>
             </div>
         </form>
     );
