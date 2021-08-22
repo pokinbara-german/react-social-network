@@ -39,17 +39,17 @@ const Users: React.FC<usersPropsType> = (props) => {
 
     const classes = useStyles();
 
-    let dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-    let followUser = (userId: number) => {
+    const followUser = (userId: number) => {
         dispatch(follow(userId));
     }
 
-    let unfollowUser = (userId: number) => {
+    const unfollowUser = (userId: number) => {
         dispatch(unfollow(userId));
     }
 
-    let users = usersPage.map((user) =>
+    const users = usersPage.map((user) =>
         <User key={'User' + user.id}
               user={user}
               unfollowUser={unfollowUser}
@@ -58,7 +58,7 @@ const Users: React.FC<usersPropsType> = (props) => {
         />
     );
 
-    let MoreUsersComponent = () => {
+    const MoreUsersComponent = () => {
         return (
             <Box textAlign={'center'} padding={'20px'}>
                 <Button variant='contained' color='primary' onClick={() => props.onPageChanged()}>More Users</Button>
@@ -75,6 +75,6 @@ const Users: React.FC<usersPropsType> = (props) => {
             {isUsersFetching ? <Preloader/> : <MoreUsersComponent/>}
         </div>
     );
-}
+};
 
 export default Users;
