@@ -27,7 +27,7 @@ const initialState: initialStateType = {
 const profileReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
         case 'SN/PROFILE/ADD_POST':
-            if (action.newPost === undefined) {
+            if (action.newPost === undefined || action.newPost.replace(/\s+/g, '') === '') {
                 return state;
             }
 
