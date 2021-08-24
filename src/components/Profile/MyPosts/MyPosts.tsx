@@ -97,9 +97,10 @@ const MyPosts: React.FC<propsType> = (props) => {
 const AddPostForm: React.FC<mapDispatchPropsType> = (props) => {
     const classes = useStyles();
 
-    function onSubmit(values: formDataType, {setSubmitting}: FormikHelpers<formDataType>) {
+    function onSubmit(values: formDataType, {setSubmitting, resetForm}: FormikHelpers<formDataType>) {
         props.sendPost(values.newPost);
         setSubmitting(false);
+        resetForm();
     }
 
     const formik = useFormik({
