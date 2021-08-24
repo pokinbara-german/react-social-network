@@ -3,7 +3,13 @@ import {Field, FieldProps} from "formik";
 import {validatorType} from "../../utils/validators";
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
+import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
+
+type elementPropsType = {
+    error?: boolean,
+    helperText?: string
+};
 
 /**
  * Constructs wrapped component for formik field.
@@ -15,12 +21,15 @@ import MenuItem from '@material-ui/core/MenuItem';
 const FormControlF: React.FC<FieldProps> = ({field, children, ...props}) => {
     const meta = props.form.getFieldMeta(field.name);
     const hasError = meta.touched && meta.error;
-    const elementProps = {
+    const helperText = meta.error || undefined;
+
+    const elementProps: typeof field & typeof props & elementPropsType = {
         ...field,
-        error: !!hasError,
-        helperText: meta.error,
         ...props
     };
+
+    if (hasError) elementProps.error = !!hasError;
+    if (helperText) elementProps.helperText = helperText;
 
     return (
         <div>
@@ -36,6 +45,16 @@ const FormControlF: React.FC<FieldProps> = ({field, children, ...props}) => {
 export const formikField: React.FC<FieldProps> = (props) => {
     return (
         <FormControlF {...props}><TextField/></FormControlF>
+    );
+};
+
+/**
+ * Material-UI checkbox for formik field constructor.
+ * @param {Object} props - any needed props
+ */
+export const formikCheckbox: React.FC<FieldProps> = (props) => {
+    return (
+        <FormControlF {...props}><Checkbox/></FormControlF>
     );
 };
 
