@@ -6,7 +6,7 @@
 import React from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getProfile, getStatus, savePhoto, saveProfile, updateStatus} from "../../reducers/profileReducer";
+import {getProfile, getStatus, saveProfile, updateStatus} from "../../reducers/profileReducer";
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import withAuthRedirect from "../../Hocs/withAuthRedirect";
 import {MatchParams, profileType} from "../../types";
@@ -24,7 +24,6 @@ type mapDispatchPropsType = {
     getProfile: (userId: number) => void,
     getStatus: (userId: number) => void,
     updateStatus: (status: string) => void,
-    savePhoto: (file: File) => void,
     saveProfile: (profile: profileType) => void
 };
 
@@ -33,6 +32,10 @@ type ownPropsType = {
 
 type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType;
 
+/**
+ * Class component which returns profile-page.
+ * If not logged-in will redirect to login.
+ */
 class ProfileContainer extends React.Component<propsType & matchType> {
     getProfileData() {
         this.props.getProfile(parseInt(this.props.match.params.userId));
@@ -65,7 +68,6 @@ const mapDispatchToProps: mapDispatchPropsType = {
     getProfile,
     getStatus,
     updateStatus,
-    savePhoto,
     saveProfile
 }
 

@@ -32,16 +32,6 @@ and open the template in the editor.
     min-width: 300px;
 }
 
-.profileDescription .avatar {
-    border-radius: 50%;
-    height: 300px;
-}
-
-.profileDescription .name {
-    font-size: xx-large;
-    font-weight: 600;
-}
-
 .statusDiv {
     height: 34px;
     display: grid;

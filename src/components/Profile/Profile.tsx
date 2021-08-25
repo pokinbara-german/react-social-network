@@ -9,6 +9,11 @@ import MyPostsContainer from "./MyPosts/MyPostsContainer";
 
 type profilePropsType = propsType;
 
+/**
+ * Whole profile-page with info about user and posts-block.
+ * @param {profilePropsType} props
+ * @constructor
+ */
 const Profile: React.FC<profilePropsType> = (props) => {
     return (
         <div>
@@ -17,7 +22,6 @@ const Profile: React.FC<profilePropsType> = (props) => {
                          updateStatus={props.updateStatus}
                          statusFetching={props.statusFetching}
                          isOwner={props.isOwner}
-                         savePhoto={props.savePhoto}
                          saveProfile={props.saveProfile}
             />
             <MyPostsContainer/>

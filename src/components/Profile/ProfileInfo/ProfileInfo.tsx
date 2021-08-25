@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import React, {ChangeEvent, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './ProfileInfo.module.css';
 import Preloader from "../../../Common/Preloader/Preloader";
-import userMale from "../../../assets/images/user-male.png"
 import ProfileStatus from "./ProfileStatus";
 import AdditionalInfo from "./AdditionalInfo/AdditionalInfo";
 import AdditionalInfoForm from "./AdditionalInfoForm/AdditionalInfoForm";
 import {profileType} from '../../../types';
+import {ProfileAvatar} from './ProfileAvatar/ProfileAvatar';
+import Typography from '@material-ui/core/Typography';
 
 export type propsType = {
     profile: profileType | null,
@@ -18,7 +19,6 @@ export type propsType = {
     isOwner: boolean,
     statusFetching: boolean,
     updateStatus: (status: string) => void,
-    savePhoto: (file: File) => void,
     saveProfile: (profile: profileType) => any,
 }
 
@@ -36,15 +36,6 @@ const ProfileInfo: React.FC<propsType> = (props) => {
         lookingForAJobDescription: props.profile.lookingForAJobDescription,
         contacts: props.profile.contacts
     }
-    let profileAvatarLarge = props.profile.photos.large || userMale;
-
-    function onFileChange(event: ChangeEvent<HTMLInputElement>) {
-        if (!event.target.files) {
-            return;
-        }
-
-        props.savePhoto(event.target.files[0]);
-    }
 
     function onSubmit (formData: profileType) {
         props.saveProfile(formData).then(() => {
@@ -58,16 +49,17 @@ const ProfileInfo: React.FC<propsType> = (props) => {
                 <img className={styles.wallpaper} alt='wallpaper' src={'https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png'}/>
             </div>
             <div className={styles.profileDescription}>
-                <div>
-                    <img className={styles.avatar} alt='ava' src={profileAvatarLarge}/>
-                    {props.isOwner && <input type={'file'} onChange={onFileChange}/>}
-                </div>
+                <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner}/>
                 <div className={styles.profileDescriptionWrapper}>
-                    <span className={styles.name}>{props.profile.fullName}</span>
+                    <Typography variant='h4'>{props.profile.fullName}</Typography>
                     <ProfileStatus status={props.status} updateStatus={props.updateStatus}
                                            statusFetching={props.statusFetching}/>
                     {isEditMode
-                            ? <AdditionalInfoForm onChancel={() => setEditMode(false)} contacts={props.profile.contacts} onSubmit={onSubmit} initialValues={formInitialValues}/>
+                            ? <AdditionalInfoForm onChancel={() => setEditMode(false)}
+                                                  contacts={props.profile.contacts}
+                                                  onSubmit={onSubmit}
+                                                  initialValues={formInitialValues}
+                            />
                             : <AdditionalInfo aboutMe={props.profile.aboutMe}
                                               lookingForAJob={props.profile.lookingForAJob}
                                               lookingForAJobDescription={props.profile.lookingForAJobDescription}
