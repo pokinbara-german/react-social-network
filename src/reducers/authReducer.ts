@@ -50,6 +50,9 @@ export const authActions = {
     getCaptchaSuccess: (url: stringOrNull) => ({type: 'SN/AUTH/GET_CAPTCHA_SUCCESS', url} as const)
 }
 
+/**
+ * Gets auth data from backend and set it to state if successful.
+ */
 export const getAuth = (): thunkType => async (dispatch) => {
     let data = await Api.Auth.Me();
 
@@ -61,7 +64,16 @@ export const getAuth = (): thunkType => async (dispatch) => {
     dispatch(authActions.setAuth(id, email, login, true));
 }
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string): thunkType => async (dispatch) => {
+/**
+ * Sets user logged-in on backend, if needed captcha then requests it.
+ * If successful sets auth data to state.
+ * @param {string} email - user email
+ * @param {string} password - user password
+ * @param {boolean} rememberMe - is need long session
+ * @param {string} captcha - captcha text from user
+ * @param errorCallback - callback calls on error from backend
+ */
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string, errorCallback = (data: string) => {}): thunkType => async (dispatch) => {
     let data = await Api.Auth.Login(email, password, rememberMe, captcha);
 
     if (data.error) {
@@ -69,13 +81,16 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
             await dispatch(getCaptcha());
         }
 
-        return dispatch(stopSubmit('login', {_error: data.error}));
+        return errorCallback(data.error);
     }
 
     await dispatch(getAuth());
     dispatch(authActions.getCaptchaSuccess(null));
 }
 
+/**
+ * Sets user as logged-out on backend, if successful clears auth data in state.
+ */
 export const logout = (): thunkType => async (dispatch) => {
     let data = await Api.Auth.Logout();
 
@@ -86,6 +101,9 @@ export const logout = (): thunkType => async (dispatch) => {
     dispatch(authActions.setAuth(null, null, null, false));
 }
 
+/**
+ * Gets url with captcha image from backend and sets it to state if successful.
+ */
 export const getCaptcha = (): thunkType => async (dispatch) => {
     let url = await Api.Security.getCaptcha();
 

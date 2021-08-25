@@ -6,13 +6,13 @@
 import React from 'react';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
-import {InjectedFormProps, reduxForm} from "redux-form";
-import {createField, TextArea} from "../../../Common/FormComponents/FieldsComponents/FieldsComponents";
-import {maxLengthCreator, required} from "../../../utils/validators";
+import {maxLengthCreator, minLengthCreator, required, validatorCreator} from "../../../utils/validators";
 import {postsDataType, stringOrNull} from '../../../types';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import {createStyles, Theme, makeStyles} from '@material-ui/core/styles';
+import {FormikHelpers, FormikProvider, useFormik} from 'formik';
+import {createFieldF, formikField} from '../../../Common/FormComponents/FieldsComponentsFormik';
 
 export type mapStatePropsType = {
     postsData: Array<postsDataType>,
@@ -34,18 +34,43 @@ type formDataType = {
 
 type fieldNamesType = keyof formDataType;
 
+/**
+ * @const
+ * @type string
+ * @description block max width.
+ */
+const maxWidth = '40ch';
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
+        postsList: {
             width: '100%',
-            maxWidth: '36ch',
+            maxWidth: maxWidth,
             backgroundColor: theme.palette.background.paper,
+        },
+        newPostForm: {
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: maxWidth,
+            '& > *': {
+                display: 'flex',
+                margin: theme.spacing(1),
+            },
+        },
+        stretched: {
+            flexGrow: 1,
         }
     }),
 );
 
-let maxLength20 = maxLengthCreator(20);
+let minLength2 = minLengthCreator(2);
+let maxLength50 = maxLengthCreator(50);
 
+/**
+ * Component with title, form and list of posts.
+ * @param {propsType} props
+ * @constructor
+ */
 const MyPosts: React.FC<propsType> = (props) => {
     const classes = useStyles();
 
@@ -53,40 +78,60 @@ const MyPosts: React.FC<propsType> = (props) => {
         <Post key={'MyPost' +post.id} postId={post.id} message={post.text} likeCount={post.likes}  avatar={props.avatar}/>
     );
 
-    const addPost = (formData: formDataType) => {
-        props.sendPost(formData.newPost);
-    }
-
     return (
         <div className={styles.postBlock}>
             <h3>Posts</h3>
-            <AddPostReduxForm onSubmit={addPost}/>
-            <List className={classes.root}>
+            <AddPostForm sendPost={props.sendPost}/>
+            <List className={classes.postsList}>
                 {posts}
             </List>
         </div>
     );
 };
 
-const AddPostForm: React.FC<InjectedFormProps<formDataType>> = (props) => {
+/**
+ * Returns form for adding new post with one multiline input and one button.
+ * @param {mapDispatchPropsType} props - callback for adding new post.
+ * @constructor
+ */
+const AddPostForm: React.FC<mapDispatchPropsType> = (props) => {
+    const classes = useStyles();
+
+    function onSubmit(values: formDataType, {setSubmitting, resetForm}: FormikHelpers<formDataType>) {
+        props.sendPost(values.newPost);
+        setSubmitting(false);
+        resetForm();
+    }
+
+    const formik = useFormik({
+        initialValues: {newPost: ''},
+        enableReinitialize: true,
+        onSubmit,
+    });
+
     return(
-        <form onSubmit={props.handleSubmit}>
-            <div>
-                {createField<fieldNamesType>(
-                    undefined,
+        <form onSubmit={formik.handleSubmit} className={classes.newPostForm}>
+            <FormikProvider value={formik}>
+                {createFieldF<fieldNamesType>(
+                    classes.stretched,
                     'Введите сообщение',
                     'newPost',
-                    TextArea,
-                    [required, maxLength20]
+                    formikField,
+                    validatorCreator([required, minLength2, maxLength50]),
+                    {multiline: true}
                 )}
-            </div>
+            </FormikProvider>
             <div>
-                <Button variant='contained' color='primary' type='submit'>Add Post</Button>
+                <Button variant='contained'
+                        color='primary'
+                        type='submit'
+                        disabled={formik.isSubmitting || !formik.dirty || !formik.isValid}
+                >
+                    Add Post
+                </Button>
             </div>
         </form>
     );
 }
-
-const AddPostReduxForm = reduxForm<formDataType>({form: 'addPost'})(AddPostForm);
 
 export default MyPosts;

@@ -1,9 +1,13 @@
-import {InjectedFormProps, reduxForm} from 'redux-form';
 import {stringOrNull} from '../../../types';
-import {maxLengthCreator, required} from '../../../utils/validators';
+import {maxLengthCreator, required, validatorCreator} from '../../../utils/validators';
 import React from 'react';
 import styles from '../Login.module.css';
-import {createField, Input} from '../../../Common/FormComponents/FieldsComponents/FieldsComponents';
+import {FormikHelpers, FormikProvider, useFormik} from 'formik';
+import Button from '@material-ui/core/Button';
+import {useDispatch} from 'react-redux';
+import {login} from '../../../reducers/authReducer';
+import {createFieldF, formikCheckbox, formikField} from '../../../Common/FormComponents/FieldsComponentsFormik';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 
 let maxLength30 = maxLengthCreator(30);
 
@@ -15,51 +19,107 @@ export type loginFormDataType = {
 }
 
 type fieldNamesType = keyof loginFormDataType
-type loginFormOwnPropsType = {
+type loginFormPropsType = {
     captchaUrl: stringOrNull
 }
 
-const LoginForm: React.FC<InjectedFormProps<loginFormDataType, loginFormOwnPropsType> & loginFormOwnPropsType> = (props) => {
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        loginForm: {
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: '40ch',
+            margin: theme.spacing(1),
+            '& > *': {
+                display: 'flex',
+            },
+        },
+        loginInput: {
+            flexGrow: 1,
+            margin: theme.spacing(1),
+        },
+        errorText: {
+            color: 'red',
+            alignSelf: 'center',
+            marginBottom: theme.spacing(1),
+        }
+    }),
+);
+
+/**
+ * Form for login process with two static inputs, one optional input with image for captcha, checkbox and button.
+ * @param {loginFormPropsType} props - url to captcha img
+ * @constructor
+ */
+const LoginForm: React.FC<loginFormPropsType> = (props) => {
+    const dispatch = useDispatch();
+    const classes = useStyles();
+    const initialValues = {
+        login: '',
+        password: '',
+        rememberMe: false,
+        captcha: ''
+    }
+
+    const onSubmit = (formData: loginFormDataType, {setSubmitting}: FormikHelpers<loginFormDataType>) => {
+        dispatch(login(formData.login, formData.password, formData.rememberMe, formData.captcha, formik.setStatus));
+        setSubmitting(false);
+    };
+
+    const formik = useFormik({
+        initialValues,
+        onSubmit,
+    });
+
     return (
-        <form className={styles.loginForm} onSubmit={props.handleSubmit}>
-            {createField<fieldNamesType>(
-                styles.loginInput,
-                'Введите логин',
-                'login',
-                Input,
-                [required, maxLength30]
-            )}
-            {createField<fieldNamesType>(
-                styles.loginInput,
-                'Введите пароль',
-                'password',
-                Input,
-                [required, maxLength30],
-                {type: 'password'}
-            )}
-            <div className={styles.checkboxWrapper}>
-                {createField<fieldNamesType>(
-                    undefined,
-                    undefined,
-                    'rememberMe',
-                    Input,
-                    [],
-                    {type: 'checkbox'}
+        <form className={classes.loginForm} onSubmit={formik.handleSubmit}>
+            <FormikProvider value={formik}>
+                {createFieldF<fieldNamesType>(
+                    classes.loginInput,
+                    'Enter login',
+                    'login',
+                    formikField,
+                    validatorCreator([required, maxLength30])
                 )}
-                <span className={styles.checkboxSpan}>remember me</span>
-            </div>
-            {props.captchaUrl && <img alt={'captcha'} src={props.captchaUrl}/>}
-            {props.captchaUrl && createField<fieldNamesType>(
-                styles.loginInput,
-                'Ввведите символы с картинки',
-                'captcha',
-                Input,
-                [required, maxLength30],
-                {autocomplete: 'off'}
-            )}
-            {props.error && <div className={styles.error}>{props.error}</div>}
-            <button>Login</button>
+                {createFieldF<fieldNamesType>(
+                    classes.loginInput,
+                    'Enter password',
+                    'password',
+                    formikField,
+                    validatorCreator([required, maxLength30]),
+                    {type: 'password'}
+                )}
+                <div className={styles.checkboxWrapper}>
+                    {createFieldF<fieldNamesType>(
+                        undefined,
+                        undefined,
+                        'rememberMe',
+                        formikCheckbox,
+                        validatorCreator([]),
+                        {color: 'primary'}
+                    )}
+                    <span>remember me</span>
+                </div>
+                {props.captchaUrl && <img alt={'captcha'} src={props.captchaUrl}/>}
+                {props.captchaUrl && createFieldF<fieldNamesType>(
+                    classes.loginInput,
+                    'Enter symbols from image',
+                    'captcha',
+                    formikField,
+                    validatorCreator([required, maxLength30]),
+                    {autoComplete: 'off'}
+                )}
+            </FormikProvider>
+            {formik.status && <div className={classes.errorText}>{formik.status}</div>}
+            <Button variant='contained'
+                    color='primary'
+                    type='submit'
+                    disabled={formik.isSubmitting || !formik.isValid}
+            >
+                Login
+            </Button>
         </form>
     );
 }
-export const LoginReduxForm = reduxForm<loginFormDataType, loginFormOwnPropsType>({form: 'login'})(LoginForm);
+
+export default LoginForm;

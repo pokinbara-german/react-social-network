@@ -1,23 +1,28 @@
 import {filterType} from '../../../reducers/usersReducer';
 import React from 'react';
-import {FormikHelpers, useFormik} from 'formik';
+import {FormikHelpers, FormikProvider, useFormik} from 'formik';
 import {useSelector} from 'react-redux';
 import {getUsersFilterSelector} from '../../../Common/Selectors/Selectors';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import {routes} from '../../../Common/Routes';
+import {createFieldF, formikField, formikSelect} from '../../../Common/FormComponents/FieldsComponentsFormik';
+import {validatorCreator} from '../../../utils/validators';
 
 type propsType = {
     onPageChanged: (filter?: filterType) => void
 }
 
+type friendFieldType = 'null' | 'true' | 'false';
+
 type formFieldsType = {
     searchTerm: string,
-    friend: 'null' | 'true' | 'false'
+    friend: friendFieldType
 }
+
+type selectOptionsType = Array<{key: friendFieldType, value: string}>;
+
+type fieldNamesType = keyof formFieldsType;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -34,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const UsersSearchForm: React.FC<propsType> = (props) => {
+export const UsersSearchForm: React.FC<propsType> = React.memo((props) => {
     const classes = useStyles();
     const filter = useSelector(getUsersFilterSelector);
 
@@ -58,23 +63,38 @@ export const UsersSearchForm: React.FC<propsType> = (props) => {
         onSubmit: onSubmit,
     });
 
+    /**
+     * @const
+     * @type selectOptionsType
+     * @description array with select options
+     */
+    const selectOptions: selectOptionsType = [
+        {key: 'null', value: 'All'},
+        {key: 'true', value: 'Only followed'},
+        {key: 'false', value: 'Only unfollowed'}
+    ]
+
     return (
         <div>
             <h1>{routes.users.title}</h1>
                 <form onSubmit={formik.handleSubmit} className={classes.root}>
-                    <TextField label="Enter user name or it's part"
-                               name='searchTerm'
-                               value={formik.values.searchTerm}
-                               onChange={formik.handleChange}
-                    />
-                    <Select name='friend'
-                            value={formik.values.friend}
-                            onChange={formik.handleChange}
-                    >
-                        <MenuItem value='null'>All</MenuItem>
-                        <MenuItem value='true'>Only followed</MenuItem>
-                        <MenuItem value='false'>Only unfollowed</MenuItem>
-                    </Select>
+                    <FormikProvider value={formik}>
+                        {createFieldF<fieldNamesType>(
+                            undefined,
+                            'Enter user name or it\'s part',
+                            'searchTerm',
+                            formikField,
+                            validatorCreator([])
+                        )}
+                        {createFieldF<fieldNamesType>(
+                            undefined,
+                            undefined,
+                            'friend',
+                            formikSelect,
+                            validatorCreator([]),
+                            {value: formik.values.friend, children: selectOptions}
+                        )}
+                    </FormikProvider>
                     <Button className={classes.searchButton}
                             color='primary'
                             variant='contained'
@@ -86,6 +106,6 @@ export const UsersSearchForm: React.FC<propsType> = (props) => {
                 </form>
         </div>
     );
-}
+});
 
 export default UsersSearchForm;
