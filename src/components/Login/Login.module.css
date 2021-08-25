@@ -8,23 +8,7 @@ and open the template in the editor.
     Author     : shadow
 */
 
-.loginForm {
-    display: table-caption;
-    padding: 0 10px 20px;
-}
-
-.loginForm .loginInput {
-    margin: 5px 0;
-}
-
 .checkboxWrapper {
     display: flex;
-}
-
-.checkboxWrapper .checkboxSpan{
-    margin-left: 5px;
-}
-
-.error {
-    color: red;
+    align-items: center;
 }
