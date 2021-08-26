@@ -52,8 +52,11 @@ const ProfileInfo: React.FC<propsType> = (props) => {
                 <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner}/>
                 <div className={styles.profileDescriptionWrapper}>
                     <Typography variant='h4'>{props.profile.fullName}</Typography>
-                    <ProfileStatus status={props.status} updateStatus={props.updateStatus}
-                                           statusFetching={props.statusFetching}/>
+                    <ProfileStatus status={props.status}
+                                   updateStatus={props.updateStatus}
+                                   statusFetching={props.statusFetching}
+                                   isOwner={props.isOwner}
+                    />
                     {isEditMode
                             ? <AdditionalInfoForm onChancel={() => setEditMode(false)}
                                                   contacts={props.profile.contacts}

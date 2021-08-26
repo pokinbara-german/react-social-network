@@ -26,24 +26,15 @@ and open the template in the editor.
 
 .profileDescriptionWrapper {
     margin: 0 30px;
-    display: grid;
-    grid-template-rows: 0fr 0fr 1fr;
-    width: max-content;
-    min-width: 300px;
+    width: 52.5ch;
 }
 
 .statusDiv {
     height: 34px;
-    display: grid;
-    align-content: center;
-    grid-template-columns: 1fr 5fr;
+    display: flex;
+    flex-direction: column;
 }
 
 .statusSpan {
     font-weight: 600;
-    margin-right: 5px;
-}
-
-.statusInput {
-    max-height: 20px;
 }
