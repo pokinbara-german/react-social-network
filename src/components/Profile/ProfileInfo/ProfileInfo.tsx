@@ -12,6 +12,8 @@ import AdditionalInfoForm from "./AdditionalInfoForm/AdditionalInfoForm";
 import {profileType} from '../../../types';
 import {ProfileAvatar} from './ProfileAvatar/ProfileAvatar';
 import Typography from '@material-ui/core/Typography';
+import ProfileBackground from '../../../assets/images/social-network-pattern-background.jpg';
+import {createStyles, makeStyles} from '@material-ui/core/styles';
 
 export type propsType = {
     profile: profileType | null,
@@ -22,7 +24,26 @@ export type propsType = {
     saveProfile: (profile: profileType) => any,
 }
 
+const wallpaperBlend = 'linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95))';
+
+const useStyles = makeStyles(() =>
+    createStyles({
+        wallpaper: {
+            backgroundImage: `${wallpaperBlend}, url(${ProfileBackground})`,
+            backgroundSize: '40%',
+            margin: '-23px'
+        }
+    }),
+);
+
+/**
+ * Returns profile-block with avatar, status and profile info.
+ * @param {propsType} props - props
+ * @constructor
+ */
 const ProfileInfo: React.FC<propsType> = (props) => {
+    const classes = useStyles();
+
     let [isEditMode, setEditMode] = useState(false);
 
     if (!props.profile) {
@@ -44,10 +65,7 @@ const ProfileInfo: React.FC<propsType> = (props) => {
     }
 
     return (
-        <div>
-            <div>
-                <img className={styles.wallpaper} alt='wallpaper' src={'https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png'}/>
-            </div>
+        <div className={classes.wallpaper}>
             <div className={styles.profileDescription}>
                 <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner}/>
                 <div className={styles.profileDescriptionWrapper}>
