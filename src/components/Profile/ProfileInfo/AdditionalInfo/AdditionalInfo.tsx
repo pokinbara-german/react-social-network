@@ -67,8 +67,6 @@ const AdditionalInfo: React.FC<propsType> = (props) => {
 
     return (
         <div className={classes.additionalInfo}>
-            {props.isOwner && <Button color='primary' variant='contained' onClick={props.setEditMode}>Edit info</Button>}
-
             <div className={classes.additionalInfoItem}>
                 <Typography>About Me: {props.aboutMe || 'Empty'}</Typography>
                 <Typography>Looking for a job: {props.lookingForAJob ? 'Yes' : 'No'}</Typography>
@@ -84,6 +82,7 @@ const AdditionalInfo: React.FC<propsType> = (props) => {
                     <Typography>no contacts</Typography>
                 </div>
             }
+            {props.isOwner && <Button color='primary' variant='contained' onClick={props.setEditMode}>Edit info</Button>}
         </div>
     );
 };
