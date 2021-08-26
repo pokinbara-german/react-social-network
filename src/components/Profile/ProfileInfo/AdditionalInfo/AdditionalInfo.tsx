@@ -11,6 +11,7 @@ type propsType = {
     lookingForAJobDescription: string,
     contacts: contactsType,
     isOwner: boolean,
+    blockWidth: string,
     setEditMode: () => void
 };
 
@@ -19,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
         additionalInfo: {
             display: 'flex',
             flexDirection: 'column',
-            maxWidth: '52.5ch',
             '& > div': {
                 marginLeft: theme.spacing(2),
                 marginRight: theme.spacing(2),
@@ -66,7 +66,7 @@ const AdditionalInfo: React.FC<propsType> = (props) => {
     }
 
     return (
-        <div className={classes.additionalInfo}>
+        <div className={classes.additionalInfo} style={{maxWidth: props.blockWidth}}>
             <div className={classes.additionalInfoItem}>
                 <Typography>About Me: {props.aboutMe || 'Empty'}</Typography>
                 <Typography>Looking for a job: {props.lookingForAJob ? 'Yes' : 'No'}</Typography>

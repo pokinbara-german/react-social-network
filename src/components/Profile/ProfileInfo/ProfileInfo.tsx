@@ -13,7 +13,7 @@ import {profileType} from '../../../types';
 import {ProfileAvatar} from './ProfileAvatar/ProfileAvatar';
 import Typography from '@material-ui/core/Typography';
 import ProfileBackground from '../../../assets/images/social-network-pattern-background.jpg';
-import {createStyles, makeStyles} from '@material-ui/core/styles';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 
 export type propsType = {
     profile: profileType | null,
@@ -25,13 +25,20 @@ export type propsType = {
 }
 
 const wallpaperBlend = 'linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95))';
+const blockWidth = '52.5ch';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         wallpaper: {
             backgroundImage: `${wallpaperBlend}, url(${ProfileBackground})`,
             backgroundSize: '40%',
             margin: '-23px'
+        },
+        profileDescriptionWrapper: {
+            display: 'flex',
+            flexDirection: 'column',
+            margin: theme.spacing(0, 4),
+            width: blockWidth
         }
     }),
 );
@@ -68,7 +75,7 @@ const ProfileInfo: React.FC<propsType> = (props) => {
         <div className={classes.wallpaper}>
             <div className={styles.profileDescription}>
                 <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner}/>
-                <div className={styles.profileDescriptionWrapper}>
+                <div className={classes.profileDescriptionWrapper}>
                     <Typography variant='h4'>{props.profile.fullName}</Typography>
                     <ProfileStatus status={props.status}
                                    updateStatus={props.updateStatus}
@@ -87,6 +94,7 @@ const ProfileInfo: React.FC<propsType> = (props) => {
                                               contacts={props.profile.contacts}
                                               setEditMode={() => setEditMode(true)}
                                               isOwner={props.isOwner}
+                                              blockWidth={blockWidth}
                             />
                     }
                 </div>

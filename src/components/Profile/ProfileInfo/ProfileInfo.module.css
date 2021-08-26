@@ -13,13 +13,6 @@ and open the template in the editor.
     display: flex;
 }
 
-.profileDescriptionWrapper {
-    display: flex;
-    flex-direction: column;
-    margin: 0 30px;
-    width: 52.5ch;
-}
-
 .statusDiv {
     height: 34px;
     display: flex;
