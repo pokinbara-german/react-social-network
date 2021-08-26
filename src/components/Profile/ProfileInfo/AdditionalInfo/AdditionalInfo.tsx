@@ -70,7 +70,9 @@ const AdditionalInfo: React.FC<propsType> = (props) => {
             <div className={classes.additionalInfoItem}>
                 <Typography>About Me: {props.aboutMe || 'Empty'}</Typography>
                 <Typography>Looking for a job: {props.lookingForAJob ? 'Yes' : 'No'}</Typography>
-                {props.lookingForAJob && <Typography className={classes.jobDesc}>Job description: {props.lookingForAJobDescription}</Typography>}
+                {props.lookingForAJob && <Typography className={classes.jobDesc}>
+                    Job description: {props.lookingForAJobDescription}
+                </Typography>}
             </div>
 
             {isNeedContacts
