@@ -68,9 +68,9 @@ const ProfileStatus: React.FC<propsType> = (props) => {
         : <div className={styles.statusDiv} onClick={toggleEditing}>
             {props.isOwner
                 ? <Tooltip title="Click to edit" aria-label="edit status" placement="right">
-                    <Typography className={styles.statusSpan}>{statusText}</Typography>
+                    <Typography>{statusText}</Typography>
                   </Tooltip>
-                : <Typography className={styles.statusSpan}>{statusText}</Typography>
+                : <Typography>{statusText}</Typography>
             }
             <Divider/>
         </div>;

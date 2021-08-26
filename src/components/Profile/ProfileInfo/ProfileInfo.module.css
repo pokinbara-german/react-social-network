@@ -25,7 +25,3 @@ and open the template in the editor.
     display: flex;
     flex-direction: column;
 }
-
-.statusSpan {
-    font-weight: 600;
-}
