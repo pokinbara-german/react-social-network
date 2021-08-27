@@ -44,7 +44,7 @@ const Message: React.FC<{message: messageType}> = React.memo(({message}) => {
     return (
         <div>
             <div><img  className={styles.chatAvatar} alt={'ava'} src={message.photo || userMale}/>{message.userName}</div>
-            <div>{message.message}</div>
+            <div className={styles.chatMessage}>{message.message}</div>
             <hr/>
         </div>
     );

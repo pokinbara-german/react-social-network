@@ -114,7 +114,7 @@ const AddPostForm: React.FC<mapDispatchPropsType> = (props) => {
             <FormikProvider value={formik}>
                 {createFieldF<fieldNamesType>(
                     classes.stretched,
-                    'Введите сообщение',
+                    'Type something',
                     'newPost',
                     formikField,
                     validatorCreator([required, minLength2, maxLength50]),
