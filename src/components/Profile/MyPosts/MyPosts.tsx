@@ -13,7 +13,8 @@ import {AddPostForm} from './AddPostForm/AddPostForm';
 
 export type myPostsPropsType = {
     postsData: Array<postsDataType>,
-    avatar: stringOrNull
+    avatar: stringOrNull,
+    userName: stringOrNull
 }
 
 /**
@@ -42,7 +43,13 @@ const MyPosts: React.FC<myPostsPropsType> = (props) => {
     const classes = useStyles();
 
     let posts = props.postsData.map( (post) =>
-        <Post key={'MyPost' +post.id} postId={post.id} message={post.text} likeCount={post.likes}  avatar={props.avatar}/>
+        <Post key={'MyPost' +post.id}
+              postId={post.id}
+              message={post.text}
+              likeCount={post.likes}
+              avatar={props.avatar}
+              userName={props.userName}
+        />
     );
 
     return (

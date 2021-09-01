@@ -11,7 +11,8 @@ let mapStateToProps = (state: appStateType) => {
     return (
         {
             postsData: state.profilePage.postsData,
-            avatar: state.profilePage.profile ? state.profilePage.profile.photos.small : ''
+            avatar: state.profilePage.profile ? state.profilePage.profile.photos.small : '',
+            userName: state.auth.login
         }
     );
 };

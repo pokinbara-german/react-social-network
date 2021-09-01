@@ -19,7 +19,8 @@ type postPropsType = {
     postId: string,
     message: string,
     likeCount: number,
-    avatar: stringOrNull
+    avatar: stringOrNull,
+    userName: stringOrNull
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -40,7 +41,10 @@ const Post: React.FC<postPropsType> = (props) => {
     let avatarSmall = props.avatar || userMale;
 
     const actions = [
-        <LikesBlock postId={props.postId} likeCount={props.likeCount} key={props.postId}/>
+        <>
+            <Typography>{props.message}</Typography>
+            <LikesBlock postId={props.postId} likeCount={props.likeCount} key={props.postId}/>
+        </>
     ];
 
     return(
@@ -49,7 +53,7 @@ const Post: React.FC<postPropsType> = (props) => {
                 <ListItemAvatar>
                     <Avatar alt="ava" src={avatarSmall} />
                 </ListItemAvatar>
-                <ListItemText className={classes.text} primary={props.message} secondary={actions}>
+                <ListItemText className={classes.text} primary={props.userName} secondary={actions}>
                 </ListItemText>
             </ListItem>
         </Card>
