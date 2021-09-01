@@ -21,23 +21,32 @@ type postPropsType = {
     likeCount?: number,
     avatar: stringOrNull,
     userName: stringOrNull,
-    withoutLikes?: boolean
+    withoutLikes?: boolean,
+    blockWidth?: string
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        postWrapper: {
-            display: 'flex',
-            margin: theme.spacing(1),
-        },
-        text: {
-            whiteSpace: 'pre-line',
-            overflowWrap: 'break-word',
-        }
-    }),
-);
+
 
 const Post: React.FC<postPropsType> = (props) => {
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            postsList: {
+                padding: 0
+            },
+            postWrapper: {
+                display: 'flex',
+                margin: theme.spacing(1),
+                maxWidth: props.blockWidth || 'none',
+                padding: theme.spacing(1, 2),
+                flexGrow: 1
+            },
+            text: {
+                whiteSpace: 'pre-line',
+                overflowWrap: 'break-word',
+            }
+        }),
+    );
+
     const classes = useStyles();
     let avatarSmall = props.avatar || userMale;
 
@@ -49,15 +58,15 @@ const Post: React.FC<postPropsType> = (props) => {
     ];
 
     return(
-        <Card variant={'outlined'} className={classes.postWrapper}>
-            <ListItem alignItems='flex-start'>
+        <ListItem alignItems='flex-start' className={classes.postsList}>
+            <Card variant={'outlined'} className={classes.postWrapper}>
                 <ListItemAvatar>
                     <Avatar alt='ava' src={avatarSmall} />
                 </ListItemAvatar>
                 <ListItemText className={classes.text} primary={props.userName} secondary={actions}>
                 </ListItemText>
-            </ListItem>
-        </Card>
+            </Card>
+        </ListItem>
     );
 };
 
