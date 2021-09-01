@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import styles from './MyPosts.module.css';
-import Post from './Post/Post';
+import Post from '../../../Common/Post/Post';
 import {postsDataType, stringOrNull} from '../../../types';
 import List from '@material-ui/core/List';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
