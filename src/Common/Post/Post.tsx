@@ -22,7 +22,8 @@ type postPropsType = {
     avatar: stringOrNull,
     userName: stringOrNull,
     withoutLikes?: boolean,
-    blockWidth?: string
+    blockWidth?: string,
+    rightSided?: boolean
 }
 
 
@@ -30,8 +31,9 @@ type postPropsType = {
 const Post: React.FC<postPropsType> = (props) => {
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
-            postsList: {
-                padding: 0
+            postsItem: {
+                padding: 0,
+                justifyContent: props.rightSided ? 'end' : 'start'
             },
             postWrapper: {
                 display: 'flex',
@@ -57,7 +59,7 @@ const Post: React.FC<postPropsType> = (props) => {
     ];
 
     return(
-        <ListItem alignItems='flex-start' className={classes.postsList}>
+        <ListItem alignItems='flex-start' className={classes.postsItem}>
             <Card variant={'outlined'} className={classes.postWrapper}>
                 <ListItemAvatar>
                     <Avatar alt='ava' src={avatarSmall} />
