@@ -15,6 +15,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import {getRouteNameById, routes} from './Common/Routes';
+import {GlobalAlert} from './Common/GlobalAlert/GlobalAlert';
 
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
 const Music = React.lazy(() => import('./components/Music/Music'));
@@ -65,10 +66,17 @@ const useStyles = makeStyles((theme: Theme) =>
  * @constructor
  */
 const App: React.FC<propsType> = (props) => {
+    const [isNotificationOpen, setNotificationOpen] = React.useState(false);
+    const [notificationText, setNotificationText] = React.useState('');
+
+    /**
+     * Catch error reason and set alert-data.
+     * @param reason
+     */
     const catchGenericError = (reason: PromiseRejectionEvent) => {
         let response = reason.reason.response;
-        //TODO: переписать на нормальный вывод ошибки
-        alert('ERROR: сервер вернул ответ ' + response.status + ' ' + response.statusText);
+        setNotificationText('ERROR: server returned ' + response.status + ' ' + response.statusText);
+        setNotificationOpen(true);
     };
 
     useEffect(() => {
@@ -90,8 +98,12 @@ const App: React.FC<propsType> = (props) => {
 
     return (
         <div className={classes.root}>
+            <GlobalAlert isOpen={isNotificationOpen}
+                         text={notificationText}
+                         setNotificationOpen={setNotificationOpen}
+            />
             <AppHeader/>
-            <Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}>
+            <Drawer className={classes.drawer} variant='permanent' classes={{paper: classes.drawerPaper}}>
                 <Toolbar />
                 <Navbar/>
             </Drawer>
