@@ -57,8 +57,10 @@ export const UsersSearchForm: React.FC<propsType> = React.memo((props) => {
         setSubmitting(false);
     }
 
+    const initialValues = {searchTerm: filter.searchTerm || '', friend: String(filter.friend)} as formFieldsType;
+
     const formik = useFormik({
-        initialValues: {searchTerm: filter.searchTerm, friend: String(filter.friend)} as formFieldsType,
+        initialValues,
         enableReinitialize: true,
         onSubmit: onSubmit,
     });

@@ -70,7 +70,7 @@ export const formikSelect: React.FC<FieldProps> = React.memo((props) => {
             <Select>
                 {options && options.map(option => {
                     return(
-                        <MenuItem value={option.key}>{option.value}</MenuItem>
+                        <MenuItem key={option.key} value={option.key}>{option.value}</MenuItem>
                     );
                 })}
             </Select>
