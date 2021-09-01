@@ -36,9 +36,8 @@ const Post: React.FC<postPropsType> = (props) => {
             postWrapper: {
                 display: 'flex',
                 margin: theme.spacing(1),
-                maxWidth: props.blockWidth || 'none',
-                padding: theme.spacing(1, 2),
-                flexGrow: 1
+                width: props.blockWidth || 'max-content',
+                padding: theme.spacing(1, 2)
             },
             text: {
                 whiteSpace: 'pre-line',

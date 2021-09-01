@@ -49,6 +49,7 @@ const MyPosts: React.FC<myPostsPropsType> = (props) => {
               likeCount={post.likes}
               avatar={props.avatar}
               userName={props.userName}
+              blockWidth={maxWidth}
         />
     );
 
