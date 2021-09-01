@@ -33,7 +33,7 @@ export const Messages: React.FC = () => {
     }
 
     return (
-        <List style={{height: '74vh', overflowY: 'auto'}} onScroll={scrollHandler}>
+        <List style={{height: '65vh', overflowY: 'auto'}} onScroll={scrollHandler}>
             {messages.map((messageItem) =>
                 <Post key={'Message' + messageItem.id}
                       postId={messageItem.id}
