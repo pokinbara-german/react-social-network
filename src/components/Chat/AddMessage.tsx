@@ -1,11 +1,22 @@
-import React, {ChangeEvent, useState} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {sendMessage} from '../../reducers/chatReducer';
 import {appStateType} from '../../redux/reduxStore';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {FormikHelpers, FormikProvider, useFormik} from 'formik';
+import {createFieldF, formikField} from '../../Common/FormComponents/FieldsComponentsFormik';
+import {maxLengthCreator, minLengthCreator, required, validatorCreator} from '../../utils/validators';
+
+type formDataType = {
+    newMessage: string
+}
+
+type fieldNamesType = keyof formDataType;
+
+let minLength2 = minLengthCreator(2);
+let maxLength100 = maxLengthCreator(100);
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -15,11 +26,15 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(1),
             width: '40ch',
             '& > *': {
+                display: 'flex',
                 margin: theme.spacing(1),
             },
         },
         sendButton: {
             alignSelf: 'start'
+        },
+        stretched: {
+            flexGrow: 1,
         }
     }),
 );
@@ -32,36 +47,41 @@ export const AddMessage: React.FC = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const [message, setMessage] = useState('');
-
     const isConnected = useSelector((state: appStateType) => state.chat.isConnected);
 
-    function sendMessageHandler() {
-        if (!message) {
-            return;
-        }
-
-        dispatch(sendMessage(message));
-        setMessage('');
+    function onSubmit(values: formDataType, {setSubmitting, resetForm}: FormikHelpers<formDataType>) {
+        dispatch(sendMessage(values.newMessage));
+        setSubmitting(false);
+        resetForm();
     }
 
-    function messageChange(event: ChangeEvent<HTMLTextAreaElement>) {
-        setMessage(event.currentTarget.value);
-    }
+    const formik = useFormik({
+        initialValues: {newMessage: ''},
+        onSubmit,
+    });
 
     return (
-        <div className={classes.chatForm}>
-            <Tooltip title={'You can type multiline. Just hit enter.'} aria-label='Hint' placement="right" arrow>
-                <TextField multiline onChange={messageChange} value={message} placeholder='Type something'/>
-            </Tooltip>
+        <form onSubmit={formik.handleSubmit} className={classes.chatForm}>
+            <FormikProvider value={formik}>
+                <Tooltip title={'You can type multiline. Just hit enter.'} aria-label='Hint' placement="right" arrow>
+                    {createFieldF<fieldNamesType>(
+                        classes.stretched,
+                        'Type something',
+                        'newMessage',
+                        formikField,
+                        validatorCreator([required, minLength2, maxLength100]),
+                        {multiline: true}
+                    )}
+                </Tooltip>
+            </FormikProvider>
             <Button className={classes.sendButton}
                     variant='contained'
                     color='primary'
-                    disabled={!isConnected}
-                    onClick={sendMessageHandler}
+                    disabled={!isConnected || formik.isSubmitting || !formik.dirty || !formik.isValid}
+                    type='submit'
             >
                 Send
             </Button>
-        </div>
+        </form>
     );
 }
