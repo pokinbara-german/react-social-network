@@ -20,28 +20,29 @@ type fieldNamesType = keyof formDataType;
 let minLength2 = minLengthCreator(2);
 let maxLength50 = maxLengthCreator(50);
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        newPostForm: {
-            display: 'flex',
-            flexDirection: 'column',
-            '& > *': {
-                display: 'flex',
-                margin: theme.spacing(1),
-            },
-        },
-        stretched: {
-            flexGrow: 1,
-        }
-    }),
-);
-
 /**
  * Returns form for adding new post with one multiline input and one button.
  * @param {mapDispatchPropsType} props - callback for adding new post.
  * @constructor
  */
 export const AddPostForm: React.FC<propsType> = (props) => {
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            newPostForm: {
+                display: 'flex',
+                flexDirection: 'column',
+                maxWidth: props.blockWidth,
+                '& > *': {
+                    display: 'flex',
+                    margin: theme.spacing(1),
+                },
+            },
+            stretched: {
+                flexGrow: 1,
+            }
+        }),
+    );
+
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -58,7 +59,7 @@ export const AddPostForm: React.FC<propsType> = (props) => {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className={classes.newPostForm} style={{maxWidth: props.blockWidth}}>
+        <form onSubmit={formik.handleSubmit} className={classes.newPostForm}>
             <FormikProvider value={formik}>
                 {createFieldF<fieldNamesType>(
                     classes.stretched,
