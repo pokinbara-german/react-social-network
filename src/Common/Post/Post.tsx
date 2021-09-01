@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 import React from 'react';
-import userMale from "../../../../assets/images/user-male.png";
-import {stringOrNull} from '../../../../types';
+import userMale from "../../assets/images/user-male.png";
+import {stringOrNull} from '../../types';
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -13,14 +13,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import {LikesBlock} from './LikesBlock';
+import {LikesBlock} from '../../components/Profile/MyPosts/Post/LikesBlock';
 
 type postPropsType = {
     postId: string,
     message: string,
-    likeCount: number,
+    likeCount?: number,
     avatar: stringOrNull,
-    userName: stringOrNull
+    userName: stringOrNull,
+    withoutLikes?: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,17 +42,17 @@ const Post: React.FC<postPropsType> = (props) => {
     let avatarSmall = props.avatar || userMale;
 
     const actions = [
-        <>
-            <Typography>{props.message}</Typography>
-            <LikesBlock postId={props.postId} likeCount={props.likeCount} key={props.postId}/>
-        </>
+        <React.Fragment key={props.postId}>
+            <Typography component='span'>{props.message}</Typography>
+            {props.withoutLikes || <LikesBlock postId={props.postId} likeCount={props.likeCount || 0}/>}
+        </React.Fragment>
     ];
 
     return(
         <Card variant={'outlined'} className={classes.postWrapper}>
-            <ListItem alignItems="flex-start">
+            <ListItem alignItems='flex-start'>
                 <ListItemAvatar>
-                    <Avatar alt="ava" src={avatarSmall} />
+                    <Avatar alt='ava' src={avatarSmall} />
                 </ListItemAvatar>
                 <ListItemText className={classes.text} primary={props.userName} secondary={actions}>
                 </ListItemText>
