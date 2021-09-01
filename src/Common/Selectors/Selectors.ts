@@ -36,6 +36,10 @@ export function getLoginSelector (state: appStateType) {
     return state.auth.login;
 }
 
+export function getOwnerIdSelector (state: appStateType) {
+    return state.auth.id;
+}
+
 export function getChatMessages (state: appStateType) {
     return state.chat.messages;
 }
