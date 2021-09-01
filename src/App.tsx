@@ -79,6 +79,7 @@ const App: React.FC<propsType> = (props) => {
         return () => {
             window.removeEventListener('unhandledrejection', catchGenericError);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const classes = useStyles();

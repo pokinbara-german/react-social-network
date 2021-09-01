@@ -37,6 +37,7 @@ const UsersContainer: React.FC = () => {
         newFilter.friend = parsed.friend === undefined ? null : parsed.friend === 'true';
 
         onPageChanged(newFilter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
