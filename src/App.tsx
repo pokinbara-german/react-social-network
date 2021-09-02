@@ -45,10 +45,16 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         drawer: {
             width: drawerWidth,
+            [theme.breakpoints.down('md')]: {
+                width: theme.spacing(7) + 1,
+            },
             flexShrink: 0,
         },
         drawerPaper: {
             width: drawerWidth,
+            [theme.breakpoints.down('md')]: {
+                width: theme.spacing(7) + 1,
+            },
         },
         drawerContainer: {
             overflow: 'auto',
