@@ -13,7 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import {LikesBlock} from '../../components/Profile/MyPosts/LikesBlock/LikesBlock';
+import {LikesBlock} from './LikesBlock/LikesBlock';
 
 type postPropsType = {
     postId: string,
