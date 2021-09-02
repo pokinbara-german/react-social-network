@@ -40,6 +40,7 @@ export const Messages: React.FC = () => {
                       message={messageItem.message}
                       avatar={messageItem.photo}
                       userName={messageItem.userName}
+                      userId={messageItem.userId}
                       withoutLikes={true}
                       rightSided={messageItem.userId === ownerId}
                 />)}

@@ -14,6 +14,8 @@ import Card from '@material-ui/core/Card';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import {LikesBlock} from './LikesBlock/LikesBlock';
+import {NavLink} from 'react-router-dom';
+import {getRouteNameById, routes} from '../Routes';
 
 type postPropsType = {
     postId: string,
@@ -21,13 +23,26 @@ type postPropsType = {
     likeCount?: number,
     avatar: stringOrNull,
     userName: stringOrNull,
+    userId?: number,
     withoutLikes?: boolean,
     blockWidth?: string,
     rightSided?: boolean
 }
 
-
-
+/**
+ * Unified post block with avatar, title, text and optional likes-block.
+ * @param {postPropsType} props - props object
+ * @param {string} props.postId - post ID as string
+ * @param {string} props.message - post text
+ * @param {number=} props.likeCount - count of likes of post
+ * @param {string|null} props.avatar - link to avatar image
+ * @param {string|null} props.userName - text for title
+ * @param {number=} props.userId - if exist, will append to avatar navlink
+ * @param {boolean=} props.withoutLikes - if true, block will return without likes-block
+ * @param {string=} props.blockWidth - sets max-width of block (CSS value, i.e. "5px")
+ * @param {boolean=} props.rightSided - if true, block will justify to end
+ * @constructor
+ */
 const Post: React.FC<postPropsType> = (props) => {
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
@@ -62,7 +77,12 @@ const Post: React.FC<postPropsType> = (props) => {
         <ListItem alignItems='flex-start' className={classes.postsItem}>
             <Card variant={'outlined'} className={classes.postWrapper}>
                 <ListItemAvatar>
-                    <Avatar alt='ava' src={avatarSmall} />
+                    {!!props.userId
+                        ? <NavLink to={'/' + getRouteNameById(routes.profile.id) + '/' + props.userId}>
+                            <Avatar alt='ava' src={avatarSmall} />
+                          </NavLink>
+                        : <Avatar alt='ava' src={avatarSmall} />
+                    }
                 </ListItemAvatar>
                 <ListItemText className={classes.text} primary={props.userName} secondary={actions}>
                 </ListItemText>

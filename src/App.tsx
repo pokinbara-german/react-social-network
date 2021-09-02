@@ -128,7 +128,7 @@ const Content = () => {
             <Suspense fallback={<div>Загрузка...</div>}>
                 <Switch>
                     <Route exact path="/" component={StartPage}/>
-                    <Route path="/profile/:userId?" component={ProfileComponent}/>
+                    <Route path={'/' + getRouteNameById(routes.profile.id) + '/:userId?'} component={ProfileComponent}/>
                     <Route path={'/' + getRouteNameById(routes.messages.id)} component={MessagesComponent}/>
                     <Route path={'/' + getRouteNameById(routes.news.id)} component={News}/>
                     <Route path={'/' + getRouteNameById(routes.music.id)} component={Music}/>
