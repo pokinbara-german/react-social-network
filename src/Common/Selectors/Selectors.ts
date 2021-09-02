@@ -43,3 +43,7 @@ export function getOwnerIdSelector (state: appStateType) {
 export function getChatMessages (state: appStateType) {
     return state.chat.messages;
 }
+
+export function getIsChatConnectedSelector (state: appStateType) {
+    return state.chat.isConnected;
+}

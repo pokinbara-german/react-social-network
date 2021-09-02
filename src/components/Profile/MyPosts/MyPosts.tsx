@@ -9,7 +9,8 @@ import Post from '../../../Common/Post/Post';
 import {postsDataType, stringOrNull} from '../../../types';
 import List from '@material-ui/core/List';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {AddPostForm} from './AddPostForm/AddPostForm';
+import {AddMessageForm} from '../../../Common/AddMessageForm/AddMessageForm';
+import {profileActions} from '../../../reducers/profileReducer';
 
 export type myPostsPropsType = {
     postsData: Array<postsDataType>,
@@ -56,7 +57,12 @@ const MyPosts: React.FC<myPostsPropsType> = (props) => {
     return (
         <div className={styles.postBlock}>
             <h3>Posts</h3>
-            <AddPostForm blockWidth={maxWidth}/>
+            <AddMessageForm blockWidth={maxWidth}
+                            sendMessage={profileActions.sendPost}
+                            buttonText='Add Post'
+                            minTextLength={2}
+                            maxTextLength={50}
+            />
             <List className={classes.postsList}>
                 {posts}
             </List>
