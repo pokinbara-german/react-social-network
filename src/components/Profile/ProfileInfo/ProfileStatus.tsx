@@ -33,7 +33,10 @@ const ProfileStatus: React.FC<propsType> = (props) => {
             },
             statusText: {
                 overflowWrap: 'anywhere',
-                width: props.blockWidth || 'auto'
+                maxWidth: props.blockWidth || 'auto',
+                flexBasis: '35.5ch',
+                flexGrow: 1,
+                whiteSpace: 'pre-line'
             }
         }),
     );
@@ -73,17 +76,20 @@ const ProfileStatus: React.FC<propsType> = (props) => {
                        onChange={onStatusChange}
                        className={classes.statusInput}
                        value={status}
+                       multiline={true}
             />
           </Tooltip>
-        : <div className={styles.statusDiv} onClick={toggleEditing}>
-            {props.isOwner
-                ? <Tooltip title="Click to edit" aria-label="edit status" placement="right">
-                    <Typography className={classes.statusText}>{statusText}</Typography>
-                  </Tooltip>
-                : <Typography className={classes.statusText}>{statusText}</Typography>
-            }
+        : <React.Fragment>
+            <div className={styles.statusDiv} onClick={toggleEditing}>
+                {props.isOwner
+                    ? <Tooltip title="Click to edit" aria-label="edit status" placement="right">
+                        <Typography color='textSecondary' className={classes.statusText}>{statusText}</Typography>
+                    </Tooltip>
+                    : <Typography color='textSecondary' className={classes.statusText}>{statusText}</Typography>
+                }
+            </div>
             <Divider/>
-        </div>;
+        </React.Fragment>;
 }
 
 export default ProfileStatus;
