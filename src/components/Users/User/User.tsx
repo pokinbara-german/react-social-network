@@ -82,7 +82,7 @@ const UserInfo: React.FC<userInfoType> = (props) => {
         <Container>
                 <span>
                     <Typography variant='h6' className={styles.overflowWrap}>{props.userName}</Typography>
-                    <div>{props.userStatus || 'No status'}</div>
+                    <Typography className={styles.overflowWrap}>{props.userStatus || 'No status'}</Typography>
                 </span>
         </Container>
     );
