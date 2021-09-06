@@ -11,6 +11,7 @@ import List from '@material-ui/core/List';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {AddMessageForm} from '../../../Common/AddMessageForm/AddMessageForm';
 import {profileActions} from '../../../reducers/profileReducer';
+import Typography from '@material-ui/core/Typography';
 
 export type myPostsPropsType = {
     postsData: Array<postsDataType>,
@@ -31,6 +32,9 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
             maxWidth: maxWidth,
             backgroundColor: theme.palette.background.paper,
+        },
+        postsTitle: {
+            margin: theme.spacing(2, 0)
         }
     })
 );
@@ -56,7 +60,7 @@ const MyPosts: React.FC<myPostsPropsType> = (props) => {
 
     return (
         <div className={styles.postBlock}>
-            <h3>Posts</h3>
+            <Typography variant='h5' className={classes.postsTitle}>Posts</Typography>
             <AddMessageForm blockWidth={maxWidth}
                             sendMessage={profileActions.sendPost}
                             buttonText='Add Post'
