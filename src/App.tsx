@@ -21,7 +21,7 @@ const Settings = React.lazy(() => import('./components/Settings/Settings'));
 const Music = React.lazy(() => import('./components/Music/Music'));
 const News = React.lazy(() => import('./components/News/News'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
-const MessagesContainer = React.lazy(() => import('./components/Messages/MessagesContainer'));
+const DialogsContainer = React.lazy(() => import('./components/Messages/DialogsContainer'));
 const ChatPage = React.lazy(() => import('./Pages/ChatPage'));
 
 type mapStatePropsType = {
@@ -126,7 +126,7 @@ const App: React.FC<propsType> = (props) => {
 const Content = () => {
     const classes = useStyles();
 
-    let MessagesComponent = () =>  <MessagesContainer/>;
+    let DialogsComponent = () =>  <DialogsContainer/>;
     let ProfileComponent = () => <ProfileContainer/>;
 
     return(
@@ -136,13 +136,13 @@ const Content = () => {
                 <Switch>
                     <Route exact path="/" component={StartPage}/>
                     <Route path={'/' + getRouteNameById(routes.profile.id) + '/:userId?'} component={ProfileComponent}/>
-                    <Route path={'/' + getRouteNameById(routes.messages.id)} component={MessagesComponent}/>
+                    <Route path={'/' + getRouteNameById(routes.dialogs.id)} component={DialogsComponent}/>
                     <Route path={'/' + getRouteNameById(routes.news.id)} component={News}/>
                     <Route path={'/' + getRouteNameById(routes.music.id)} component={Music}/>
                     <Route path={'/' + getRouteNameById(routes.users.id)} component={UsersContainer}/>
                     <Route path={'/' + getRouteNameById(routes.settings.id)} component={Settings}/>
-                    <Route path="/login" component={Login}/>
                     <Route path={'/' + getRouteNameById(routes.chat.id)} component={ChatPage}/>
+                    <Route path="/login" component={Login}/>
                     <Route path="*" component={NotFound}/>
                 </Switch>
             </Suspense>
