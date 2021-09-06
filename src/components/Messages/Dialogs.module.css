@@ -9,15 +9,15 @@ and open the template in the editor.
 */
 
 .dialogs {
-    display: grid;
-    grid-template-columns: 2fr 10fr;
+    display: flex;
+    margin: -24px;
 }
 
-.dialogs .dialogs_items {
-    padding: 10px;
+.dialogs_items > li > div {
+    flex-grow: 1;
 }
 
 .messages {
-    padding: 10px;
-    background-color: aliceblue;
+    padding: 8px;
+    flex-basis: 100%;
 }

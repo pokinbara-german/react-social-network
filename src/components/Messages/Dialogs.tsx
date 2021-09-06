@@ -5,11 +5,12 @@
  */
 import React from 'react';
 import styles from './Dialogs.module.css';
-import DialogsItem from "./DialogsItem/DialogsItem";
-import Message from "./Message/Message";
 import {initialStateType} from '../../reducers/dialogsReducer';
 import {dialogsActions} from '../../reducers/dialogsReducer';
 import {AddMessageForm} from '../../Common/AddMessageForm/AddMessageForm';
+import List from '@material-ui/core/List';
+import Post from '../../Common/Post/Post';
+import Divider from '@material-ui/core/Divider';
 
 export type dialogsPropsType = {
     dialogsPage: initialStateType
@@ -19,19 +20,39 @@ type propsType = dialogsPropsType;
 
 const Dialogs: React.FC<propsType> = (props) => {
     let users = props.dialogsPage.userList.map( (user, userIndex) => {
-        return <DialogsItem key={'User'+userIndex} id={user.id} name={user.name}/>;
+        return <Post key={'User' + userIndex}
+                     postId={String(userIndex)}
+                     message={''}
+                     avatar={null}
+                     userName={user.name}
+                     userId={user.id}
+                     withoutLikes={true}
+                     primaryLink={true}
+        />
     });
+
     let messages = props.dialogsPage.messageList.map( (message, messageIndex) => {
-        return <Message key={'Message' + messageIndex} message={message.text} userId={message.userId}/>;
+        return <Post key={'Message' + messageIndex}
+                     postId={String(messageIndex)}
+                     message={message.text}
+                     avatar={null}
+                     userName={''}
+                     withoutLikes={true}
+                     rightSided={message.userId === 1}
+        />
     });
 
     return (
         <div className={styles.dialogs}>
-            <div className={styles.dialogs_items}>
+            <List className={styles.dialogs_items} style={{height: '90vh', overflowY: 'auto', width: '20%'}}>
                 {users}
-            </div>
+            </List>
+            <Divider orientation='vertical' flexItem={true}/>
             <div className={styles.messages}>
-                {messages}
+                <List style={{height: '75vh', overflowY: 'auto', width: '100%'}}>
+                    {messages}
+                </List>
+                <Divider/>
                 <AddMessageForm blockWidth={'40ch'}
                                 sendMessage={dialogsActions.sendMessage}
                                 buttonText='Send'
