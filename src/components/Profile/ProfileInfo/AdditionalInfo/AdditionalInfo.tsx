@@ -28,13 +28,14 @@ const useStyles = makeStyles((theme: Theme) =>
         additionalInfoItem: {
             marginTop: theme.spacing(1)
         },
-        jobDesc: {
+        wrapped: {
             display: 'flex',
             flexWrap: 'wrap'
         },
         contacts: {
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            width: '100%'
         }
     }),
 );
@@ -70,15 +71,19 @@ const AdditionalInfo: React.FC<propsType> = (props) => {
             <div className={classes.additionalInfoItem}>
                 <Typography>About Me: {props.aboutMe || 'Empty'}</Typography>
                 <Typography>Looking for a job: {props.lookingForAJob ? 'Yes' : 'No'}</Typography>
-                {props.lookingForAJob && <Typography className={classes.jobDesc}>
+                {props.lookingForAJob && <Typography className={classes.wrapped}>
                     Job description: {props.lookingForAJobDescription}
                 </Typography>}
             </div>
 
             {isNeedContacts
                 ? <div className={classes.contacts}>
-                    <Typography variant='h6'>Contacts:</Typography>
-                    {ContactsList}
+                    <div>
+                        <Typography>Contacts:</Typography>
+                    </div>
+                    <div  className={classes.wrapped}>
+                        {ContactsList}
+                    </div>
                 </div>
                 : <div className={classes.contacts}>
                     <Typography>no contacts</Typography>
