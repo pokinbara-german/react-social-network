@@ -26,7 +26,8 @@ type postPropsType = {
     userId?: number,
     withoutLikes?: boolean,
     blockWidth?: string,
-    rightSided?: boolean
+    rightSided?: boolean,
+    primaryLink?: boolean,
 }
 
 /**
@@ -40,7 +41,7 @@ type postPropsType = {
  * @param {number=} props.userId - if exist, will append to avatar navlink
  * @param {boolean=} props.withoutLikes - if true, block will return without likes-block
  * @param {string=} props.blockWidth - sets max-width of block (CSS value, i.e. "5px")
- * @param {boolean=} props.rightSided - if true, block will justify to end
+ * @param {boolean=} props.primaryLink - if true, title text will anchor
  * @constructor
  */
 const Post: React.FC<postPropsType> = (props) => {
@@ -73,19 +74,25 @@ const Post: React.FC<postPropsType> = (props) => {
         </React.Fragment>
     ];
 
+    const primaryLinked = <NavLink to={`/${getRouteNameById(routes.dialogs.id)}/${props.userId}`}>
+                              {props.userName}
+                          </NavLink>;
+
     return(
         <ListItem alignItems='flex-start' className={classes.postsItem}>
             <Card variant={'outlined'} className={classes.postWrapper}>
                 <ListItemAvatar>
                     {!!props.userId
-                        ? <NavLink to={'/' + getRouteNameById(routes.profile.id) + '/' + props.userId}>
+                        ? <NavLink to={`/${getRouteNameById(routes.profile.id)}/${props.userId}`}>
                             <Avatar alt='ava' src={avatarSmall} />
                           </NavLink>
                         : <Avatar alt='ava' src={avatarSmall} />
                     }
                 </ListItemAvatar>
-                <ListItemText className={classes.text} primary={props.userName} secondary={actions}>
-                </ListItemText>
+                <ListItemText className={classes.text}
+                              primary={!!props.primaryLink ? primaryLinked : props.userName}
+                              secondary={actions}
+                />
             </Card>
         </ListItem>
     );
