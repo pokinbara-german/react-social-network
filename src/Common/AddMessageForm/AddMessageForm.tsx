@@ -8,7 +8,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {useDispatch} from 'react-redux';
 
 type propsType = {
-    blockWidth: string,
+    blockWidth?: string,
     buttonText: string,
     minTextLength: number,
     maxTextLength: number,
@@ -25,7 +25,7 @@ type fieldNamesType = keyof formDataType;
 /**
  * Returns form for adding new message with one multiline input and one button.
  * @param {propsType} props - props object.
- * @param {string} props.blockWidth - width of form
+ * @param {string=} props.blockWidth - width of form (optional param, 'inherit' by default)
  * @param {string} props.buttonText - text on button
  * @param {number} props.minTextLength - min length of input value
  * @param {number} props.maxTextLength - max length of input value
@@ -42,7 +42,7 @@ export const AddMessageForm: React.FC<propsType> = (props) => {
             newPostForm: {
                 display: 'flex',
                 flexDirection: 'column',
-                maxWidth: props.blockWidth,
+                maxWidth: props.blockWidth || 'inherit',
                 '& > *': {
                     display: 'flex',
                     margin: theme.spacing(1),
