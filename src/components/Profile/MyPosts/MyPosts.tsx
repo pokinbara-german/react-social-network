@@ -61,7 +61,7 @@ const MyPosts: React.FC<myPostsPropsType> = (props) => {
                             sendMessage={profileActions.sendPost}
                             buttonText='Add Post'
                             minTextLength={2}
-                            maxTextLength={50}
+                            maxTextLength={100}
             />
             <List className={classes.postsList}>
                 {posts}
