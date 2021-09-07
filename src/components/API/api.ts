@@ -4,7 +4,7 @@ import {
     captchaResultCodeType, Override,
     photosType,
     profileType,
-    resultCodesType, usersType
+    resultCodesType, userListType, usersType
 } from "../../types";
 import {filterType} from '../../reducers/usersReducer';
 
@@ -49,6 +49,8 @@ type getUsersResponseType = {
     totalCount: number,
     error: string | null
 }
+
+type dialogsListResponseType = Array<userListType>
 
 export const Api = {
     Users: {
@@ -145,7 +147,7 @@ export const Api = {
                     if (response.data.resultCode === resultCodesType.Success) {
                         return;
                     } else {
-                        return response.data.messages.length ? response.data.messages[0] : 'Unknown error';
+                        return response.data.messages.length ? response.data.messages : ['Unknown error. (unknown)'];
                     }
                 });
         }
@@ -159,6 +161,44 @@ export const Api = {
                     }
 
                     return response.data.url;
+                })
+        }
+    },
+    Dialogs: {
+        getDialogsList: () => {
+            return defaultApi.get<dialogsListResponseType>('dialogs')
+                .then(response => {
+                    if (!response.data) {
+                        return;
+                    }
+
+                    return response.data;
+                })
+        },
+        startRefreshDialog: (userId: number) => {
+            return defaultApi.put<basicResponseType>('dialogs/' + userId)
+                .then(response => {
+                    return response.data.resultCode === resultCodesType.Success
+                })
+        },
+        getMessagesList: (userId: number) => {
+            return defaultApi.get('dialogs/' + userId + '/messages')
+                .then(response => {
+                    if (!response.data) {
+                        return;
+                    }
+
+                    return response.data;
+                })
+        },
+        sendMessage: (userId: number, message: string) => {
+            return defaultApi.post('dialogs/' + userId + '/messages', {body: message})
+                .then(response => {
+                    if (!response.data) {
+                        return;
+                    }
+
+                    return response.data;
                 })
         }
     }
