@@ -73,7 +73,7 @@ const ProfileInfo: React.FC<propsType> = (props) => {
     return (
         <div className={classes.wallpaper}>
             <div className={styles.profileDescription}>
-                <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner}/>
+                <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner} userId={props.profile.userId}/>
                 <div className={classes.profileDescriptionWrapper}>
                     <Typography variant='h4'>{props.profile.fullName}</Typography>
                     <ProfileStatus status={props.status}

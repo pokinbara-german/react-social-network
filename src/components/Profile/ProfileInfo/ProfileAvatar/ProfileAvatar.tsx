@@ -7,10 +7,14 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {useHistory} from 'react-router-dom';
+import {getRouteNameById, routes} from '../../../../Common/Routes';
+import {startRefreshDialog} from '../../../../reducers/dialogsReducer';
 
 type profileAvatarPropsType = {
     largePhoto: stringOrNull,
-    isOwner: boolean
+    isOwner: boolean,
+    userId: number
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,18 +43,31 @@ const useStyles = makeStyles((theme: Theme) =>
 /**
  * Returns avatar-block with avatar-image and button for upload new.
  * If user is not owner of this profile returns avatar without button.
- * @param {profileAvatarPropsType} props - url to image and isOwner.
+ * @param {profileAvatarPropsType} props - url to image, user ID and isOwner.
  * @constructor
  */
 export const ProfileAvatar: React.FC<profileAvatarPropsType> = (props) => {
     const classes = useStyles();
+    const history = useHistory();
+    const dispatch = useDispatch();
 
-    let profileAvatarLarge = props.largePhoto || userMale;
+    const profileAvatarLarge = props.largePhoto || userMale;
+
+    /**
+     * Add new dialog or refresh existing.
+     * Redirects to new dialog's route.
+     */
+    const addDialog = () => {
+        dispatch(startRefreshDialog(props.userId));
+        history.push(`/${getRouteNameById(routes.dialogs.id)}/${props.userId}`);
+    }
+
+    const AddDialogButton = <Button variant='contained' color='primary' onClick={addDialog}>Start dialog</Button>;
 
     return (
         <div className={classes.avatarWrapper}>
             <Avatar className={classes.large} src={profileAvatarLarge}/>
-            {props.isOwner && <AvatarUploadButton/>}
+            {props.isOwner ? <AvatarUploadButton/> : AddDialogButton}
         </div>
     );
 }
