@@ -23,8 +23,8 @@ const Dialogs: React.FC<propsType> = (props) => {
         return <Post key={'User' + userIndex}
                      postId={String(userIndex)}
                      message={''}
-                     avatar={null}
-                     userName={user.name}
+                     avatar={user.photos.small}
+                     userName={user.userName}
                      userId={user.id}
                      withoutLikes={true}
                      primaryLink={true}

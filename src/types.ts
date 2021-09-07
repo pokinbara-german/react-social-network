@@ -69,3 +69,11 @@ export type postsDataType = {
     text: string,
     likes: number
 }
+
+export type userListType = {
+    id: number,
+    userName: string,
+    hasNewMessages: boolean,
+    newMessagesCount: number,
+    photos: photosType
+}
