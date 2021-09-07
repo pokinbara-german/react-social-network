@@ -3,25 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './Dialogs.module.css';
-import {initialStateType} from '../../reducers/dialogsReducer';
+import {getDialogsList, initialStateType} from '../../reducers/dialogsReducer';
 import {dialogsActions} from '../../reducers/dialogsReducer';
 import {AddMessageForm} from '../../Common/AddMessageForm/AddMessageForm';
 import List from '@material-ui/core/List';
 import Post from '../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
+import {useDispatch} from 'react-redux';
 
 export type dialogsPropsType = {
     dialogsPage: initialStateType
 };
 
-type propsType = dialogsPropsType;
+/**
+ * Returns page with dialogs.
+ * @param {dialogsPropsType} props - props object (whole dialogs stage)
+ * @constructor
+ */
+const Dialogs: React.FC<dialogsPropsType> = (props) => {
+    const dispatch = useDispatch();
 
-const Dialogs: React.FC<propsType> = (props) => {
-    let users = props.dialogsPage.userList.map( (user, userIndex) => {
-        return <Post key={'User' + userIndex}
-                     postId={String(userIndex)}
+    let users = props.dialogsPage.userList.map( (user) => {
+        return <Post key={'User' + user.id}
+                     postId={String(user.id)}
                      message={''}
                      avatar={user.photos.small}
                      userName={user.userName}
@@ -41,6 +47,11 @@ const Dialogs: React.FC<propsType> = (props) => {
                      rightSided={message.userId === 1}
         />
     });
+
+    useEffect(() => {
+        dispatch(getDialogsList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className={styles.dialogs}>
