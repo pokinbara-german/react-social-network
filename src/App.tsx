@@ -136,7 +136,7 @@ const Content = () => {
                 <Switch>
                     <Route exact path="/" component={StartPage}/>
                     <Route path={'/' + getRouteNameById(routes.profile.id) + '/:userId?'} component={ProfileComponent}/>
-                    <Route path={'/' + getRouteNameById(routes.dialogs.id)} component={DialogsComponent}/>
+                    <Route path={'/' + getRouteNameById(routes.dialogs.id) + '/:userId?'} component={DialogsComponent}/>
                     <Route path={'/' + getRouteNameById(routes.news.id)} component={News}/>
                     <Route path={'/' + getRouteNameById(routes.music.id)} component={Music}/>
                     <Route path={'/' + getRouteNameById(routes.users.id)} component={UsersContainer}/>

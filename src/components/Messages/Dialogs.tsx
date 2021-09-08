@@ -12,18 +12,23 @@ import List from '@material-ui/core/List';
 import Post from '../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
 import {useDispatch} from 'react-redux';
+import {RouteComponentProps} from 'react-router-dom';
+import {MatchParams} from '../../types';
 
 export type dialogsPropsType = {
     dialogsPage: initialStateType
 };
+
+type matchType = RouteComponentProps<MatchParams>;
 
 /**
  * Returns page with dialogs.
  * @param {dialogsPropsType} props - props object (whole dialogs stage)
  * @constructor
  */
-const Dialogs: React.FC<dialogsPropsType> = (props) => {
+const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     const dispatch = useDispatch();
+    const currentDialogId = props.match.params.userId;
 
     let users = props.dialogsPage.userList.map( (user) => {
         return <Post key={'User' + user.id}

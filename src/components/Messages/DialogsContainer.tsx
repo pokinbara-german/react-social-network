@@ -6,8 +6,8 @@
 import {connect} from 'react-redux';
 import Dialogs, {dialogsPropsType} from './Dialogs';
 import withAuthRedirect from '../../Hocs/withAuthRedirect';
-import {compose} from 'redux';
 import {appStateType} from '../../redux/reduxStore';
+import {withRouter} from 'react-router-dom';
 
 let mapStateToProps = (state: appStateType) => {
     return (
@@ -15,9 +15,7 @@ let mapStateToProps = (state: appStateType) => {
     );
 };
 
-let ComposedComponent = compose(withAuthRedirect)(Dialogs);
-
 export default connect<dialogsPropsType, {}, {}, appStateType>(
     mapStateToProps,
     {}
-)(ComposedComponent);
+)(withRouter(withAuthRedirect(Dialogs)));
