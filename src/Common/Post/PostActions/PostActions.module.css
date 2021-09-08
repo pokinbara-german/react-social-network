@@ -1,0 +1,8 @@
+.textWithIconWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.textWithIconWrapper .icon {
+    align-self: end;
+}
