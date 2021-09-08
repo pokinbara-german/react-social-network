@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 
 type userPropsType = {
@@ -47,8 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
         userCard: {
             display: 'flex',
             padding: theme.spacing(2),
-            margin: theme.spacing(2, 6),
-            flexBasis: '25%'
+            margin: theme.spacing(2, 2),
+            flexBasis: 390,
         }
     }),
 );
@@ -80,12 +81,8 @@ const UserInfo: React.FC<userInfoType> = (props) => {
     return (
         <Container>
                 <span>
-                    <div>{props.userName}</div>
-                    <div>{props.userStatus || 'No status'}</div>
-                </span>
-                 <span>
-                    <div>{'user.location.country'}</div>
-                    <div>{'user.location.city'}</div>
+                    <Typography variant='h6' className={styles.overflowWrap}>{props.userName}</Typography>
+                    <Typography className={styles.overflowWrap}>{props.userStatus || 'No status'}</Typography>
                 </span>
         </Container>
     );

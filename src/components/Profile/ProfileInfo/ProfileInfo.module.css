@@ -11,10 +11,9 @@ and open the template in the editor.
 .profileDescription {
     padding: 10px;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .statusDiv {
-    height: 34px;
     display: flex;
-    flex-direction: column;
 }

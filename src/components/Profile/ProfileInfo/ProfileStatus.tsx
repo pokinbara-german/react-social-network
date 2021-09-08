@@ -11,23 +11,36 @@ type propsType = {
     status: string,
     isOwner: boolean,
     statusFetching: boolean,
+    blockWidth?: string,
     updateStatus: (status: string) => void
 };
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        statusInput: {
-            margin: theme.spacing(1),
-        }
-    }),
-);
-
 /**
  * Returns status block or input for editing status.
- * @param {propsType} props - props
+ * @param {propsType} props - props object
+ * @param {string} props.status - status text
+ * @param {boolean} props.isOwner - is user owner of this page
+ * @param {boolean} props.statusFetching - fetching in progress flag
+ * @param {string=} props.blockWidth - with of block (optional)
+ * @param {function(status: string):void} props.updateStatus - callback for set status
  * @constructor
  */
 const ProfileStatus: React.FC<propsType> = (props) => {
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            statusInput: {
+                margin: theme.spacing(1),
+            },
+            statusText: {
+                overflowWrap: 'anywhere',
+                maxWidth: props.blockWidth || 'auto',
+                flexBasis: '35.5ch',
+                flexGrow: 1,
+                whiteSpace: 'pre-line'
+            }
+        }),
+    );
+
     const classes = useStyles();
 
     let statusText = props.status || 'No status';
@@ -63,17 +76,20 @@ const ProfileStatus: React.FC<propsType> = (props) => {
                        onChange={onStatusChange}
                        className={classes.statusInput}
                        value={status}
+                       multiline={true}
             />
           </Tooltip>
-        : <div className={styles.statusDiv} onClick={toggleEditing}>
-            {props.isOwner
-                ? <Tooltip title="Click to edit" aria-label="edit status" placement="right">
-                    <Typography>{statusText}</Typography>
-                  </Tooltip>
-                : <Typography>{statusText}</Typography>
-            }
+        : <React.Fragment>
+            <div className={styles.statusDiv} onClick={toggleEditing}>
+                {props.isOwner
+                    ? <Tooltip title="Click to edit" aria-label="edit status" placement="right">
+                        <Typography color='textSecondary' className={classes.statusText}>{statusText}</Typography>
+                    </Tooltip>
+                    : <Typography color='textSecondary' className={classes.statusText}>{statusText}</Typography>
+                }
+            </div>
             <Divider/>
-        </div>;
+        </React.Fragment>;
 }
 
 export default ProfileStatus;

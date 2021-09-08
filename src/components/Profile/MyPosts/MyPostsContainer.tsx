@@ -3,23 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {profileActions} from "../../../reducers/profileReducer";
 import {connect} from "react-redux";
-import MyPosts, {mapDispatchPropsType, mapStatePropsType} from "./MyPosts";
+import MyPosts, {myPostsPropsType} from "./MyPosts";
 import {appStateType} from '../../../redux/reduxStore';
 
 let mapStateToProps = (state: appStateType) => {
     return (
         {
             postsData: state.profilePage.postsData,
-            avatar: state.profilePage.profile ? state.profilePage.profile.photos.small : ''
+            avatar: state.profilePage.profile ? state.profilePage.profile.photos.small : '',
+            userName: state.auth.login
         }
     );
 };
 
-const MyPostsContainer = connect<mapStatePropsType, mapDispatchPropsType, {}, appStateType>(
+const MyPostsContainer = connect<myPostsPropsType, {}, {}, appStateType>(
     mapStateToProps,
-    {sendPost: profileActions.sendPost}
+    {}
 )(MyPosts);
 
 export default MyPostsContainer;

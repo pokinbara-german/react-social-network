@@ -8,7 +8,7 @@ import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import {OverridableComponent} from '@material-ui/core/OverridableComponent';
 import {SvgIconTypeMap} from '@material-ui/core';
 
-export type routesVariants = 'profile' | 'messages' | 'news' | 'music' | 'chat' | 'users' | 'settings';
+export type routesVariants = 'profile' | 'dialogs' | 'news' | 'music' | 'chat' | 'users' | 'settings';
 
 export type routesType = {
     [key in routesVariants]: {
@@ -23,7 +23,7 @@ export type routesType = {
  */
 export const routes: routesType = {
     'profile': {id: 1, title: 'Profile', icon: PersonOutlinedIcon},
-    'messages': {id: 2, title: 'Messages', icon: EmailOutlinedIcon},
+    'dialogs': {id: 2, title: 'Dialogs', icon: EmailOutlinedIcon},
     'news': {id: 3, title: 'News', icon: FeaturedPlayListOutlinedIcon},
     'music': {id: 4, title: 'Music', icon: LibraryMusicOutlinedIcon},
     'chat': {id: 5, title: 'Chat', icon: MessageOutlinedIcon},

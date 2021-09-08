@@ -32,13 +32,12 @@ const useStyles = makeStyles((theme: Theme) =>
         wallpaper: {
             backgroundImage: `${wallpaperBlend}, url(${ProfileBackground})`,
             backgroundSize: '40%',
-            margin: '-23px'
+            margin: theme.spacing(-3)
         },
         profileDescriptionWrapper: {
             display: 'flex',
             flexDirection: 'column',
             margin: theme.spacing(0, 4),
-            width: blockWidth
         }
     }),
 );
@@ -74,13 +73,14 @@ const ProfileInfo: React.FC<propsType> = (props) => {
     return (
         <div className={classes.wallpaper}>
             <div className={styles.profileDescription}>
-                <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner}/>
+                <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner} userId={props.profile.userId}/>
                 <div className={classes.profileDescriptionWrapper}>
                     <Typography variant='h4'>{props.profile.fullName}</Typography>
                     <ProfileStatus status={props.status}
                                    updateStatus={props.updateStatus}
                                    statusFetching={props.statusFetching}
                                    isOwner={props.isOwner}
+                                   blockWidth={blockWidth}
                     />
                     {isEditMode
                             ? <AdditionalInfoForm onChancel={() => setEditMode(false)}

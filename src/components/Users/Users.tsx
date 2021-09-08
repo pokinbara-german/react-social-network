@@ -22,6 +22,7 @@ const useStyles = makeStyles(() =>
         usersWrapper: {
             display: 'flex',
             flexWrap: 'wrap',
+            justifyContent: 'center'
         }
     }),
 );

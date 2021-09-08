@@ -15,12 +15,13 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import {getRouteNameById, routes} from './Common/Routes';
+import {GlobalAlert} from './Common/GlobalAlert/GlobalAlert';
 
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
 const Music = React.lazy(() => import('./components/Music/Music'));
 const News = React.lazy(() => import('./components/News/News'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
-const MessagesContainer = React.lazy(() => import('./components/Messages/MessagesContainer'));
+const DialogsContainer = React.lazy(() => import('./components/Messages/DialogsContainer'));
 const ChatPage = React.lazy(() => import('./Pages/ChatPage'));
 
 type mapStatePropsType = {
@@ -44,16 +45,23 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         drawer: {
             width: drawerWidth,
+            [theme.breakpoints.down('md')]: {
+                width: theme.spacing(7) + 1,
+            },
             flexShrink: 0,
         },
         drawerPaper: {
             width: drawerWidth,
+            [theme.breakpoints.down('md')]: {
+                width: theme.spacing(7) + 1,
+            },
         },
         drawerContainer: {
             overflow: 'auto',
         },
         content: {
             flexGrow: 1,
+            width: 330,
             padding: theme.spacing(3),
         },
     }),
@@ -65,10 +73,17 @@ const useStyles = makeStyles((theme: Theme) =>
  * @constructor
  */
 const App: React.FC<propsType> = (props) => {
+    const [isNotificationOpen, setNotificationOpen] = React.useState(false);
+    const [notificationText, setNotificationText] = React.useState('');
+
+    /**
+     * Catch error reason and set alert-data.
+     * @param reason
+     */
     const catchGenericError = (reason: PromiseRejectionEvent) => {
         let response = reason.reason.response;
-        //TODO: переписать на нормальный вывод ошибки
-        alert('ERROR: сервер вернул ответ ' + response.status + ' ' + response.statusText);
+        setNotificationText('ERROR: server returned ' + response.status + ' ' + response.statusText);
+        setNotificationOpen(true);
     };
 
     useEffect(() => {
@@ -79,6 +94,7 @@ const App: React.FC<propsType> = (props) => {
         return () => {
             window.removeEventListener('unhandledrejection', catchGenericError);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const classes = useStyles();
@@ -89,8 +105,12 @@ const App: React.FC<propsType> = (props) => {
 
     return (
         <div className={classes.root}>
+            <GlobalAlert isOpen={isNotificationOpen}
+                         text={notificationText}
+                         setNotificationOpen={setNotificationOpen}
+            />
             <AppHeader/>
-            <Drawer className={classes.drawer} variant="permanent" classes={{paper: classes.drawerPaper}}>
+            <Drawer className={classes.drawer} variant='permanent' classes={{paper: classes.drawerPaper}}>
                 <Toolbar />
                 <Navbar/>
             </Drawer>
@@ -106,7 +126,7 @@ const App: React.FC<propsType> = (props) => {
 const Content = () => {
     const classes = useStyles();
 
-    let MessagesComponent = () =>  <MessagesContainer/>;
+    let DialogsComponent = () =>  <DialogsContainer/>;
     let ProfileComponent = () => <ProfileContainer/>;
 
     return(
@@ -115,14 +135,14 @@ const Content = () => {
             <Suspense fallback={<div>Загрузка...</div>}>
                 <Switch>
                     <Route exact path="/" component={StartPage}/>
-                    <Route path="/profile/:userId?" component={ProfileComponent}/>
-                    <Route path={'/' + getRouteNameById(routes.messages.id)} component={MessagesComponent}/>
+                    <Route path={'/' + getRouteNameById(routes.profile.id) + '/:userId?'} component={ProfileComponent}/>
+                    <Route path={'/' + getRouteNameById(routes.dialogs.id) + '/:userId?'} component={DialogsComponent}/>
                     <Route path={'/' + getRouteNameById(routes.news.id)} component={News}/>
                     <Route path={'/' + getRouteNameById(routes.music.id)} component={Music}/>
                     <Route path={'/' + getRouteNameById(routes.users.id)} component={UsersContainer}/>
                     <Route path={'/' + getRouteNameById(routes.settings.id)} component={Settings}/>
-                    <Route path="/login" component={Login}/>
                     <Route path={'/' + getRouteNameById(routes.chat.id)} component={ChatPage}/>
+                    <Route path="/login" component={Login}/>
                     <Route path="*" component={NotFound}/>
                 </Switch>
             </Suspense>
