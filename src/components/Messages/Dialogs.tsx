@@ -5,15 +5,16 @@
  */
 import React, {useEffect} from 'react';
 import styles from './Dialogs.module.css';
-import {getDialogsList, initialStateType, sendMessage} from '../../reducers/dialogsReducer';
+import {getDialogsList, getMessagesList, initialStateType, sendMessage} from '../../reducers/dialogsReducer';
 import {dialogsActions} from '../../reducers/dialogsReducer';
 import {AddMessageForm} from '../../Common/AddMessageForm/AddMessageForm';
 import List from '@material-ui/core/List';
 import Post from '../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 import {MatchParams} from '../../types';
+import {getOwnerIdSelector} from '../../Common/Selectors/Selectors';
 
 export type dialogsPropsType = {
     dialogsPage: initialStateType
@@ -28,7 +29,8 @@ type matchType = RouteComponentProps<MatchParams>;
  */
 const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     const dispatch = useDispatch();
-    const currentDialogId = props.match.params.userId;
+    const ownerId = useSelector(getOwnerIdSelector);
+    const currentDialogId = props.match.params.userId ? parseInt(props.match.params.userId) : 0;
 
     let users = props.dialogsPage.userList.map( (user) => {
         return <Post key={'User' + user.id}
@@ -42,16 +44,23 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
         />
     });
 
-    let messages = props.dialogsPage.messageList.map( (message, messageIndex) => {
-        return <Post key={'Message' + messageIndex}
-                     postId={String(messageIndex)}
+    let messages = props.dialogsPage.messageList.map( (message) => {
+        return <Post key={'Message' + message.id}
+                     postId={message.id}
                      message={message.body}
                      avatar={null}
                      userName={''}
                      withoutLikes={true}
-                     rightSided={message.senderId === 1}
+                     rightSided={message.senderId === ownerId}
         />
     });
+
+    useEffect(() => {
+        if (currentDialogId) {
+            dispatch(dialogsActions.chatChanged(currentDialogId));
+            dispatch(getMessagesList(currentDialogId));
+        }
+    }, [currentDialogId, dispatch]);
 
     useEffect(() => {
         dispatch(getDialogsList());
