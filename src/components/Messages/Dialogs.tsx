@@ -5,7 +5,7 @@
  */
 import React, {useEffect} from 'react';
 import styles from './Dialogs.module.css';
-import {getDialogsList, initialStateType} from '../../reducers/dialogsReducer';
+import {getDialogsList, initialStateType, sendMessage} from '../../reducers/dialogsReducer';
 import {dialogsActions} from '../../reducers/dialogsReducer';
 import {AddMessageForm} from '../../Common/AddMessageForm/AddMessageForm';
 import List from '@material-ui/core/List';
@@ -45,11 +45,11 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     let messages = props.dialogsPage.messageList.map( (message, messageIndex) => {
         return <Post key={'Message' + messageIndex}
                      postId={String(messageIndex)}
-                     message={message.text}
+                     message={message.body}
                      avatar={null}
                      userName={''}
                      withoutLikes={true}
-                     rightSided={message.userId === 1}
+                     rightSided={message.senderId === 1}
         />
     });
 
@@ -70,7 +70,7 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
                 </List>
                 <Divider/>
                 <AddMessageForm blockWidth={'40ch'}
-                                sendMessage={dialogsActions.sendMessage}
+                                sendMessage={sendMessage}
                                 buttonText='Send'
                                 minTextLength={2}
                                 maxTextLength={100}
