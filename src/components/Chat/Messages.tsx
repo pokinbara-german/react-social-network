@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 import {getChatMessages, getOwnerIdSelector} from '../../Common/Selectors/Selectors';
 import Post from '../../Common/Post/Post';
 import List from '@material-ui/core/List';
+import {PostActions} from '../../Common/Post/PostActions/PostActions';
 
 export const Messages: React.FC = () => {
     const messages = useSelector(getChatMessages);
@@ -37,11 +38,10 @@ export const Messages: React.FC = () => {
             {messages.map((messageItem) =>
                 <Post key={'Message' + messageItem.id}
                       postId={messageItem.id}
-                      message={messageItem.message}
+                      action={PostActions.onlyText(messageItem.message)}
                       avatar={messageItem.photo}
                       userName={messageItem.userName}
                       userId={messageItem.userId}
-                      withoutLikes={true}
                       rightSided={messageItem.userId === ownerId}
                 />)}
             <div  ref={messagesRef}/>

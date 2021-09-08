@@ -8,6 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import {AddMessageForm} from '../../../Common/AddMessageForm/AddMessageForm';
 import {sendMessage} from '../../../reducers/dialogsReducer';
 import {messageListType} from '../../../types';
+import {PostActions} from '../../../Common/Post/PostActions/PostActions';
 
 type dialogPropsType = {
     messageList: Array<messageListType>
@@ -25,10 +26,9 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
     let messages = props.messageList.map(message => {
         return <Post key={'Message' + message.id}
                      postId={message.id}
-                     message={message.body}
+                     action={message.viewed ? PostActions.textWithOk(message.body) : PostActions.textWithWait(message.body)}
                      avatar={null}
                      userName={''}
-                     withoutLikes={true}
                      rightSided={message.senderId === ownerId}
         />
     });

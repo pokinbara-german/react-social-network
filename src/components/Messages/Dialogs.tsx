@@ -33,11 +33,9 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     let users = props.dialogsPage.userList.map( (user) => {
         return <Post key={'User' + user.id}
                      postId={String(user.id)}
-                     message={''}
                      avatar={user.photos.small}
                      userName={user.userName}
                      userId={user.id}
-                     withoutLikes={true}
                      primaryLink={user.id !== currentDialogId}
         />
     });
