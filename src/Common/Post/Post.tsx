@@ -60,6 +60,9 @@ const Post: React.FC<postPropsType> = (props) => {
             text: {
                 whiteSpace: 'pre-line',
                 overflowWrap: 'break-word',
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column'
             }
         }),
     );
