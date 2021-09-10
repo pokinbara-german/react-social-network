@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
         profileDescriptionWrapper: {
             display: 'flex',
             flexDirection: 'column',
+            flexGrow: 1,
             margin: theme.spacing(0, 4),
         }
     }),
