@@ -59,7 +59,7 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
             </List>
             <Divider orientation='vertical' flexItem={true}/>
             {currentDialogId
-                ? <Dialog messageList={props.dialogsPage.messageList}/>
+                ? <Dialog/>
                 : <NoDialog/>
             }
         </div>

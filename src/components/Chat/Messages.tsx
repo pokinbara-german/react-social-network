@@ -1,50 +1,25 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {useSelector} from 'react-redux';
 import {getChatMessages, getOwnerIdSelector} from '../../Common/Selectors/Selectors';
 import Post from '../../Common/Post/Post';
-import List from '@material-ui/core/List';
 import {PostActions} from '../../Common/Post/PostActions/PostActions';
+import {MessagesList} from '../../Common/MessagesList/MessagesList';
 
 export const Messages: React.FC = () => {
     const messages = useSelector(getChatMessages);
     const ownerId = useSelector(getOwnerIdSelector);
-    const messagesRef = useRef<HTMLDivElement>(null);
-    const [isAutoscroll, setIsAutoscroll] = useState(true);
 
-    useEffect(() => {
-        if (isAutoscroll) {
-            setTimeout(() => {
-                messagesRef.current?.scrollIntoView({behavior: 'smooth', block: 'end'});
-            }, 500);
-        }
-    }, [messages, isAutoscroll]);
-
-    /**
-     * Detects scroll end and set autoscroll to true or false.
-     * @param event
-     */
-    function scrollHandler(event: React.UIEvent<HTMLUListElement, UIEvent>) {
-        const element = event.currentTarget;
-
-        if ((element.scrollHeight - element.scrollTop) === element.clientHeight) {
-            !isAutoscroll && setIsAutoscroll(true);
-        } else {
-            isAutoscroll && setIsAutoscroll(false);
-        }
-    }
+    let messagesComponentsList = messages.map((messageItem) =>
+        <Post key={'Message' + messageItem.id}
+              postId={messageItem.id}
+              action={PostActions.onlyText(messageItem.message)}
+              avatar={messageItem.photo}
+              userName={messageItem.userName}
+              userId={messageItem.userId}
+              rightSided={messageItem.userId === ownerId}
+        />);
 
     return (
-        <List style={{height: '65vh', overflowY: 'auto', width: '100%'}} onScroll={scrollHandler}>
-            {messages.map((messageItem) =>
-                <Post key={'Message' + messageItem.id}
-                      postId={messageItem.id}
-                      action={PostActions.onlyText(messageItem.message)}
-                      avatar={messageItem.photo}
-                      userName={messageItem.userName}
-                      userId={messageItem.userId}
-                      rightSided={messageItem.userId === ownerId}
-                />)}
-            <div  ref={messagesRef}/>
-        </List>
+        <MessagesList messages={messagesComponentsList} height={'65vh'}/>
     );
 };

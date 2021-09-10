@@ -47,3 +47,7 @@ export function getChatMessages (state: appStateType) {
 export function getIsChatConnectedSelector (state: appStateType) {
     return state.chat.isConnected;
 }
+
+export function getDialogsMessagesSelector (state: appStateType) {
+    return state.dialogsPage.messageList;
+}
