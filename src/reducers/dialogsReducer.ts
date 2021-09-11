@@ -5,7 +5,8 @@ import {Api} from '../components/API/api';
 export type initialStateType = {
     userList: Array<userListType>,
     messageList: Array<messageListType>,
-    currentChatId: number
+    currentChatId: number,
+    newMessagesCount: number
 };
 
 type actionsType = inferActionsType<typeof dialogsActions>;
@@ -14,7 +15,8 @@ type thunkType = baseThunkType<actionsType>;
 const initialState: initialStateType = {
     userList: [],
     messageList: [],
-    currentChatId: 0
+    currentChatId: 0,
+    newMessagesCount: 0
 };
 
 const dialogReducer = (state = initialState, action: actionsType): initialStateType => {
@@ -39,6 +41,12 @@ const dialogReducer = (state = initialState, action: actionsType): initialStateT
                 ...state,
                 currentChatId: action.payload
             }
+        case 'SN/DIALOGS/NEW_MESSAGES_COUNT_RECEIVED': {
+            return {
+                ...state,
+                newMessagesCount: action.payload
+            }
+        }
         default:
             return state;
     }
@@ -49,6 +57,7 @@ export const dialogsActions = {
     dialogsListReceived: (list: Array<userListType>) => ({type: 'SN/DIALOGS/DIALOGS_LIST_RECEIVED', payload: list} as const),
     messagesListReceived: (list: Array<messageListType>) => ({type: 'SN/DIALOGS/MESSAGES_LIST_RECEIVED', payload: list} as const),
     chatChanged: (chatId: number) => ({type: 'SN/DIALOGS/CHAT_CHANGED', payload: chatId} as const),
+    newMessagesCountReceived: (count: number) => ({type: 'SN/DIALOGS/NEW_MESSAGES_COUNT_RECEIVED', payload: count} as const),
 }
 
 export const getDialogsList = (): thunkType => async (dispatch) => {
@@ -89,6 +98,12 @@ export const sendMessage = (text: string): thunkType => async (dispatch, getStat
     }
 
     dispatch(dialogsActions.messageSent(data));
+}
+
+export const getNewMessagesCount = (): thunkType => async (dispatch) => {
+    let data = await Api.Dialogs.getNewMessagesCount();
+
+    dispatch(dialogsActions.newMessagesCountReceived(data));
 }
 
 export default dialogReducer;

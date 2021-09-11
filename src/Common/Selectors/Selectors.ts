@@ -51,3 +51,7 @@ export function getIsChatConnectedSelector (state: appStateType) {
 export function getDialogsMessagesSelector (state: appStateType) {
     return state.dialogsPage.messageList;
 }
+
+export function getNewMessagesCountSelector (state: appStateType) {
+    return state.dialogsPage.newMessagesCount;
+}

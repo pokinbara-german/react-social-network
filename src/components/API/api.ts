@@ -213,6 +213,12 @@ export const Api = {
 
                     return response.data.data.message;
                 })
+        },
+        getNewMessagesCount: () => {
+            return defaultApi.get<number>('dialogs/messages/new/count')
+                .then(response => {
+                    return response.data;
+                })
         }
     }
 }
