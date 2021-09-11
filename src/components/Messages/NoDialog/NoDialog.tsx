@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStyles, makeStyles} from '@material-ui/core';
+import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 
@@ -8,13 +8,16 @@ import Typography from '@material-ui/core/Typography';
  * @constructor
  */
 export const NoDialog: React.FC = () => {
-    const useStyles = makeStyles(() =>
+    const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             helperText: {
                 display: 'flex',
                 flexGrow: 1,
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                [theme.breakpoints.down('xs')]: {
+                    display: 'none'
+                }
             }
         }),
     );

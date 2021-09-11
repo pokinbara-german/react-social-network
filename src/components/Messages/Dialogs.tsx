@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 import React, {useEffect} from 'react';
-import styles from './Dialogs.module.css';
 import {dialogsActions, getDialogsList, getMessagesList, initialStateType} from '../../reducers/dialogsReducer';
 import List from '@material-ui/core/List';
 import Post from '../../Common/Post/Post';
@@ -14,6 +13,7 @@ import {RouteComponentProps} from 'react-router-dom';
 import {MatchParams} from '../../types';
 import {NoDialog} from './NoDialog/NoDialog';
 import {Dialog} from './Dialog/Dialog';
+import {createStyles, makeStyles, Theme} from '@material-ui/core';
 
 export type dialogsPropsType = {
     dialogsPage: initialStateType
@@ -29,6 +29,32 @@ type matchType = RouteComponentProps<MatchParams>;
 const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     const dispatch = useDispatch();
     const currentDialogId = props.match.params.userId ? parseInt(props.match.params.userId) : 0;
+
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            dialogsWrapper: {
+                display: 'flex',
+                margin: theme.spacing(-3)
+            },
+            dialogs: {
+                display: 'flex',
+                [theme.breakpoints.down('xs')]: {
+                    display: currentDialogId ? 'none' : 'flex',
+                    width: '100%'
+                },
+            },
+            dialogsItems: {
+                height: '90vh',
+                overflowY: 'auto',
+                flexGrow: 1,
+                '& > li > div': {
+                    flexGrow: 1,
+                }
+            }
+        }),
+    );
+
+    const classes = useStyles();
 
     let users = props.dialogsPage.userList.map( (user) => {
         return <Post key={'User' + user.id}
@@ -53,11 +79,13 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     }, []);
 
     return (
-        <div className={styles.dialogs}>
-            <List className={styles.dialogs_items} style={{height: '90vh', overflowY: 'auto', width: '20%'}}>
-                {users}
-            </List>
-            <Divider orientation='vertical' flexItem={true}/>
+        <div className={classes.dialogsWrapper}>
+            <div className={classes.dialogs}>
+                <List className={classes.dialogsItems}>
+                    {users}
+                </List>
+                <Divider orientation='vertical'/>
+            </div>
             {currentDialogId
                 ? <Dialog/>
                 : <NoDialog/>
