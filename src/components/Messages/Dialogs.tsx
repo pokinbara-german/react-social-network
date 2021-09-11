@@ -87,7 +87,7 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
                 <Divider orientation='vertical'/>
             </div>
             {currentDialogId
-                ? <Dialog/>
+                ? <Dialog currentDialogId={currentDialogId}/>
                 : <NoDialog/>
             }
         </div>

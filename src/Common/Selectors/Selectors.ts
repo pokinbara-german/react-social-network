@@ -52,6 +52,10 @@ export function getDialogsMessagesSelector (state: appStateType) {
     return state.dialogsPage.messageList;
 }
 
+export function getDialogsUserListSelector (state: appStateType) {
+    return state.dialogsPage.userList;
+}
+
 export function getNewMessagesCountSelector (state: appStateType) {
     return state.dialogsPage.newMessagesCount;
 }
