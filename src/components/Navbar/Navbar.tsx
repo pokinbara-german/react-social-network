@@ -11,10 +11,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {getRouteIdByName, getRouteNameById, routes, routesVariants} from '../../Common/Routes';
-import Chip from '@material-ui/core/Chip';
-import {useTheme} from '@material-ui/core';
 import {useSelector} from 'react-redux';
 import {getNewMessagesCountSelector} from '../../Common/Selectors/Selectors';
+import {Counter} from '../../Common/Counter/Counter';
 
 interface MainMenuItemProps {
     icon: React.ReactElement;
@@ -55,7 +54,6 @@ const MenuItem = (props: MainMenuItemProps) => {
  */
 const Navbar = () => {
     const history = useHistory();
-    const theme = useTheme();
     const currentRoute = history.location.pathname.substr(1) as routesVariants;
     const newMessagesCount = useSelector(getNewMessagesCountSelector);
     const [selectedIndex, setSelectedIndex] = useState(getRouteIdByName(currentRoute));
@@ -70,9 +68,7 @@ const Navbar = () => {
         let title = routes[currentRoute].title;
         let icon = React.createElement(routes[currentRoute].icon);
         let routeName = getRouteNameById(currentRouteId);
-        let secondary = (routeName === 'dialogs' && newMessagesCount > 0)
-            ? <Chip style={{margin: theme.spacing(0, 1)}} color='primary' label={newMessagesCount} size='small'/>
-            : undefined;
+        let secondary = (routeName === 'dialogs' && newMessagesCount > 0) ? <Counter count={newMessagesCount}/> : undefined;
 
         return <MenuItem to={"/" + routeName}
                          primary={title}

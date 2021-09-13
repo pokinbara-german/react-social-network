@@ -14,6 +14,7 @@ import {MatchParams} from '../../types';
 import {NoDialog} from './NoDialog/NoDialog';
 import {Dialog} from './Dialog/Dialog';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
+import {Counter} from '../../Common/Counter/Counter';
 
 export type dialogsPropsType = {
     dialogsPage: initialStateType
@@ -57,12 +58,15 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     const classes = useStyles();
 
     let users = props.dialogsPage.userList.map( (user) => {
+        let action = user.newMessagesCount > 0 ? <Counter count={user.newMessagesCount} inCorner={true}/> : undefined;
+
         return <Post key={'User' + user.id}
                      postId={String(user.id)}
                      avatar={user.photos.small}
                      userName={user.userName}
                      userId={user.id}
                      primaryLink={user.id !== currentDialogId}
+                     action={action}
         />
     });
 
