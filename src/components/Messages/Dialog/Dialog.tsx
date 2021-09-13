@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {useHistory} from 'react-router-dom';
 import {userListType} from '../../../types';
+import {getRouteNameById, routes} from '../../../Common/Routes';
 
 type dialogPropsType = {
     currentDialogId: number
@@ -72,7 +73,7 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
     });
 
     function closeDialog () {
-        history.goBack();
+        history.push(`/${getRouteNameById(routes.dialogs.id)}`);
     }
 
     return (
