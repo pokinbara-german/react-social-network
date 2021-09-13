@@ -1,6 +1,6 @@
 import React from 'react';
 import {FormikHelpers, FormikProvider, useFormik} from 'formik';
-import {createFieldF, formikField} from '../FormComponents/FieldsComponentsFormik';
+import {createField, formikField} from '../FormComponents/FieldsComponentsFormik';
 import {maxLengthCreator, minLengthCreator, required, validatorCreator} from '../../utils/validators';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -78,7 +78,7 @@ export const AddMessageForm: React.FC<propsType> = (props) => {
         <form onSubmit={formik.handleSubmit} className={classes.newPostForm}>
             <FormikProvider value={formik}>
                 <Tooltip title={'You can type multiline. Just hit enter.'} aria-label='Hint' placement="right" arrow>
-                    {createFieldF<fieldNamesType>(
+                    {createField<fieldNamesType>(
                         classes.stretched,
                         'Type something',
                         'newMessage',

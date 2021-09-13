@@ -3,7 +3,7 @@ import {required, validatorCreator} from "../../../../utils/validators";
 import {contactsType, profileType} from '../../../../types';
 import Button from '@material-ui/core/Button';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {createFieldF, formikCheckbox, formikField} from '../../../../Common/FormComponents/FieldsComponentsFormik';
+import {createField, formikCheckbox, formikField} from '../../../../Common/FormComponents/FieldsComponentsFormik';
 import {ErrorMessage, FormikHelpers, FormikProvider, useFormik} from 'formik';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -186,7 +186,7 @@ const FormBasicInfo: React.FC<formBasicInfoPropsType> = (props) => {
         <Card variant={'outlined'}>
             <div className={classes.additionalInfoRow}>
                 <Typography>Full name: </Typography>
-                {createFieldF<fieldNamesType>(
+                {createField<fieldNamesType>(
                     classes.stretched,
                     'Your name',
                     'fullName',
@@ -197,7 +197,7 @@ const FormBasicInfo: React.FC<formBasicInfoPropsType> = (props) => {
             </div>
             <div className={classes.additionalInfoRow}>
                 <Typography>About me: </Typography>
-                {createFieldF<fieldNamesType>(
+                {createField<fieldNamesType>(
                     classes.stretched,
                     'Say about you',
                     'aboutMe',
@@ -207,7 +207,7 @@ const FormBasicInfo: React.FC<formBasicInfoPropsType> = (props) => {
             </div>
             <div className={classes.additionalInfoRow}>
                 <Typography>Look for job: </Typography>
-                {createFieldF<fieldNamesType>(
+                {createField<fieldNamesType>(
                     undefined,
                     undefined,
                     'lookingForAJob',
@@ -219,7 +219,7 @@ const FormBasicInfo: React.FC<formBasicInfoPropsType> = (props) => {
             <div className={classes.errorText}><ErrorMessage name={'lookingForAJob'} /></div>
             <div className={classes.additionalInfoRow}>
                 <Typography>Skills: </Typography>
-                {createFieldF<fieldNamesType>(
+                {createField<fieldNamesType>(
                     classes.stretched,
                     'Say about job or skills',
                     'lookingForAJobDescription',
@@ -245,7 +245,7 @@ const FormContactsInfo: React.FC<formContactsInfoPropsType> = (props) => {
             {Object.keys(props.contacts).map(key => {
                 return (
                     <div key={key} className={classes.additionalInfoRow}><Typography>{key}:</Typography>
-                        {createFieldF(
+                        {createField(
                             classes.stretched,
                             key + ' link with http',
                             'contacts.' + key,
