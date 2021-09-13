@@ -89,7 +89,6 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
                             sendMessage={sendMessage}
                             buttonText='Send'
                             minTextLength={2}
-                            maxTextLength={100}
             />
         </div>
     );

@@ -11,7 +11,7 @@ type propsType = {
     blockWidth?: string,
     buttonText: string,
     minTextLength: number,
-    maxTextLength: number,
+    maxTextLength?: number,
     isBlocked?: boolean,
     sendMessage: (text: string) => void
 };
@@ -28,14 +28,20 @@ type fieldNamesType = keyof formDataType;
  * @param {string=} props.blockWidth - width of form (optional param, 'inherit' by default)
  * @param {string} props.buttonText - text on button
  * @param {number} props.minTextLength - min length of input value
- * @param {number} props.maxTextLength - max length of input value
+ * @param {number=} props.maxTextLength - max length of input value (optional)
  * @param {boolean} props.isBlocked - is need to disable button
  * @param {function(text: string): void} props.sendMessage - callback for set new message
  * @constructor
  */
 export const AddMessageForm: React.FC<propsType> = (props) => {
     let minLength = minLengthCreator(props.minTextLength);
-    let maxLength = maxLengthCreator(props.maxTextLength);
+    let maxLength = props.maxTextLength ? maxLengthCreator(props.maxTextLength) : undefined;
+
+    let validatorsList = [required, minLength];
+
+    if (maxLength !== undefined) {
+        validatorsList.push(maxLength);
+    }
 
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
@@ -77,7 +83,7 @@ export const AddMessageForm: React.FC<propsType> = (props) => {
                         'Type something',
                         'newMessage',
                         formikField,
-                        validatorCreator([required, minLength, maxLength]),
+                        validatorCreator(validatorsList),
                         {multiline: true}
                     )}
                 </Tooltip>
