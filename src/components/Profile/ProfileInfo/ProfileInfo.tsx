@@ -21,7 +21,6 @@ export type propsType = {
     isOwner: boolean,
     statusFetching: boolean,
     updateStatus: (status: string) => void,
-    saveProfile: (profile: profileType) => any,
 }
 
 const wallpaperBlend = 'linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95))';
@@ -57,20 +56,6 @@ const ProfileInfo: React.FC<propsType> = (props) => {
         return <Preloader/>
     }
 
-    let formInitialValues = {
-        fullName: props.profile.fullName,
-        aboutMe: props.profile.aboutMe,
-        lookingForAJob: props.profile.lookingForAJob,
-        lookingForAJobDescription: props.profile.lookingForAJobDescription,
-        contacts: props.profile.contacts
-    }
-
-    function onSubmit (formData: profileType) {
-        props.saveProfile(formData).then(() => {
-            setEditMode(false);
-        }).catch(() => {});
-    }
-
     return (
         <div className={classes.wallpaper}>
             <div className={styles.profileDescription}>
@@ -85,9 +70,7 @@ const ProfileInfo: React.FC<propsType> = (props) => {
                     />
                     {isEditMode
                             ? <AdditionalInfoForm onChancel={() => setEditMode(false)}
-                                                  contacts={props.profile.contacts}
-                                                  onSubmit={onSubmit}
-                                                  initialValues={formInitialValues}
+                                                  profile={props.profile}
                             />
                             : <AdditionalInfo aboutMe={props.profile.aboutMe}
                                               lookingForAJob={props.profile.lookingForAJob}
