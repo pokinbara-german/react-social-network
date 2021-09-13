@@ -1,8 +1,6 @@
 import {Api} from '../components/API/api';
-import {FormAction, stopSubmit} from 'redux-form';
 import {baseThunkType, captchaResultCodeType, stringOrNull} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
-import {Action} from 'redux';
 
 export type initialStateType = {
     id: number | null,
@@ -14,7 +12,7 @@ export type initialStateType = {
 }
 
 type actionsType = inferActionsType<typeof authActions>;
-type thunkType = baseThunkType<actionsType | Action<actionsType> | Action<ReturnType<typeof stopSubmit>>, Promise<void | FormAction>>;
+type thunkType = baseThunkType<actionsType, void>;
 
 const initialState: initialStateType = {
     id: null,
@@ -71,7 +69,7 @@ export const getAuth = (): thunkType => async (dispatch) => {
  * @param {string} password - user password
  * @param {boolean} rememberMe - is need long session
  * @param {string} captcha - captcha text from user
- * @param errorCallback - callback calls on error from backend
+ * @param {(string):void=} errorCallback - callback calls on error from backend (optional)
  */
 export const login = (email: string, password: string, rememberMe: boolean, captcha: string, errorCallback = (data: string) => {}): thunkType => async (dispatch) => {
     let data = await Api.Auth.Login(email, password, rememberMe, captcha);

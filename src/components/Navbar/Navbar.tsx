@@ -11,10 +11,15 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {getRouteIdByName, getRouteNameById, routes, routesVariants} from '../../Common/Routes';
+import Chip from '@material-ui/core/Chip';
+import {useTheme} from '@material-ui/core';
+import {useSelector} from 'react-redux';
+import {getNewMessagesCountSelector} from '../../Common/Selectors/Selectors';
 
 interface MainMenuItemProps {
     icon: React.ReactElement;
     primary: string;
+    secondary?: JSX.Element;
     to: string;
     selected?: boolean;
     onClick: () => void;
@@ -26,7 +31,7 @@ interface MainMenuItemProps {
  * @constructor
  */
 const MenuItem = (props: MainMenuItemProps) => {
-    const {icon, primary, to, selected, onClick} = props;
+    const {icon, primary, secondary, to, selected, onClick} = props;
 
     const renderLink = React.useMemo(() =>
             React.forwardRef<any, Omit<LinkProps, 'to'>>((itemProps, ref) => (
@@ -38,7 +43,7 @@ const MenuItem = (props: MainMenuItemProps) => {
         <li>
             <ListItem button component={renderLink} selected={selected} onClick={onClick}>
                 <ListItemIcon>{icon}</ListItemIcon>
-                <ListItemText primary={primary} />
+                <ListItemText style={{display: 'flex'}} primary={primary} secondary={secondary}/>
             </ListItem>
         </li>
     );
@@ -50,7 +55,9 @@ const MenuItem = (props: MainMenuItemProps) => {
  */
 const Navbar = () => {
     const history = useHistory();
+    const theme = useTheme();
     const currentRoute = history.location.pathname.substr(1) as routesVariants;
+    const newMessagesCount = useSelector(getNewMessagesCountSelector);
     const [selectedIndex, setSelectedIndex] = useState(getRouteIdByName(currentRoute));
 
     const setActive = (index: number) => {
@@ -63,9 +70,13 @@ const Navbar = () => {
         let title = routes[currentRoute].title;
         let icon = React.createElement(routes[currentRoute].icon);
         let routeName = getRouteNameById(currentRouteId);
+        let secondary = (routeName === 'dialogs' && newMessagesCount > 0)
+            ? <Chip style={{margin: theme.spacing(0, 1)}} color='primary' label={newMessagesCount} size='small'/>
+            : undefined;
 
         return <MenuItem to={"/" + routeName}
                          primary={title}
+                         secondary={secondary}
                          icon={icon}
                          selected={selectedIndex === currentRouteId}
                          onClick={() => {setActive(currentRouteId)}}

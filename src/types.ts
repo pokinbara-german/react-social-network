@@ -77,3 +77,12 @@ export type userListType = {
     newMessagesCount: number,
     photos: photosType
 }
+
+export type messageListType = {
+    id: string,
+    body: string,
+    senderId: number,
+    senderName: string,
+    recipientId: number,
+    viewed: boolean
+}

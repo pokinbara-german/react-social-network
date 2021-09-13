@@ -37,6 +37,9 @@ const ProfileStatus: React.FC<propsType> = (props) => {
                 flexBasis: '35.5ch',
                 flexGrow: 1,
                 whiteSpace: 'pre-line'
+            },
+            divider: {
+                maxWidth: props.blockWidth || 'auto',
             }
         }),
     );
@@ -88,7 +91,7 @@ const ProfileStatus: React.FC<propsType> = (props) => {
                     : <Typography color='textSecondary' className={classes.statusText}>{statusText}</Typography>
                 }
             </div>
-            <Divider/>
+            <Divider className={classes.divider}/>
         </React.Fragment>;
 }
 

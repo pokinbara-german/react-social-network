@@ -4,16 +4,16 @@
  * and open the template in the editor.
  */
 import React, {useEffect} from 'react';
-import styles from './Dialogs.module.css';
-import {getDialogsList, initialStateType} from '../../reducers/dialogsReducer';
-import {dialogsActions} from '../../reducers/dialogsReducer';
-import {AddMessageForm} from '../../Common/AddMessageForm/AddMessageForm';
+import {dialogsActions, getDialogsList, getMessagesList, initialStateType} from '../../reducers/dialogsReducer';
 import List from '@material-ui/core/List';
 import Post from '../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
 import {useDispatch} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 import {MatchParams} from '../../types';
+import {NoDialog} from './NoDialog/NoDialog';
+import {Dialog} from './Dialog/Dialog';
+import {createStyles, makeStyles, Theme} from '@material-ui/core';
 
 export type dialogsPropsType = {
     dialogsPage: initialStateType
@@ -28,30 +28,50 @@ type matchType = RouteComponentProps<MatchParams>;
  */
 const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     const dispatch = useDispatch();
-    const currentDialogId = props.match.params.userId;
+    const currentDialogId = props.match.params.userId ? parseInt(props.match.params.userId) : 0;
+
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            dialogsWrapper: {
+                display: 'flex',
+                margin: theme.spacing(-3)
+            },
+            dialogs: {
+                display: 'flex',
+                [theme.breakpoints.down('xs')]: {
+                    display: currentDialogId ? 'none' : 'flex',
+                    width: '100%'
+                },
+            },
+            dialogsItems: {
+                height: '90vh',
+                overflowY: 'auto',
+                flexGrow: 1,
+                '& > li > div': {
+                    flexGrow: 1,
+                }
+            }
+        }),
+    );
+
+    const classes = useStyles();
 
     let users = props.dialogsPage.userList.map( (user) => {
         return <Post key={'User' + user.id}
                      postId={String(user.id)}
-                     message={''}
                      avatar={user.photos.small}
                      userName={user.userName}
                      userId={user.id}
-                     withoutLikes={true}
-                     primaryLink={true}
+                     primaryLink={user.id !== currentDialogId}
         />
     });
 
-    let messages = props.dialogsPage.messageList.map( (message, messageIndex) => {
-        return <Post key={'Message' + messageIndex}
-                     postId={String(messageIndex)}
-                     message={message.text}
-                     avatar={null}
-                     userName={''}
-                     withoutLikes={true}
-                     rightSided={message.userId === 1}
-        />
-    });
+    useEffect(() => {
+        if (currentDialogId) {
+            dispatch(dialogsActions.chatChanged(currentDialogId));
+            dispatch(getMessagesList(currentDialogId));
+        }
+    }, [currentDialogId, dispatch]);
 
     useEffect(() => {
         dispatch(getDialogsList());
@@ -59,23 +79,17 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     }, []);
 
     return (
-        <div className={styles.dialogs}>
-            <List className={styles.dialogs_items} style={{height: '90vh', overflowY: 'auto', width: '20%'}}>
-                {users}
-            </List>
-            <Divider orientation='vertical' flexItem={true}/>
-            <div className={styles.messages}>
-                <List style={{height: '75vh', overflowY: 'auto', width: '100%'}}>
-                    {messages}
+        <div className={classes.dialogsWrapper}>
+            <div className={classes.dialogs}>
+                <List className={classes.dialogsItems}>
+                    {users}
                 </List>
-                <Divider/>
-                <AddMessageForm blockWidth={'40ch'}
-                                sendMessage={dialogsActions.sendMessage}
-                                buttonText='Send'
-                                minTextLength={2}
-                                maxTextLength={100}
-                />
+                <Divider orientation='vertical'/>
             </div>
+            {currentDialogId
+                ? <Dialog currentDialogId={currentDialogId}/>
+                : <NoDialog/>
+            }
         </div>
     );
 };

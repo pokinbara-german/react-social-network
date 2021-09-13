@@ -1,10 +1,10 @@
 import axios from "axios";
 import {
     basicResponseType,
-    captchaResultCodeType, Override,
+    captchaResultCodeType, messageListType, Override,
     photosType,
     profileType,
-    resultCodesType, userListType, usersType
+    resultCodesType, stringOrNull, userListType, usersType
 } from "../../types";
 import {filterType} from '../../reducers/usersReducer';
 
@@ -51,6 +51,19 @@ type getUsersResponseType = {
 }
 
 type dialogsListResponseType = Array<userListType>
+
+type dialogsSendMessageResponseType = Override<basicResponseType, {
+    data: {
+        message: messageListType
+    },
+    fieldsErrors: Array<string>
+}>
+
+type getMessagesListResponseType = {
+    items: Array<messageListType>,
+    totalCount: number,
+    error: stringOrNull
+}
 
 export const Api = {
     Users: {
@@ -182,22 +195,28 @@ export const Api = {
                 })
         },
         getMessagesList: (userId: number) => {
-            return defaultApi.get('dialogs/' + userId + '/messages')
+            return defaultApi.get<getMessagesListResponseType>('dialogs/' + userId + '/messages')
                 .then(response => {
-                    if (!response.data) {
+                    if (response.data.error) {
                         return;
                     }
 
-                    return response.data;
+                    return response.data.items;
                 })
         },
         sendMessage: (userId: number, message: string) => {
-            return defaultApi.post('dialogs/' + userId + '/messages', {body: message})
+            return defaultApi.post<dialogsSendMessageResponseType>('dialogs/' + userId + '/messages', {body: message})
                 .then(response => {
-                    if (!response.data) {
+                    if (response.data.resultCode !== resultCodesType.Success) {
                         return;
                     }
 
+                    return response.data.data.message;
+                })
+        },
+        getNewMessagesCount: () => {
+            return defaultApi.get<number>('dialogs/messages/new/count')
+                .then(response => {
                     return response.data;
                 })
         }

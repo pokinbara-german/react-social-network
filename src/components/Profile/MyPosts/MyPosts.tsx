@@ -12,6 +12,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {AddMessageForm} from '../../../Common/AddMessageForm/AddMessageForm';
 import {profileActions} from '../../../reducers/profileReducer';
 import Typography from '@material-ui/core/Typography';
+import {PostActions} from '../../../Common/Post/PostActions/PostActions';
 
 export type myPostsPropsType = {
     postsData: Array<postsDataType>,
@@ -50,8 +51,7 @@ const MyPosts: React.FC<myPostsPropsType> = (props) => {
     let posts = props.postsData.map( (post) =>
         <Post key={'MyPost' +post.id}
               postId={post.id}
-              message={post.text}
-              likeCount={post.likes}
+              action={PostActions.textWithLikes(post.text, post.id, post.likes)}
               avatar={props.avatar}
               userName={props.userName}
               blockWidth={maxWidth}
