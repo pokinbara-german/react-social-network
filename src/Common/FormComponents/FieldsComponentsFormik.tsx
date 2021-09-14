@@ -5,7 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
-import {useTheme} from '@material-ui/core';
+import {createStyles, makeStyles} from '@material-ui/core';
+import {getFontsWithEmoji} from '../../utils/fontHelpers';
 
 type elementPropsType = {
     error?: boolean,
@@ -44,10 +45,20 @@ const FormControl: React.FC<FieldProps> = ({field, children, ...props}) => {
  * @param {Object} props - any needed props
  */
 export const FormikField: React.FC<FieldProps> = (props) => {
-    const theme = useTheme();
+    const useStyles = makeStyles((theme) =>
+        createStyles({
+            root: {
+                '& > div': {
+                    fontFamily: getFontsWithEmoji(theme)
+                }
+            }
+        }),
+    );
+
+    const classes = useStyles();
 
     return (
-        <FormControl {...props}><TextField style={{fontFamily: '"Twemoji Mozilla", ' + theme.typography.fontFamily}}/></FormControl>
+        <FormControl {...props}><TextField classes={classes}/></FormControl>
     );
 };
 
