@@ -6,7 +6,7 @@ import {FormikHelpers, FormikProvider, useFormik} from 'formik';
 import Button from '@material-ui/core/Button';
 import {useDispatch} from 'react-redux';
 import {login} from '../../../reducers/authReducer';
-import {createFieldF, formikCheckbox, formikField} from '../../../Common/FormComponents/FieldsComponentsFormik';
+import {createField, formikCheckbox, formikField} from '../../../Common/FormComponents/FieldsComponentsFormik';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 
 let maxLength30 = maxLengthCreator(30);
@@ -74,14 +74,14 @@ const LoginForm: React.FC<loginFormPropsType> = (props) => {
     return (
         <form className={classes.loginForm} onSubmit={formik.handleSubmit}>
             <FormikProvider value={formik}>
-                {createFieldF<fieldNamesType>(
+                {createField<fieldNamesType>(
                     classes.loginInput,
                     'Enter login',
                     'login',
                     formikField,
                     validatorCreator([required, maxLength30])
                 )}
-                {createFieldF<fieldNamesType>(
+                {createField<fieldNamesType>(
                     classes.loginInput,
                     'Enter password',
                     'password',
@@ -90,7 +90,7 @@ const LoginForm: React.FC<loginFormPropsType> = (props) => {
                     {type: 'password'}
                 )}
                 <div className={styles.checkboxWrapper}>
-                    {createFieldF<fieldNamesType>(
+                    {createField<fieldNamesType>(
                         undefined,
                         undefined,
                         'rememberMe',
@@ -101,7 +101,7 @@ const LoginForm: React.FC<loginFormPropsType> = (props) => {
                     <span>remember me</span>
                 </div>
                 {props.captchaUrl && <img alt={'captcha'} src={props.captchaUrl}/>}
-                {props.captchaUrl && createFieldF<fieldNamesType>(
+                {props.captchaUrl && createField<fieldNamesType>(
                     classes.loginInput,
                     'Enter symbols from image',
                     'captcha',

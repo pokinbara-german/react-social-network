@@ -158,9 +158,10 @@ export const Api = {
             return defaultApi.put<updateProfileResponseType>('profile', profile)
                 .then(response => {
                     if (response.data.resultCode === resultCodesType.Success) {
-                        return;
+                        return Promise.resolve();
                     } else {
-                        return response.data.messages.length ? response.data.messages : ['Unknown error. (unknown)'];
+                        let reason = response.data.messages.length ? response.data.messages : ['Unknown error. (unknown)'];
+                        return Promise.reject(reason);
                     }
                 });
         }

@@ -18,7 +18,7 @@ type elementPropsType = {
  * @param {Object} props - any needed props
  * @constructor
  */
-const FormControlF: React.FC<FieldProps> = ({field, children, ...props}) => {
+const FormControl: React.FC<FieldProps> = ({field, children, ...props}) => {
     const meta = props.form.getFieldMeta(field.name);
     const hasError = meta.touched && meta.error;
     const helperText = meta.error || undefined;
@@ -44,7 +44,7 @@ const FormControlF: React.FC<FieldProps> = ({field, children, ...props}) => {
  */
 export const formikField: React.FC<FieldProps> = (props) => {
     return (
-        <FormControlF {...props}><TextField/></FormControlF>
+        <FormControl {...props}><TextField/></FormControl>
     );
 };
 
@@ -54,7 +54,7 @@ export const formikField: React.FC<FieldProps> = (props) => {
  */
 export const formikCheckbox: React.FC<FieldProps> = (props) => {
     return (
-        <FormControlF {...props}><Checkbox/></FormControlF>
+        <FormControl {...props}><Checkbox/></FormControl>
     );
 };
 
@@ -66,7 +66,7 @@ export const formikSelect: React.FC<FieldProps> = React.memo((props) => {
     let options = props.children as Array<{key: string, value: string}>;
 
     return (
-        <FormControlF {...props}>
+        <FormControl {...props}>
             <Select>
                 {options && options.map(option => {
                     return(
@@ -74,7 +74,7 @@ export const formikSelect: React.FC<FieldProps> = React.memo((props) => {
                     );
                 })}
             </Select>
-        </FormControlF>
+        </FormControl>
     );
 });
 
@@ -87,7 +87,7 @@ export const formikSelect: React.FC<FieldProps> = React.memo((props) => {
  * @param {validatorType} validate - field validator
  * @param {Object} props - any props as object
  */
-export function createFieldF<namesType extends string> (
+export function createField<namesType extends string> (
     className: string | undefined,
     placeholder: string | undefined,
     name: namesType,

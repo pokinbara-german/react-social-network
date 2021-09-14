@@ -6,7 +6,7 @@ import {getUsersFilterSelector} from '../../../Common/Selectors/Selectors';
 import Button from '@material-ui/core/Button';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import {routes} from '../../../Common/Routes';
-import {createFieldF, formikField, formikSelect} from '../../../Common/FormComponents/FieldsComponentsFormik';
+import {createField, formikField, formikSelect} from '../../../Common/FormComponents/FieldsComponentsFormik';
 import {validatorCreator} from '../../../utils/validators';
 
 type propsType = {
@@ -81,14 +81,14 @@ export const UsersSearchForm: React.FC<propsType> = React.memo((props) => {
             <h1>{routes.users.title}</h1>
                 <form onSubmit={formik.handleSubmit} className={classes.root}>
                     <FormikProvider value={formik}>
-                        {createFieldF<fieldNamesType>(
+                        {createField<fieldNamesType>(
                             undefined,
                             'Enter user name or it\'s part',
                             'searchTerm',
                             formikField,
                             validatorCreator([])
                         )}
-                        {createFieldF<fieldNamesType>(
+                        {createField<fieldNamesType>(
                             undefined,
                             undefined,
                             'friend',

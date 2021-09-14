@@ -22,7 +22,6 @@ const Profile: React.FC<profilePropsType> = (props) => {
                          updateStatus={props.updateStatus}
                          statusFetching={props.statusFetching}
                          isOwner={props.isOwner}
-                         saveProfile={props.saveProfile}
             />
             <MyPostsContainer/>
         </div>);

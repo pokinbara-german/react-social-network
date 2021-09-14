@@ -1,8 +1,8 @@
 import {Api} from '../components/API/api';
-import {stopSubmit} from 'redux-form';
 import {baseThunkType, contactsType, photosType, postsDataType, profileType} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
 import {nanoid} from 'nanoid';
+import {emptyErrorCallback, emptyStatusCallback, setErrors} from '../utils/formikSetters';
 
 export type initialStateType = {
     postsData: Array<postsDataType>,
@@ -140,16 +140,18 @@ export const savePhoto = (file: File): thunkType => async (dispatch) => {
     dispatch(profileActions.savePhotoSuccess(data));
 }
 
-export const saveProfile = (profile: profileType): thunkType => async (dispatch) => {
-    let data = await Api.Profile.saveProfile(profile);
+export const saveProfile = (profile: profileType, errorCallback = emptyErrorCallback, statusCallback = emptyStatusCallback): thunkType => (dispatch) => {
+    let promise = Api.Profile.saveProfile(profile);
 
-    if (data) {
-        dispatch(stopSubmit('profileInfo', {_error: data}));
-        return Promise.reject(data);
-    }
-
-    dispatch(profileActions.updateProfile(profile));
-    return Promise.resolve();
+    return promise.then(
+        () => {
+            dispatch(profileActions.updateProfile(profile));
+            return Promise.resolve();
+        },
+        (data) => {
+            setErrors(data, errorCallback, statusCallback)
+            return Promise.reject('formHasErrors');
+    });
 }
 
 export default profileReducer;

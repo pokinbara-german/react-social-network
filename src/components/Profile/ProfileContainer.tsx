@@ -6,7 +6,7 @@
 import React from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getProfile, getStatus, saveProfile, updateStatus} from "../../reducers/profileReducer";
+import {getProfile, getStatus, updateStatus} from "../../reducers/profileReducer";
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import withAuthRedirect from "../../Hocs/withAuthRedirect";
 import {MatchParams, profileType} from "../../types";
@@ -24,7 +24,6 @@ type mapDispatchPropsType = {
     getProfile: (userId: number) => void,
     getStatus: (userId: number) => void,
     updateStatus: (status: string) => void,
-    saveProfile: (profile: profileType) => void
 };
 
 type ownPropsType = {
@@ -68,7 +67,6 @@ const mapDispatchToProps: mapDispatchPropsType = {
     getProfile,
     getStatus,
     updateStatus,
-    saveProfile
 }
 
 export default connect<
