@@ -3,7 +3,7 @@ import {required, validatorCreator} from "../../../../utils/validators";
 import {contactsType, profileType} from '../../../../types';
 import Button from '@material-ui/core/Button';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {createField, formikCheckbox, formikField} from '../../../../Common/FormComponents/FieldsComponentsFormik';
+import {createField, FormikCheckbox, FormikField} from '../../../../Common/FormComponents/FieldsComponentsFormik';
 import {ErrorMessage, FormikHelpers, FormikProvider, useFormik} from 'formik';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -190,7 +190,7 @@ const FormBasicInfo: React.FC<formBasicInfoPropsType> = (props) => {
                     classes.stretched,
                     'Your name',
                     'fullName',
-                    formikField,
+                    FormikField,
                     validatorCreator([required])
                 )}
                 <ErrorMessage name='fullName' />
@@ -201,7 +201,7 @@ const FormBasicInfo: React.FC<formBasicInfoPropsType> = (props) => {
                     classes.stretched,
                     'Say about you',
                     'aboutMe',
-                    formikField,
+                    FormikField,
                     validatorCreator([])
                 )}
             </div>
@@ -211,7 +211,7 @@ const FormBasicInfo: React.FC<formBasicInfoPropsType> = (props) => {
                     undefined,
                     undefined,
                     'lookingForAJob',
-                    formikCheckbox,
+                    FormikCheckbox,
                     validatorCreator([]),
                     {checked, color: 'primary', onChange}
                 )}
@@ -223,7 +223,7 @@ const FormBasicInfo: React.FC<formBasicInfoPropsType> = (props) => {
                     classes.stretched,
                     'Say about job or skills',
                     'lookingForAJobDescription',
-                    formikField,
+                    FormikField,
                     validatorCreator([]),
                     {multiline: true}
                 )}
@@ -249,7 +249,7 @@ const FormContactsInfo: React.FC<formContactsInfoPropsType> = (props) => {
                             classes.stretched,
                             key + ' link with http',
                             'contacts.' + key,
-                            formikField,
+                            FormikField,
                             validatorCreator([])
                         )}
                     </div>

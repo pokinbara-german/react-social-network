@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
+import {useTheme} from '@material-ui/core';
 
 type elementPropsType = {
     error?: boolean,
@@ -42,9 +43,11 @@ const FormControl: React.FC<FieldProps> = ({field, children, ...props}) => {
  * Material-UI input for formik field constructor.
  * @param {Object} props - any needed props
  */
-export const formikField: React.FC<FieldProps> = (props) => {
+export const FormikField: React.FC<FieldProps> = (props) => {
+    const theme = useTheme();
+
     return (
-        <FormControl {...props}><TextField/></FormControl>
+        <FormControl {...props}><TextField style={{fontFamily: '"Twemoji Mozilla", ' + theme.typography.fontFamily}}/></FormControl>
     );
 };
 
@@ -52,7 +55,7 @@ export const formikField: React.FC<FieldProps> = (props) => {
  * Material-UI checkbox for formik field constructor.
  * @param {Object} props - any needed props
  */
-export const formikCheckbox: React.FC<FieldProps> = (props) => {
+export const FormikCheckbox: React.FC<FieldProps> = (props) => {
     return (
         <FormControl {...props}><Checkbox/></FormControl>
     );

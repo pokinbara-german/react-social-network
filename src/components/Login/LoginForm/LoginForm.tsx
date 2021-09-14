@@ -6,7 +6,7 @@ import {FormikHelpers, FormikProvider, useFormik} from 'formik';
 import Button from '@material-ui/core/Button';
 import {useDispatch} from 'react-redux';
 import {login} from '../../../reducers/authReducer';
-import {createField, formikCheckbox, formikField} from '../../../Common/FormComponents/FieldsComponentsFormik';
+import {createField, FormikCheckbox, FormikField} from '../../../Common/FormComponents/FieldsComponentsFormik';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 
 let maxLength30 = maxLengthCreator(30);
@@ -78,14 +78,14 @@ const LoginForm: React.FC<loginFormPropsType> = (props) => {
                     classes.loginInput,
                     'Enter login',
                     'login',
-                    formikField,
+                    FormikField,
                     validatorCreator([required, maxLength30])
                 )}
                 {createField<fieldNamesType>(
                     classes.loginInput,
                     'Enter password',
                     'password',
-                    formikField,
+                    FormikField,
                     validatorCreator([required, maxLength30]),
                     {type: 'password'}
                 )}
@@ -94,7 +94,7 @@ const LoginForm: React.FC<loginFormPropsType> = (props) => {
                         undefined,
                         undefined,
                         'rememberMe',
-                        formikCheckbox,
+                        FormikCheckbox,
                         validatorCreator([]),
                         {color: 'primary'}
                     )}
@@ -105,7 +105,7 @@ const LoginForm: React.FC<loginFormPropsType> = (props) => {
                     classes.loginInput,
                     'Enter symbols from image',
                     'captcha',
-                    formikField,
+                    FormikField,
                     validatorCreator([required, maxLength30]),
                     {autoComplete: 'off'}
                 )}

@@ -11,7 +11,7 @@ import {getIsChatConnectedSelector} from '../Common/Selectors/Selectors';
  * @type string
  * @description block max width.
  */
-const maxWidth = '40ch';
+const maxWidth = '30ch';
 
 const ChatPage: React.FC = () => {
     const dispatch = useDispatch();

@@ -56,7 +56,10 @@ const Post: React.FC<postPropsType> = (props) => {
                 overflowWrap: 'break-word',
                 display: 'flex',
                 justifyContent: 'center',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                '& > p > span': {
+                    fontFamily: '"Twemoji Mozilla", ' + theme.typography.fontFamily
+                },
             }
         }),
     );
