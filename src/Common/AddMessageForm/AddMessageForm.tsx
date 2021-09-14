@@ -6,8 +6,8 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {useDispatch} from 'react-redux';
-import {IEmojiData} from 'emoji-picker-react';
 import {EmojiPicker} from './EmojiPicker/EmojiPicker';
+import {BaseEmoji} from 'emoji-mart';
 
 type propsType = {
     blockWidth?: string,
@@ -84,8 +84,8 @@ export const AddMessageForm: React.FC<propsType> = (props) => {
         onSubmit,
     });
 
-    const onEmojiClick = (event: any, emojiObject: IEmojiData) => {
-        formik.setFieldValue('newMessage', formik.values.newMessage + emojiObject.emoji);
+    const onEmojiClick = (emojiObject: BaseEmoji) => {
+        formik.setFieldValue('newMessage', formik.values.newMessage + emojiObject.native);
     };
 
     return (

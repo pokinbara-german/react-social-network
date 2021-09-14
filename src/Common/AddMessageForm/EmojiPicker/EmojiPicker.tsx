@@ -1,17 +1,18 @@
-import Picker, {IEmojiData} from 'emoji-picker-react';
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import EmojiEmotionsOutlinedIcon from '@material-ui/icons/EmojiEmotionsOutlined';
 import Popover from '@material-ui/core/Popover';
+import 'emoji-mart/css/emoji-mart.css'
+import {BaseEmoji, Picker} from 'emoji-mart'
 
 type emojiPickerPropsType = {
-    onEmojiClick: (event: any, emojiObject: IEmojiData) => void
+    onEmojiClick: (emojiObject:  BaseEmoji) => void
 }
 
 /**
  * Returns IconButton with emoji picker in popup.
  * @param {emojiPickerPropsType} props - props object
- * @param {function(event: any, emojiObject: IEmojiData):void} props.onEmojiClick - function which will set picked emoji.
+ * @param {function(emojiObject: BaseEmoji):void} props.onEmojiClick - function which will set picked emoji
  * @constructor
  */
 export const EmojiPicker: React.FC<emojiPickerPropsType> = (props) => {
@@ -45,7 +46,9 @@ export const EmojiPicker: React.FC<emojiPickerPropsType> = (props) => {
                 anchorEl={anchorElement}
                 onClose={handleClose}
             >
-                <Picker onEmojiClick={props.onEmojiClick} />
+                <Picker onSelect={props.onEmojiClick}
+                        set='apple'
+                />
             </Popover>
         </React.Fragment>
     );
