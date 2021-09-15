@@ -5,7 +5,7 @@ import {Route, Switch} from 'react-router-dom';
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import {Login} from "./components/Login/Login";
 import {connect} from "react-redux";
-import {getInfoAfterLogin, makeInit} from "./reducers/appReducer";
+import {makeInit} from "./reducers/appReducer";
 import Preloader from "./Common/Preloader/Preloader";
 import StartPage from "./Pages/StartPage";
 import {appStateType} from './redux/reduxStore';
@@ -31,7 +31,6 @@ type mapStatePropsType = {
 
 type mapDispatchPropsType = {
     makeInit: () => void,
-    getInfoAfterLogin: () => void,
 }
 
 type ownPropsType = {};
@@ -46,11 +45,10 @@ const drawerWidth = 240;
  * @param {boolean} props.isAuth - is user authorized
  * @param {boolean} props.isInitDone - is App initiated
  * @param {function():void} props.makeInit - App initiation function
- * @param {function():void} props.getInfoAfterLogin - function which will call after user logged in.
  * @constructor
  */
 const App: React.FC<propsType> = (props) => {
-    let {isAuth, isInitDone, makeInit, getInfoAfterLogin} = props;
+    let {isInitDone, makeInit} = props;
     const [isNotificationOpen, setNotificationOpen] = React.useState(false);
     const [notificationText, setNotificationText] = React.useState('');
     const [isMenuOpen, setMenuOpen] = React.useState<boolean>(false);
@@ -105,12 +103,6 @@ const App: React.FC<propsType> = (props) => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useEffect(() => {
-        if (isAuth) {
-            getInfoAfterLogin();
-        }
-    }, [isAuth, getInfoAfterLogin]);
 
     const classes = useStyles();
 
@@ -188,5 +180,5 @@ let mapStateToProps = (state: appStateType): mapStatePropsType => {
 
 export default connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, appStateType>(
     mapStateToProps,
-    {makeInit, getInfoAfterLogin}
+    {makeInit}
 )(App);

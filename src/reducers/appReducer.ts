@@ -32,17 +32,15 @@ export const appActions = {
     setInitDone: () => ({type: 'SN/APP/SET_INIT_DONE'} as const)
 }
 
-export const makeInit = (): thunkType => (dispatch) => {
-    let auth = dispatch(getAuth());
-
-    Promise.all([auth]).then(() => {
+export const makeInit = (): thunkType => async (dispatch) => {
+    try {
+        await dispatch(getAuth());
+        await dispatch(getNewMessagesCount());
+        await dispatch(getOwnerProfile());
+    }
+    finally {
         dispatch(appActions.setInitDone());
-    })
-}
-
-export const getInfoAfterLogin = (): thunkType => async (dispatch) => {
-    await dispatch(getNewMessagesCount());
-    await dispatch(getOwnerProfile());
+    }
 }
 
 export default authReducer;
