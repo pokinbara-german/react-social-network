@@ -16,8 +16,8 @@ type thunkType = baseThunkType<actionsType>;
 
 const initialState: initialStateType = {
     postsData: [
-        {id: nanoid(), text: 'Second post!', likes: 20},
         {id: nanoid(), text: 'First post!', likes: 15},
+        {id: nanoid(), text: 'Second post!', likes: 20},
     ],
     profile: null,
     statusFetching: false,
