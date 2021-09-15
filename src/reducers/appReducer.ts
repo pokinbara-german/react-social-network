@@ -2,6 +2,7 @@ import {getAuth} from './authReducer';
 import {inferActionsType} from '../redux/reduxStore';
 import {baseThunkType} from '../types';
 import {getNewMessagesCount} from './dialogsReducer';
+import {getOwnerProfile} from './profileReducer';
 
 export type initialStateType = {
     initDone: boolean
@@ -41,6 +42,7 @@ export const makeInit = (): thunkType => (dispatch) => {
 
 export const getInfoAfterLogin = (): thunkType => async (dispatch) => {
     await dispatch(getNewMessagesCount());
+    await dispatch(getOwnerProfile());
 }
 
 export default authReducer;
