@@ -24,6 +24,10 @@ interface MainMenuItemProps {
     onClick: () => void;
 }
 
+type navbarPropsType = {
+    onMenuClick: () => void
+}
+
 /**
  * Returns one item (<li> for <ul>) of app menu.
  * @param {MainMenuItemProps} props
@@ -52,13 +56,14 @@ const MenuItem = (props: MainMenuItemProps) => {
  * Returns complete app menu list.
  * @constructor
  */
-const Navbar = () => {
+const Navbar: React.FC<navbarPropsType> = (props) => {
     const history = useHistory();
     const currentRoute = history.location.pathname.substr(1) as routesVariants;
     const newMessagesCount = useSelector(getNewMessagesCountSelector);
     const [selectedIndex, setSelectedIndex] = useState(getRouteIdByName(currentRoute));
 
     const setActive = (index: number) => {
+        props.onMenuClick();
         setSelectedIndex(index);
     };
 

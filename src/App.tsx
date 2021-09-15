@@ -40,35 +40,6 @@ type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType;
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-        },
-        drawer: {
-            width: drawerWidth,
-            [theme.breakpoints.down('md')]: {
-                width: theme.spacing(7) + 1,
-            },
-            flexShrink: 0,
-        },
-        drawerPaper: {
-            width: drawerWidth,
-            [theme.breakpoints.down('md')]: {
-                width: theme.spacing(7) + 1,
-            },
-        },
-        drawerContainer: {
-            overflow: 'auto',
-        },
-        content: {
-            flexGrow: 1,
-            width: 330,
-            padding: theme.spacing(3),
-        },
-    }),
-);
-
 /**
  * Returns whole app (header, menu and needed page).
  * @param {propsType} props - props object
@@ -82,6 +53,31 @@ const App: React.FC<propsType> = (props) => {
     let {isAuth, isInitDone, makeInit, getInfoAfterLogin} = props;
     const [isNotificationOpen, setNotificationOpen] = React.useState(false);
     const [notificationText, setNotificationText] = React.useState('');
+    const [isMenuOpen, setMenuOpen] = React.useState<boolean>(false);
+
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            root: {
+                display: 'flex',
+            },
+            drawer: {
+                width: drawerWidth,
+                [theme.breakpoints.down('md')]: {
+                    width: theme.spacing(7) + 1,
+                },
+                [theme.breakpoints.down('xs')]: {
+                    display: isMenuOpen ? '' : 'none',
+                },
+                flexShrink: 0,
+            },
+            drawerPaper: {
+                width: drawerWidth,
+                [theme.breakpoints.down('md')]: {
+                    width: theme.spacing(7) + 1,
+                },
+            },
+        }),
+    );
 
     /**
      * Catch error reason and set alert-data.
@@ -122,16 +118,20 @@ const App: React.FC<propsType> = (props) => {
         return <Preloader/>
     }
 
+    function onMenuClick() {
+        setMenuOpen(!isMenuOpen);
+    }
+
     return (
         <div className={classes.root}>
             <GlobalAlert isOpen={isNotificationOpen}
                          text={notificationText}
                          setNotificationOpen={setNotificationOpen}
             />
-            <AppHeader/>
+            <AppHeader onMenuClick={onMenuClick}/>
             <Drawer className={classes.drawer} variant='permanent' classes={{paper: classes.drawerPaper}}>
                 <Toolbar />
-                <Navbar/>
+                <Navbar onMenuClick={onMenuClick}/>
             </Drawer>
             <Content/>
         </div>
@@ -142,7 +142,17 @@ const App: React.FC<propsType> = (props) => {
  * Returns correct page depends on route, uses suspend for lazy-load.
  * @constructor
  */
-const Content = () => {
+const Content: React.FC = () => {
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            content: {
+                flexGrow: 1,
+                width: 330,
+                padding: theme.spacing(3),
+            },
+        }),
+    );
+
     const classes = useStyles();
 
     let DialogsComponent = () =>  <DialogsContainer/>;
