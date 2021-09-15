@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
         loginForm: {
             display: 'flex',
             flexDirection: 'column',
-            maxWidth: '40ch',
+            width: '20ch',
             margin: theme.spacing(1),
             '& > *': {
                 display: 'flex',
