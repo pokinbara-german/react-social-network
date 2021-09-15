@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import {
     getDialogsMessagesSelector,
     getDialogsUserListSelector,
-    getOwnerIdSelector
+    getOwnerIdSelector, getOwnerPhotosSelector
 } from '../../../Common/Selectors/Selectors';
 import Post from '../../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
@@ -45,6 +45,7 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
     const messages = useSelector(getDialogsMessagesSelector);
     const opponents = useSelector(getDialogsUserListSelector);
     const ownerId = useSelector(getOwnerIdSelector);
+    const ownerPhoto = useSelector(getOwnerPhotosSelector)?.small;
     const classes = useStyles();
     const history = useHistory();
 
@@ -66,7 +67,7 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
         return <Post key={'Message' + message.id}
                      postId={message.id}
                      action={action}
-                     avatar={!isOwner ? opponentPhoto : null}
+                     avatar={!isOwner ? opponentPhoto : ownerPhoto || null}
                      userName={''}
                      rightSided={isOwner}
         />

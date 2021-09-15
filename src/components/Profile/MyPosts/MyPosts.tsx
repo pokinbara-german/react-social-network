@@ -33,6 +33,8 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
             maxWidth: maxWidth,
             backgroundColor: theme.palette.background.paper,
+            display: 'flex',
+            flexDirection: 'column-reverse'
         },
         postsTitle: {
             margin: theme.spacing(2, 0)

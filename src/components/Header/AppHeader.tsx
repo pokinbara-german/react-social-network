@@ -7,16 +7,22 @@ import React from 'react';
 import styles from './AppHeader.module.css';
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
-import {getIsAuthSelector, getLoginSelector} from '../../Common/Selectors/Selectors';
+import {getIsAuthSelector, getLoginSelector, getOwnerPhotosSelector} from '../../Common/Selectors/Selectors';
 import {logout} from '../../reducers/authReducer';
 import logo from '../../assets/images/logo.svg';
 import userMale from "../../assets/images/user-male.png";
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+
+type appHeaderPropsType = {
+    onMenuClick: () => void
+}
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -35,14 +41,29 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         headerContentWrapper: {
             justifyContent: 'space-between'
+        },
+        menuButton: {
+            [theme.breakpoints.up('sm')]: {
+                display: 'none',
+            },
+        },
+        leftPart: {
+            display: 'flex'
         }
     }),
 );
 
-export const AppHeader: React.FC = () => {
+/**
+ * Returns complete header for App with logo, menu-button, logout-button and owner-info.
+ * @param {appHeaderPropsType} props - props object
+ * @param {function():void} props.onMenuClick - function which will calls on menu-button click
+ * @constructor
+ */
+export const AppHeader: React.FC<appHeaderPropsType> = (props) => {
     const classes = useStyles();
     const isAuth = useSelector(getIsAuthSelector);
     const login = useSelector(getLoginSelector);
+    const ownerPhotos = useSelector(getOwnerPhotosSelector);
 
     const dispatch = useDispatch();
 
@@ -53,16 +74,27 @@ export const AppHeader: React.FC = () => {
     return(
         <AppBar position="fixed" className={classes.appBar}>
             <Toolbar className={classes.headerContentWrapper}>
-                <img className={styles.headerLogo}
-                     src={logo}
-                     alt="logo"/>
+                <div className={classes.leftPart}>
+                    <IconButton color='inherit'
+                                edge='start'
+                                className={classes.menuButton}
+                                onClick={props.onMenuClick}
+                    >
+                        <MenuIcon/>
+                    </IconButton>
+                    <img className={styles.headerLogo}
+                         src={logo}
+                         alt="logo"/>
+                </div>
                 <div>
                     {
                         isAuth
                             ? <div className={classes.loginBlock}>
-                                <Avatar alt={'Header Avatar'} src={userMale}/>
+                                <Avatar alt={'Header Avatar'} src={ownerPhotos?.small || userMale}/>
                                 <Typography className={classes.login}>{login}</Typography>
-                                <Button variant='contained' onClick={logoutCallback}>logout</Button>
+                                <IconButton onClick={logoutCallback}>
+                                    <ExitToAppOutlinedIcon/>
+                                </IconButton>
                             </div>
                             : <NavLink to='/login' className={styles.loginLink}>Login</NavLink>
                     }

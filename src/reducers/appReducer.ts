@@ -2,6 +2,7 @@ import {getAuth} from './authReducer';
 import {inferActionsType} from '../redux/reduxStore';
 import {baseThunkType} from '../types';
 import {getNewMessagesCount} from './dialogsReducer';
+import {getOwnerProfile} from './profileReducer';
 
 export type initialStateType = {
     initDone: boolean
@@ -31,13 +32,15 @@ export const appActions = {
     setInitDone: () => ({type: 'SN/APP/SET_INIT_DONE'} as const)
 }
 
-export const makeInit = (): thunkType => (dispatch) => {
-    let auth = dispatch(getAuth());
-    let messagesCount = dispatch(getNewMessagesCount());
-
-    Promise.all([auth, messagesCount]).then(() => {
+export const makeInit = (): thunkType => async (dispatch) => {
+    try {
+        await dispatch(getAuth());
+        await dispatch(getNewMessagesCount());
+        await dispatch(getOwnerProfile());
+    }
+    finally {
         dispatch(appActions.setInitDone());
-    })
+    }
 }
 
 export default authReducer;
