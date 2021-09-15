@@ -5,7 +5,7 @@ import {Route, Switch} from 'react-router-dom';
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import {Login} from "./components/Login/Login";
 import {connect} from "react-redux";
-import {makeInit} from "./reducers/appReducer";
+import {getInfoAfterLogin, makeInit} from "./reducers/appReducer";
 import Preloader from "./Common/Preloader/Preloader";
 import StartPage from "./Pages/StartPage";
 import {appStateType} from './redux/reduxStore';
@@ -25,11 +25,13 @@ const DialogsContainer = React.lazy(() => import('./components/Messages/DialogsC
 const ChatPage = React.lazy(() => import('./Pages/ChatPage'));
 
 type mapStatePropsType = {
-    isInitDone: boolean
+    isInitDone: boolean,
+    isAuth: boolean
 }
 
 type mapDispatchPropsType = {
-    makeInit: () => void
+    makeInit: () => void,
+    getInfoAfterLogin: () => void,
 }
 
 type ownPropsType = {};
@@ -69,10 +71,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /**
  * Returns whole app (header, menu and needed page).
- * @param {propsType} props
+ * @param {propsType} props - props object
+ * @param {boolean} props.isAuth - is user authorized
+ * @param {boolean} props.isInitDone - is App initiated
+ * @param {function():void} props.makeInit - App initiation function
+ * @param {function():void} props.getInfoAfterLogin - function which will call after user logged in.
  * @constructor
  */
 const App: React.FC<propsType> = (props) => {
+    let {isAuth, isInitDone, makeInit, getInfoAfterLogin} = props;
     const [isNotificationOpen, setNotificationOpen] = React.useState(false);
     const [notificationText, setNotificationText] = React.useState('');
 
@@ -94,7 +101,7 @@ const App: React.FC<propsType> = (props) => {
 
     useEffect(() => {
         window.addEventListener('unhandledrejection', catchGenericError);
-        props.makeInit();
+        makeInit();
 
         // returned function will be called on component unmount
         return () => {
@@ -103,9 +110,15 @@ const App: React.FC<propsType> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        if (isAuth) {
+            getInfoAfterLogin();
+        }
+    }, [isAuth, getInfoAfterLogin]);
+
     const classes = useStyles();
 
-    if (!props.isInitDone) {
+    if (!isInitDone) {
         return <Preloader/>
     }
 
@@ -157,10 +170,13 @@ const Content = () => {
 }
 
 let mapStateToProps = (state: appStateType): mapStatePropsType => {
-    return {isInitDone: state.app.initDone}
+    return {
+        isInitDone: state.app.initDone,
+        isAuth: state.auth.isAuth
+    }
 }
 
 export default connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, appStateType>(
     mapStateToProps,
-    {makeInit}
+    {makeInit, getInfoAfterLogin}
 )(App);

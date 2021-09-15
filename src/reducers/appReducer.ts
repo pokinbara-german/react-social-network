@@ -33,11 +33,14 @@ export const appActions = {
 
 export const makeInit = (): thunkType => (dispatch) => {
     let auth = dispatch(getAuth());
-    let messagesCount = dispatch(getNewMessagesCount());
 
-    Promise.all([auth, messagesCount]).then(() => {
+    Promise.all([auth]).then(() => {
         dispatch(appActions.setInitDone());
     })
+}
+
+export const getInfoAfterLogin = (): thunkType => async (dispatch) => {
+    await dispatch(getNewMessagesCount());
 }
 
 export default authReducer;
