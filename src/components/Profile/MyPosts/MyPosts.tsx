@@ -25,7 +25,7 @@ export type myPostsPropsType = {
  * @type string
  * @description block max width.
  */
-const maxWidth = '40ch';
+const maxWidth = '30ch';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -1,11 +1,13 @@
 import React from 'react';
 import {FormikHelpers, FormikProvider, useFormik} from 'formik';
-import {createField, formikField} from '../FormComponents/FieldsComponentsFormik';
+import {createField, FormikField} from '../FormComponents/FieldsComponentsFormik';
 import {maxLengthCreator, minLengthCreator, required, validatorCreator} from '../../utils/validators';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {useDispatch} from 'react-redux';
+import {EmojiPicker} from './EmojiPicker/EmojiPicker';
+import {BaseEmoji} from 'emoji-mart';
 
 type propsType = {
     blockWidth?: string,
@@ -49,8 +51,16 @@ export const AddMessageForm: React.FC<propsType> = (props) => {
                 display: 'flex',
                 flexDirection: 'column',
                 maxWidth: props.blockWidth || 'inherit',
-                '& > *': {
+                '& > div': {
                     display: 'flex',
+                    margin: theme.spacing(1),
+                },
+            },
+            newPostFormInputWrapper: {
+                display: 'flex',
+                '& > div': {
+                    display: 'flex',
+                    flexGrow: 1,
                     margin: theme.spacing(1),
                 },
             },
@@ -74,20 +84,27 @@ export const AddMessageForm: React.FC<propsType> = (props) => {
         onSubmit,
     });
 
+    const onEmojiClick = (emojiObject: BaseEmoji) => {
+        formik.setFieldValue('newMessage', formik.values.newMessage + emojiObject.native);
+    };
+
     return (
         <form onSubmit={formik.handleSubmit} className={classes.newPostForm}>
-            <FormikProvider value={formik}>
-                <Tooltip title={'You can type multiline. Just hit enter.'} aria-label='Hint' placement="right" arrow>
-                    {createField<fieldNamesType>(
-                        classes.stretched,
-                        'Type something',
-                        'newMessage',
-                        formikField,
-                        validatorCreator(validatorsList),
-                        {multiline: true}
-                    )}
-                </Tooltip>
-            </FormikProvider>
+            <div className={classes.newPostFormInputWrapper}>
+                <FormikProvider value={formik}>
+                    <Tooltip title={'You can type multiline. Just hit enter.'} aria-label='Hint' placement="right" arrow>
+                        {createField<fieldNamesType>(
+                            classes.stretched,
+                            'Type something',
+                            'newMessage',
+                            FormikField,
+                            validatorCreator(validatorsList),
+                            {multiline: true}
+                        )}
+                    </Tooltip>
+                </FormikProvider>
+                <EmojiPicker onEmojiClick={onEmojiClick}/>
+            </div>
             <div>
                 <Button variant='contained'
                         color='primary'

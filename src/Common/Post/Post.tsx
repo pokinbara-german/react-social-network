@@ -14,6 +14,7 @@ import Card from '@material-ui/core/Card';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import {NavLink} from 'react-router-dom';
 import {getRouteNameById, routes} from '../Routes';
+import {getFontsWithEmoji} from '../../utils/fontHelpers';
 
 type postPropsType = {
     postId: string,
@@ -56,7 +57,10 @@ const Post: React.FC<postPropsType> = (props) => {
                 overflowWrap: 'break-word',
                 display: 'flex',
                 justifyContent: 'center',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                '& > p > span': {
+                    fontFamily: getFontsWithEmoji(theme)
+                },
             }
         }),
     );

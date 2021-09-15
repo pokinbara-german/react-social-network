@@ -84,9 +84,9 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
                 </IconButton>
                 <Divider/>
             </div>
-            <MessagesList messages={messagesComponentsList} height={'75vh'}/>
+            <MessagesList messages={messagesComponentsList} height={'70vh'}/>
             <Divider/>
-            <AddMessageForm blockWidth={'40ch'}
+            <AddMessageForm blockWidth={'30ch'}
                             sendMessage={sendMessage}
                             buttonText='Send'
                             minTextLength={2}

@@ -82,7 +82,13 @@ const App: React.FC<propsType> = (props) => {
      */
     const catchGenericError = (reason: PromiseRejectionEvent) => {
         let response = reason.reason.response;
-        setNotificationText('ERROR: server returned ' + response.status + ' ' + response.statusText);
+
+        if (response) {
+            setNotificationText('ERROR: server returned ' + response.status + ' ' + response.statusText);
+        } else {
+            setNotificationText('ERROR: server is not respond!');
+        }
+
         setNotificationOpen(true);
     };
 
