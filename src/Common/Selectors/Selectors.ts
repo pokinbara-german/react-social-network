@@ -59,3 +59,7 @@ export function getDialogsUserListSelector (state: appStateType) {
 export function getNewMessagesCountSelector (state: appStateType) {
     return state.dialogsPage.newMessagesCount;
 }
+
+export function getOwnerPhotosSelector (state: appStateType) {
+    return state.profilePage.ownerProfile?.photos;
+}

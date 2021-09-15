@@ -7,7 +7,7 @@ import React from 'react';
 import styles from './AppHeader.module.css';
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
-import {getIsAuthSelector, getLoginSelector} from '../../Common/Selectors/Selectors';
+import {getIsAuthSelector, getLoginSelector, getOwnerPhotosSelector} from '../../Common/Selectors/Selectors';
 import {logout} from '../../reducers/authReducer';
 import logo from '../../assets/images/logo.svg';
 import userMale from "../../assets/images/user-male.png";
@@ -63,6 +63,7 @@ export const AppHeader: React.FC<appHeaderPropsType> = (props) => {
     const classes = useStyles();
     const isAuth = useSelector(getIsAuthSelector);
     const login = useSelector(getLoginSelector);
+    const ownerPhotos = useSelector(getOwnerPhotosSelector);
 
     const dispatch = useDispatch();
 
@@ -89,7 +90,7 @@ export const AppHeader: React.FC<appHeaderPropsType> = (props) => {
                     {
                         isAuth
                             ? <div className={classes.loginBlock}>
-                                <Avatar alt={'Header Avatar'} src={userMale}/>
+                                <Avatar alt={'Header Avatar'} src={ownerPhotos?.small || userMale}/>
                                 <Typography className={classes.login}>{login}</Typography>
                                 <IconButton onClick={logoutCallback}>
                                     <ExitToAppOutlinedIcon/>
