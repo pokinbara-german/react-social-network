@@ -1,6 +1,7 @@
 import {Api} from '../components/API/api';
 import {baseThunkType, captchaResultCodeType, stringOrNull} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
+import {emptyStatusCallback, setStatusType} from '../utils/formikSetters';
 
 export type initialStateType = {
     id: number | null,
@@ -71,7 +72,7 @@ export const getAuth = (): thunkType => async (dispatch) => {
  * @param {string} captcha - captcha text from user
  * @param {(string):void=} errorCallback - callback calls on error from backend (optional)
  */
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string, errorCallback = (data: string) => {}): thunkType => async (dispatch) => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string, errorCallback: setStatusType = emptyStatusCallback): thunkType => async (dispatch) => {
     let data = await Api.Auth.Login(email, password, rememberMe, captcha);
 
     if (data.error) {

@@ -91,7 +91,7 @@ export const profileActions = {
 }
 
 /**
- * Requests status from api ad set it to state.
+ * Requests status from api and set it to state.
  * @param {number} userId - user ID as number, if not valid will set owner ID
  */
 export const getStatus = (userId: number): thunkType => async (dispatch, getState) => {

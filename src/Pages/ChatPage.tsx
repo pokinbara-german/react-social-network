@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {sendMessage, startMessagesListening, stopMessagesListening} from '../reducers/chatReducer';
-import {Messages} from '../components/Chat/Messages';
+import {ChatMessages} from '../components/Chat/ChatMessages';
 import Divider from '@material-ui/core/Divider';
 import {AddMessageForm} from '../Common/AddMessageForm/AddMessageForm';
 import {getIsChatConnectedSelector} from '../Common/Selectors/Selectors';
@@ -13,6 +13,10 @@ import {getIsChatConnectedSelector} from '../Common/Selectors/Selectors';
  */
 const maxWidth = '30ch';
 
+/**
+ * Returns whole page of chat.
+ * @constructor
+ */
 const ChatPage: React.FC = () => {
     const dispatch = useDispatch();
     const isConnected = useSelector(getIsChatConnectedSelector);
@@ -27,7 +31,7 @@ const ChatPage: React.FC = () => {
 
     return(
         <div>
-            <Messages/>
+            <ChatMessages/>
             <Divider/>
             <AddMessageForm blockWidth={maxWidth}
                             sendMessage={sendMessage}
