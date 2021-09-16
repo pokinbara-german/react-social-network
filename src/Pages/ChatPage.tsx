@@ -5,6 +5,7 @@ import {ChatMessages} from '../components/Chat/ChatMessages';
 import Divider from '@material-ui/core/Divider';
 import {AddMessageForm} from '../Common/AddMessageForm/AddMessageForm';
 import {getIsChatConnectedSelector} from '../Common/Selectors/Selectors';
+import withAuthRedirect from '../Hocs/withAuthRedirect';
 
 /**
  * @const
@@ -15,6 +16,7 @@ const maxWidth = '30ch';
 
 /**
  * Returns whole page of chat.
+ * Available only for authorized users.
  * @constructor
  */
 const ChatPage: React.FC = () => {
@@ -44,4 +46,4 @@ const ChatPage: React.FC = () => {
     );
 }
 
-export default ChatPage;
+export default withAuthRedirect(ChatPage);

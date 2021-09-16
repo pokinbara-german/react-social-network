@@ -135,7 +135,13 @@ export const sendMessage = (text: string): thunkType => async (dispatch, getStat
 /**
  * Requests counter of new messages from api and set it to state.
  */
-export const getNewMessagesCount = (): thunkType => async (dispatch) => {
+export const getNewMessagesCount = (): thunkType => async (dispatch, getState) => {
+    const isAuthorized = getState().auth.isAuth;
+
+    if (!isAuthorized) {
+        return;
+    }
+
     let data = await Api.Dialogs.getNewMessagesCount();
 
     dispatch(dialogsActions.newMessagesCountReceived(data));

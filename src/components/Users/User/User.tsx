@@ -9,6 +9,8 @@ import Card from '@material-ui/core/Card';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
+import {useSelector} from 'react-redux';
+import {getIsAuthSelector} from '../../../Common/Selectors/Selectors';
 
 type userPropsType = {
     user: usersType,
@@ -94,6 +96,7 @@ const UserInfo: React.FC<userInfoType> = (props) => {
  * @constructor
  */
 const User: React.FC<userPropsType> = (props) => {
+    const isAuthorized = useSelector(getIsAuthSelector);
     const classes = useStyles();
     let user = props.user;
     user.photos = props.user.photos || emptyPhotos;
@@ -105,12 +108,14 @@ const User: React.FC<userPropsType> = (props) => {
                     <Avatar className={classes.largeAvatar} alt='ava' src={user.photos.small || userMale}/>
                 </NavLink>
                 <div>
-                    <FollowUnfollowButton isFollowed={user.followed}
-                                          userId={user.id}
-                                          followingInProgress={props.followingInProgress}
-                                          followUser={props.followUser}
-                                          unfollowUser={props.unfollowUser}
-                    />
+                    {isAuthorized
+                    && <FollowUnfollowButton isFollowed={user.followed}
+                                             userId={user.id}
+                                             followingInProgress={props.followingInProgress}
+                                             followUser={props.followUser}
+                                             unfollowUser={props.unfollowUser}
+                      />
+                    }
                 </div>
             </div>
             <UserInfo userName={user.name} userStatus={user.status}/>
