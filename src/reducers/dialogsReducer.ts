@@ -19,7 +19,7 @@ const initialState: initialStateType = {
     newMessagesCount: 0
 };
 
-const dialogReducer = (state = initialState, action: actionsType): initialStateType => {
+const dialogsReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
         case 'SN/DIALOGS/ADD_MESSAGE':
             return {
@@ -41,10 +41,25 @@ const dialogReducer = (state = initialState, action: actionsType): initialStateT
                 ...state,
                 currentChatId: action.payload
             }
-        case 'SN/DIALOGS/NEW_MESSAGES_COUNT_RECEIVED': {
+        case 'SN/DIALOGS/NEW_MESSAGES_COUNT_RECEIVED':
             return {
                 ...state,
                 newMessagesCount: action.payload
+            }
+        case 'SN/DIALOGS/CHAT_MESSAGES_READ': {
+            let messagesWasRead = 0;
+            return {
+                ...state,
+                userList: state.userList.map(userItem => {
+                    if (action.payload === userItem.id) {
+                        messagesWasRead = userItem.newMessagesCount;
+                        userItem.newMessagesCount = 0;
+                        userItem.hasNewMessages = false;
+                    }
+
+                    return userItem;
+                }),
+                newMessagesCount: state.newMessagesCount >= messagesWasRead ? state.newMessagesCount - messagesWasRead : 0
             }
         }
         default:
@@ -57,6 +72,7 @@ export const dialogsActions = {
     dialogsListReceived: (list: Array<userListType>) => ({type: 'SN/DIALOGS/DIALOGS_LIST_RECEIVED', payload: list} as const),
     messagesListReceived: (list: Array<messageListType>) => ({type: 'SN/DIALOGS/MESSAGES_LIST_RECEIVED', payload: list} as const),
     chatChanged: (chatId: number) => ({type: 'SN/DIALOGS/CHAT_CHANGED', payload: chatId} as const),
+    chatMessagesRead: (chatId: number) => ({type: 'SN/DIALOGS/CHAT_MESSAGES_READ', payload: chatId} as const),
     newMessagesCountReceived: (count: number) => ({type: 'SN/DIALOGS/NEW_MESSAGES_COUNT_RECEIVED', payload: count} as const),
 }
 
@@ -106,4 +122,4 @@ export const getNewMessagesCount = (): thunkType => async (dispatch) => {
     dispatch(dialogsActions.newMessagesCountReceived(data));
 }
 
-export default dialogReducer;
+export default dialogsReducer;

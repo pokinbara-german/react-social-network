@@ -1,5 +1,5 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {
     getDialogsMessagesSelector,
     getDialogsUserListSelector,
@@ -8,7 +8,7 @@ import {
 import Post from '../../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
 import {AddMessageForm} from '../../../Common/AddMessageForm/AddMessageForm';
-import {sendMessage} from '../../../reducers/dialogsReducer';
+import {dialogsActions, sendMessage} from '../../../reducers/dialogsReducer';
 import {PostActions} from '../../../Common/Post/PostActions/PostActions';
 import {MessagesList} from '../../../Common/MessagesList/MessagesList';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
@@ -42,18 +42,30 @@ const useStyles = makeStyles((theme: Theme) =>
  * @constructor
  */
 export const Dialog: React.FC<dialogPropsType> = (props) => {
+    let {currentDialogId} = props;
     const messages = useSelector(getDialogsMessagesSelector);
     const opponents = useSelector(getDialogsUserListSelector);
     const ownerId = useSelector(getOwnerIdSelector);
     const ownerPhoto = useSelector(getOwnerPhotosSelector)?.small;
     const classes = useStyles();
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const opponent = opponents.filter(user => {
-        return user.id === props.currentDialogId ? user as userListType : undefined;
+        return user.id === currentDialogId ? user as userListType : undefined;
     });
 
     const opponentPhoto = opponent.length ? opponent[0].photos.small : null;
+
+    useEffect(() => {
+        if (!currentDialogId || !opponent.length){
+            return;
+        }
+
+        if (opponent[0].hasNewMessages) {
+            dispatch(dialogsActions.chatMessagesRead(currentDialogId));
+        }
+    }, [currentDialogId, dispatch, opponent]);
 
     let messagesComponentsList = messages.map(message => {
         const isOwner = message.senderId === ownerId;
