@@ -60,6 +60,10 @@ export function getNewMessagesCountSelector (state: appStateType) {
     return state.dialogsPage.newMessagesCount;
 }
 
+export function getAppInitDoneSelector (state: appStateType) {
+    return state.app.initDone;
+}
+
 export function getOwnerPhotosSelector (state: appStateType) {
     return state.profilePage.ownerProfile?.photos;
 }

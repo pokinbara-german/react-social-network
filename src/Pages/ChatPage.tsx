@@ -12,7 +12,7 @@ import withAuthRedirect from '../Hocs/withAuthRedirect';
  * @type string
  * @description block max width.
  */
-const maxWidth = '30ch';
+const MAX_WIDTH = '30ch';
 
 /**
  * Returns whole page of chat.
@@ -35,7 +35,7 @@ const ChatPage: React.FC = () => {
         <div>
             <ChatMessages/>
             <Divider/>
-            <AddMessageForm blockWidth={maxWidth}
+            <AddMessageForm blockWidth={MAX_WIDTH}
                             sendMessage={sendMessage}
                             buttonText='Send'
                             minTextLength={2}

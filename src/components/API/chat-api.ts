@@ -20,7 +20,9 @@ type subscribersType = {
     'connection-changed': Array<connectionChangedSubscriberType>
 }
 
-/** @constant {string} URL to websocket end-point */
+/** @constant
+ *  @type string
+ *  @description URL to websocket end-point */
 const BASE_URL = 'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx';
 
 let subscribers: subscribersType = {
@@ -30,12 +32,19 @@ let subscribers: subscribersType = {
 
 let ws: WebSocket | null = null;
 
+/**
+ * Notify subscribers about connection closing and restart it's connection.
+ */
 function closeHandler() {
     console.log('CLOSE WS');
     notifyConnectionChanged(false);
     setTimeout(createChanel, 3000);
 }
 
+/**
+ * Notify subscribers about new message was received.
+ * @param {MessageEvent} event
+ */
 function messageHandler(event: MessageEvent) {
     const newMessages = JSON.parse(event.data);
     newMessages.forEach((message: messageType) => message.id = nanoid());
@@ -50,6 +59,14 @@ function openHandler() {
 }
 
 /**
+ * Notify subscribers about connection status was changed.
+ * @param {boolean} status - connection ready or not.
+ */
+function notifyConnectionChanged(status: boolean) {
+    subscribers['connection-changed'].forEach(subscriber => subscriber(status));
+}
+
+/**
  * Clean WebSocket object from listeners and closes connection.
  */
 function cleanUpWs() {
@@ -59,10 +76,9 @@ function cleanUpWs() {
     ws?.close();
 }
 
-function notifyConnectionChanged(status: boolean) {
-    subscribers['connection-changed'].forEach(subscriber => subscriber(status));
-}
-
+/**
+ * Cleanup old connection and creates new.
+ */
 function createChanel() {
     cleanUpWs();
     ws = new WebSocket(BASE_URL);

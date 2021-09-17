@@ -1,7 +1,6 @@
 import {stringOrNull} from '../../../types';
 import {maxLengthCreator, required, validatorCreator} from '../../../utils/validators';
 import React from 'react';
-import styles from '../Login.module.css';
 import {FormikHelpers, FormikProvider, useFormik} from 'formik';
 import Button from '@material-ui/core/Button';
 import {useDispatch} from 'react-redux';
@@ -33,6 +32,9 @@ const useStyles = makeStyles((theme: Theme) =>
             '& > *': {
                 display: 'flex',
             },
+        },
+        checkboxWrapper: {
+            alignItems: 'center'
         },
         loginInput: {
             flexGrow: 1,
@@ -89,7 +91,7 @@ const LoginForm: React.FC<loginFormPropsType> = (props) => {
                     validatorCreator([required, maxLength30]),
                     {type: 'password'}
                 )}
-                <div className={styles.checkboxWrapper}>
+                <div className={classes.checkboxWrapper}>
                     {createField<fieldNamesType>(
                         undefined,
                         undefined,

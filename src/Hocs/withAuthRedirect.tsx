@@ -7,6 +7,10 @@ type mapStatePropsType = {
     isAuth: boolean
 }
 
+/**
+ * Returns component with redirect to login if user is not authorized. (generic-function)
+ * @param {React.ComponentType} Component - component for wrapping
+ */
 function withAuthRedirect<WCP> (Component: React.ComponentType<WCP>) {
     let mapStateToProps = (state: appStateType) => {
         return (

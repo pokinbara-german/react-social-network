@@ -19,7 +19,7 @@ type userPropsType = {
     unfollowUser: (userId: number) => void,
 }
 
-type followUnfollowPropsType = {
+type followUnfollowButtonPropsType = {
     isFollowed: boolean,
     userId: number,
     followingInProgress: arrayOfNumbers,
@@ -58,9 +58,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /**
  * Returns complete follow or unfollow button.
- * @param {followUnfollowPropsType} props
+ * @param {followUnfollowButtonPropsType} props
  */
-const FollowUnfollowButton: React.FC<followUnfollowPropsType> = React.memo((props) => {
+const FollowUnfollowButton: React.FC<followUnfollowButtonPropsType> = React.memo((props) => {
     let isDisabled: boolean = props.followingInProgress.some(id => id === props.userId);
 
     return(

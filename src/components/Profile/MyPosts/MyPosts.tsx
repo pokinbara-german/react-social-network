@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 import React from 'react';
-import styles from './MyPosts.module.css';
 import Post from '../../../Common/Post/Post';
 import {postsDataType, stringOrNull} from '../../../types';
 import List from '@material-ui/core/List';
@@ -25,19 +24,22 @@ export type myPostsPropsType = {
  * @type string
  * @description block max width.
  */
-const maxWidth = '30ch';
+const MAX_WIDTH = '30ch';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         postsList: {
             width: '100%',
-            maxWidth: maxWidth,
+            maxWidth: MAX_WIDTH,
             backgroundColor: theme.palette.background.paper,
             display: 'flex',
             flexDirection: 'column-reverse'
         },
         postsTitle: {
             margin: theme.spacing(2, 0)
+        },
+        postBlock: {
+            padding: theme.spacing(1)
         }
     })
 );
@@ -56,14 +58,14 @@ const MyPosts: React.FC<myPostsPropsType> = (props) => {
               action={PostActions.textWithLikes(post.text, post.id, post.likes)}
               avatar={props.avatar}
               userName={props.userName}
-              blockWidth={maxWidth}
+              blockWidth={MAX_WIDTH}
         />
     );
 
     return (
-        <div className={styles.postBlock}>
+        <div className={classes.postBlock}>
             <Typography variant='h5' className={classes.postsTitle}>Posts</Typography>
-            <AddMessageForm blockWidth={maxWidth}
+            <AddMessageForm blockWidth={MAX_WIDTH}
                             sendMessage={profileActions.sendPost}
                             buttonText='Add Post'
                             minTextLength={2}

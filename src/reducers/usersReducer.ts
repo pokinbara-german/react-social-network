@@ -93,6 +93,12 @@ export const userActions = {
     } as const)
 }
 
+/**
+ * Gets one page of users from API and sets it to state.
+ * @param {number} pageSize - number of items in page
+ * @param {number} currentPage - number of page
+ * @param {filterType} filter - search filter
+ */
 export const getUsers = (pageSize: number, currentPage: number, filter: filterType): thunkType => {
     return async (dispatch, getState) => {
         dispatch(userActions.updateUsersFetching(true));
@@ -115,6 +121,13 @@ export const getUsers = (pageSize: number, currentPage: number, filter: filterTy
     }
 }
 
+/**
+ * Make process of following or unfollowing wia API and sets result to state.
+ * @param {number} userId - ID of user which will be followed\unfollowed
+ * @param {Dispatch<actionsType>} dispatch - dispatch function
+ * @param {apiMethodType} apiMethod - function of API
+ * @param {function(number): actionsType} actionCreator - process which will be made
+ */
 const processFollowUnfollow = async (
     userId: number,
     dispatch: Dispatch<actionsType>,
@@ -131,12 +144,20 @@ const processFollowUnfollow = async (
     dispatch(userActions.updateFollowingFetching(false, userId));
 }
 
+/**
+ * Makes following process
+ * @param {number} userId - ID of user which will be followed
+ */
 export const follow = (userId: number): thunkType => {
     return async (dispatch) => {
         await processFollowUnfollow(userId, dispatch, Api.Users.follow, userActions.followUser);
     }
 }
 
+/**
+ * Makes unfollowing process
+ * @param {number} userId - ID of user which will be unfollowed
+ */
 export const unfollow = (userId: number): thunkType => {
     return async (dispatch) => {
         await processFollowUnfollow(userId, dispatch, Api.Users.unfollow, userActions.unfollowUser);

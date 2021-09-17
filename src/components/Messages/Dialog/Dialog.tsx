@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
     getDialogsMessagesSelector,
@@ -38,6 +38,19 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 /**
+ * Returns opponent data.
+ * @param {Array<userListType>} opponents - list of dialogs
+ * @param {number} dialogId - profile ID of opponent.
+ */
+function getOpponentData(opponents: Array<userListType>, dialogId: number):userListType|null  {
+    let opponent = opponents.filter(user => {
+        return user.id === dialogId ? user as userListType : undefined;
+    });
+
+    return opponent.length ? opponent[0] : null;
+}
+
+/**
  * Returns block of dialog with list of messages and form to add new.
  * @constructor
  */
@@ -51,18 +64,15 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const opponent = opponents.filter(user => {
-        return user.id === currentDialogId ? user as userListType : undefined;
-    });
+    const opponent = getOpponentData(opponents, currentDialogId);
+    const opponentPhoto = opponent ? opponent.photos.small : null;
 
-    const opponentPhoto = opponent.length ? opponent[0].photos.small : null;
-
-    useEffect(() => {
-        if (!currentDialogId || !opponent.length){
+    React.useEffect(() => {
+        if (!currentDialogId || !opponent){
             return;
         }
 
-        if (opponent[0].hasNewMessages) {
+        if (opponent.hasNewMessages) {
             dispatch(dialogsActions.chatMessagesRead(currentDialogId));
         }
     }, [currentDialogId, dispatch, opponent]);

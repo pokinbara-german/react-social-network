@@ -5,6 +5,10 @@ import Post from '../../Common/Post/Post';
 import {PostActions} from '../../Common/Post/PostActions/PostActions';
 import {MessagesList} from '../../Common/MessagesList/MessagesList';
 
+/**
+ * Returns block with list of messages.
+ * @constructor
+ */
 export const ChatMessages: React.FC = () => {
     const messages = useSelector(getChatMessages);
     const ownerId = useSelector(getOwnerIdSelector);
