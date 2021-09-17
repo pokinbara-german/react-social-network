@@ -24,7 +24,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /**
  * Returns counter for post likes with tooltip and button to add like.
- * @param {likesBlockPropsType} props
+ * @param {likesBlockPropsType} props - props object
+ * @param {string} props.postId - ID of post for identify it in DOM (must be unique)
+ * @param {number} props.likeCount - current count of post likes
  * @constructor
  */
 export const LikesBlock: React.FC<likesBlockPropsType> = (props) => {

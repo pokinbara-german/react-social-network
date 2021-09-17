@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import List from '@material-ui/core/List';
 
 type messagesListPropsType = {
@@ -15,8 +15,9 @@ type messagesListPropsType = {
  * @constructor
  */
 export const MessagesList: React.FC<messagesListPropsType> = (props) => {
-    const messagesRef = useRef<HTMLLIElement>(null);
-    const [isAutoscroll, setIsAutoscroll] = useState(true);
+    const {messages} = props;
+    const messagesRef = React.useRef<HTMLLIElement>(null);
+    const [isAutoscroll, setIsAutoscroll] = React.useState(true);
 
     /**
      * Detects scroll end and set autoscroll to true or false.
@@ -32,17 +33,17 @@ export const MessagesList: React.FC<messagesListPropsType> = (props) => {
         }
     }
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (isAutoscroll) {
             setTimeout(() => {
                 messagesRef.current?.scrollIntoView({behavior: 'smooth', block: 'end'});
             }, 500);
         }
-    }, [props.messages, isAutoscroll]);
+    }, [messages, isAutoscroll]);
 
     return (
         <List style={{height: props.height, overflowY: 'auto', width: '100%'}} onScroll={scrollHandler}>
-            {props.messages}
+            {messages}
             <li ref={messagesRef}/>
         </List>
     );

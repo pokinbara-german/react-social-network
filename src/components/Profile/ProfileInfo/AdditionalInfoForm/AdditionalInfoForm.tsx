@@ -1,31 +1,19 @@
-import React, {useState} from "react";
-import {required, validatorCreator} from "../../../../utils/validators";
+import React from "react";
 import {contactsType, profileType} from '../../../../types';
 import Button from '@material-ui/core/Button';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {createField, FormikCheckbox, FormikField} from '../../../../Common/FormComponents/FieldsComponentsFormik';
-import {ErrorMessage, FormikHelpers, FormikProvider, useFormik} from 'formik';
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
+import {FormikHelpers, FormikProvider, useFormik} from 'formik';
 import {useDispatch} from 'react-redux';
 import {saveProfile} from '../../../../reducers/profileReducer';
+import {FormBasicInfo, FormContactsInfo} from './AdditionalInfoParts/AdditionalInfoParts';
 
 type propsType = {
     profile: profileType,
     onChancel: () => void
 }
 
-type formBasicInfoPropsType = {
-    checked: boolean,
-    triggerCheckbox: () => void
-}
-
-type formContactsInfoPropsType = {
-    contacts: contactsType
-}
-
 type formDataType = profileType;
-type fieldNamesType = keyof formDataType;
+export type fieldNamesType = keyof formDataType;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -40,23 +28,6 @@ const useStyles = makeStyles((theme: Theme) =>
                 margin: theme.spacing(1),
             },
         },
-        additionalInfoRow: {
-            display: 'flex',
-            justifyContent: 'start',
-            alignItems: 'center',
-            '& > *': {
-                margin: theme.spacing(1),
-            },
-            '& > p': {
-                flexBasis: '92px',
-                textAlign: 'end',
-                margin: theme.spacing(1),
-            },
-            '& > div': {
-                flexGrow: 1,
-                display: 'flex'
-            }
-        },
         infoWrapper: {
             display: 'flex',
             flexWrap: 'wrap',
@@ -66,10 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 flexBasis: '460px',
             }
         },
-        stretched: {
-            flexGrow: 1
-        },
-        errorText: {
+        statusText: {
             color: 'red',
             marginLeft: theme.spacing(1),
         },
@@ -79,6 +47,22 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     }),
 );
+
+/**
+ * Sets every contact value to empty string if it's value is null.
+ * Because Material-UI not allow null as value to input.
+ * @param {contactsType} contacts - object with contacts
+ */
+function normalizeContacts (contacts: contactsType) {
+    for (let contact in contacts) {
+        if (contacts.hasOwnProperty(contact)) {
+            contacts[contact as keyof contactsType] = contacts[contact as keyof contactsType] || '';
+        }
+
+    }
+
+    return contacts;
+}
 
 /**
  * Returns form with profile-info data.
@@ -116,22 +100,6 @@ const AdditionalInfoForm: React.FC<propsType> = (props) => {
     }
 
     /**
-     * Sets every contact value to empty string if it's value is null.
-     * Because Material-UI not allow null as value to input.
-     * @param {contactsType} contacts - object with contacts
-     */
-    function normalizeContacts (contacts: contactsType) {
-        for (let contact in contacts) {
-            if (contacts.hasOwnProperty(contact)) {
-                contacts[contact as keyof contactsType] = contacts[contact as keyof contactsType] || '';
-            }
-
-        }
-
-        return contacts;
-    }
-
-    /**
      * Handler for manually trigger lookingForAJob-checkbox in formik.
      * Because formik can't trigger Material-UI Checkbox by himself if default value set.
      */
@@ -147,7 +115,7 @@ const AdditionalInfoForm: React.FC<propsType> = (props) => {
                 <FormContactsInfo contacts={props.profile.contacts}/>
             </div>
             <div className={classes.errorsWrapper}>
-                <div className={classes.errorText}>{formik.status}</div>
+                <div className={classes.statusText}>{formik.status}</div>
             </div>
             <div className={classes.buttonsWrapper}>
                 <Button color='primary'
@@ -159,103 +127,6 @@ const AdditionalInfoForm: React.FC<propsType> = (props) => {
             </div>
             </FormikProvider>
         </form>
-    );
-}
-
-/**
- * Returns fields: fullName, aboutMe, lookingForAJob, lookingForAJobDescription
- * for profile-info form with needed handlers.
- * @param {formBasicInfoPropsType} props
- * @constructor
- */
-const FormBasicInfo: React.FC<formBasicInfoPropsType> = (props) => {
-    const classes = useStyles();
-    const [checked, setChecked] = useState(props.checked);
-
-    /**
-     * Checkbox trigger handler. Sets value to Checkbox and to formik differently.
-     * Because formik can't trigger Material-UI Checkbox by himself if default value set.
-     * @param event
-     */
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        props.triggerCheckbox();
-        setChecked(event.target.checked);
-    };
-
-    return (
-        <Card variant={'outlined'}>
-            <div className={classes.additionalInfoRow}>
-                <Typography>Full name: </Typography>
-                {createField<fieldNamesType>(
-                    classes.stretched,
-                    'Your name',
-                    'fullName',
-                    FormikField,
-                    validatorCreator([required])
-                )}
-                <ErrorMessage name='fullName' />
-            </div>
-            <div className={classes.additionalInfoRow}>
-                <Typography>About me: </Typography>
-                {createField<fieldNamesType>(
-                    classes.stretched,
-                    'Say about you',
-                    'aboutMe',
-                    FormikField,
-                    validatorCreator([])
-                )}
-            </div>
-            <div className={classes.additionalInfoRow}>
-                <Typography>Look for job: </Typography>
-                {createField<fieldNamesType>(
-                    undefined,
-                    undefined,
-                    'lookingForAJob',
-                    FormikCheckbox,
-                    validatorCreator([]),
-                    {checked, color: 'primary', onChange}
-                )}
-            </div>
-            <div className={classes.errorText}><ErrorMessage name={'lookingForAJob'} /></div>
-            <div className={classes.additionalInfoRow}>
-                <Typography>Skills: </Typography>
-                {createField<fieldNamesType>(
-                    classes.stretched,
-                    'Say about job or skills',
-                    'lookingForAJobDescription',
-                    FormikField,
-                    validatorCreator([]),
-                    {multiline: true}
-                )}
-            </div>
-        </Card>
-    );
-}
-
-/**
- * Returns fields with contacts for profile-info form.
- * @param {formContactsInfoPropsType} props
- * @constructor
- */
-const FormContactsInfo: React.FC<formContactsInfoPropsType> = (props) => {
-    const classes = useStyles();
-
-    return (
-        <Card variant={'outlined'}>
-            {Object.keys(props.contacts).map(key => {
-                return (
-                    <div key={key} className={classes.additionalInfoRow}><Typography>{key}:</Typography>
-                        {createField(
-                            classes.stretched,
-                            key + ' link with http',
-                            'contacts.' + key,
-                            FormikField,
-                            validatorCreator([])
-                        )}
-                    </div>
-                );
-            })}
-        </Card>
     );
 }
 

@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 import React, {useState} from 'react';
-import styles from './ProfileInfo.module.css';
 import Preloader from "../../../Common/Preloader/Preloader";
 import ProfileStatus from "./ProfileStatus";
 import AdditionalInfo from "./AdditionalInfo/AdditionalInfo";
@@ -24,7 +23,7 @@ export type propsType = {
 }
 
 const wallpaperBlend = 'linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95))';
-const blockWidth = '52.5ch';
+const blockWidth = '30ch';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -38,6 +37,11 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'column',
             flexGrow: 1,
             margin: theme.spacing(0, 4),
+        },
+        profileDescription: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            padding: theme.spacing(1)
         }
     }),
 );
@@ -58,7 +62,7 @@ const ProfileInfo: React.FC<propsType> = (props) => {
 
     return (
         <div className={classes.wallpaper}>
-            <div className={styles.profileDescription}>
+            <div className={classes.profileDescription}>
                 <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner} userId={props.profile.userId}/>
                 <div className={classes.profileDescriptionWrapper}>
                     <Typography variant='h4'>{props.profile.fullName}</Typography>

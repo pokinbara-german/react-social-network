@@ -1,5 +1,5 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
     getDialogsMessagesSelector,
     getDialogsUserListSelector,
@@ -8,7 +8,7 @@ import {
 import Post from '../../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
 import {AddMessageForm} from '../../../Common/AddMessageForm/AddMessageForm';
-import {sendMessage} from '../../../reducers/dialogsReducer';
+import {dialogsActions, sendMessage} from '../../../reducers/dialogsReducer';
 import {PostActions} from '../../../Common/Post/PostActions/PostActions';
 import {MessagesList} from '../../../Common/MessagesList/MessagesList';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
@@ -38,22 +38,44 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 /**
+ * Returns opponent data.
+ * @param {Array<userListType>} opponents - list of dialogs
+ * @param {number} dialogId - profile ID of opponent.
+ */
+function getOpponentData(opponents: Array<userListType>, dialogId: number):userListType|null  {
+    let opponent = opponents.filter(user => {
+        return user.id === dialogId ? user as userListType : undefined;
+    });
+
+    return opponent.length ? opponent[0] : null;
+}
+
+/**
  * Returns block of dialog with list of messages and form to add new.
  * @constructor
  */
 export const Dialog: React.FC<dialogPropsType> = (props) => {
+    let {currentDialogId} = props;
     const messages = useSelector(getDialogsMessagesSelector);
     const opponents = useSelector(getDialogsUserListSelector);
     const ownerId = useSelector(getOwnerIdSelector);
     const ownerPhoto = useSelector(getOwnerPhotosSelector)?.small;
     const classes = useStyles();
     const history = useHistory();
+    const dispatch = useDispatch();
 
-    const opponent = opponents.filter(user => {
-        return user.id === props.currentDialogId ? user as userListType : undefined;
-    });
+    const opponent = getOpponentData(opponents, currentDialogId);
+    const opponentPhoto = opponent ? opponent.photos.small : null;
 
-    const opponentPhoto = opponent.length ? opponent[0].photos.small : null;
+    React.useEffect(() => {
+        if (!currentDialogId || !opponent){
+            return;
+        }
+
+        if (opponent.hasNewMessages) {
+            dispatch(dialogsActions.chatMessagesRead(currentDialogId));
+        }
+    }, [currentDialogId, dispatch, opponent]);
 
     let messagesComponentsList = messages.map(message => {
         const isOwner = message.senderId === ownerId;

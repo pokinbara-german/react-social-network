@@ -8,7 +8,11 @@ import {
 } from "../../types";
 import {filterType} from '../../reducers/usersReducer';
 
-const defaultApi = axios.create({
+/**
+ * @const
+ * @description Axios object with basic settings
+ */
+const DEFAULT_API = axios.create({
     withCredentials: true,
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
     headers: {'API-KEY': '4b793204-e0f1-45c5-b96a-007d58f175b3'}
@@ -65,10 +69,14 @@ type getMessagesListResponseType = {
     error: stringOrNull
 }
 
+/**
+ * @const
+ * @description Api-object (documentation see at https://social-network.samuraijs.com/docs)
+ */
 export const Api = {
     Users: {
         getUsers: (pageSize = 4, currentPage = 0, filter: filterType) => {
-            return defaultApi.get<getUsersResponseType>('users',
+            return DEFAULT_API.get<getUsersResponseType>('users',
                 {params: {count: pageSize, page: currentPage + 1, term: filter.searchTerm, friend: filter.friend}}
             ).then(response => {
                 if (response.data.items.length === 0) {
@@ -79,20 +87,20 @@ export const Api = {
             });
         },
         unfollow: (userId: number) => {
-            return defaultApi.delete<basicResponseType>('follow/' + userId)
+            return DEFAULT_API.delete<basicResponseType>('follow/' + userId)
                 .then( response => {
                     return response.data.resultCode === resultCodesType.Success;
                 });
         },
         follow: (userId: number) => {
-            return defaultApi.post<basicResponseType>('follow/' + userId).then( response => {
+            return DEFAULT_API.post<basicResponseType>('follow/' + userId).then( response => {
                     return response.data.resultCode === resultCodesType.Success;
                 });
         }
     },
     Auth: {
         Me: () => {
-            return defaultApi.get<meResponseType>('auth/me/').then(response => {
+            return DEFAULT_API.get<meResponseType>('auth/me/').then(response => {
                 if (response.data.resultCode === resultCodesType.Success) {
                     return response.data.data;
                 }
@@ -101,7 +109,7 @@ export const Api = {
             });
         },
         Login: (email: string, password: string, rememberMe: boolean, captcha: string) => {
-            return defaultApi.post<loginResponseType>('auth/login/', {email, password, rememberMe, captcha}).then(response => {
+            return DEFAULT_API.post<loginResponseType>('auth/login/', {email, password, rememberMe, captcha}).then(response => {
                 if (response.data.resultCode === resultCodesType.Success) {
                     return {result: response.data.data};
                 }
@@ -113,14 +121,14 @@ export const Api = {
             });
         },
         Logout: () => {
-            return defaultApi.delete<basicResponseType>('auth/login/').then(response => {
+            return DEFAULT_API.delete<basicResponseType>('auth/login/').then(response => {
                 return response.data.resultCode === resultCodesType.Success;
             });
         }
     },
     Profile: {
         getProfile: (userId: number) => {
-            return defaultApi.get<profileType>('profile/' + userId)
+            return DEFAULT_API.get<profileType>('profile/' + userId)
                 .then( response => {
                     if (!response.data) {
                         return null;
@@ -130,13 +138,13 @@ export const Api = {
                 });
         },
         getStatus: (userId: number) => {
-            return defaultApi.get<string>('profile/status/' + userId)
+            return DEFAULT_API.get<string>('profile/status/' + userId)
                 .then( response => {
                     return response.data;
                 });
         },
         updateStatus: (status: string) => {
-            return defaultApi.put<basicResponseType>('profile/status', {status})
+            return DEFAULT_API.put<basicResponseType>('profile/status', {status})
                 .then( response => {
                     return response.data.resultCode === resultCodesType.Success;
                 });
@@ -145,7 +153,7 @@ export const Api = {
             const formData = new FormData();
             formData.append('image', file);
 
-            return defaultApi.put<savePhotoResponseType>('profile/photo', formData, {
+            return DEFAULT_API.put<savePhotoResponseType>('profile/photo', formData, {
                 headers: {'Content-Type': 'multipart/form-data'}
             })
                 .then( response => {
@@ -155,7 +163,7 @@ export const Api = {
                 });
         },
         saveProfile: (profile: profileType) => {
-            return defaultApi.put<updateProfileResponseType>('profile', profile)
+            return DEFAULT_API.put<updateProfileResponseType>('profile', profile)
                 .then(response => {
                     if (response.data.resultCode === resultCodesType.Success) {
                         return Promise.resolve();
@@ -168,7 +176,7 @@ export const Api = {
     },
     Security: {
         getCaptcha: () => {
-            return defaultApi.get<captchaResponseType>('security/get-captcha-url')
+            return DEFAULT_API.get<captchaResponseType>('security/get-captcha-url')
                 .then(response => {
                     if (!response.data) {
                         return;
@@ -180,7 +188,7 @@ export const Api = {
     },
     Dialogs: {
         getDialogsList: () => {
-            return defaultApi.get<dialogsListResponseType>('dialogs')
+            return DEFAULT_API.get<dialogsListResponseType>('dialogs')
                 .then(response => {
                     if (!response.data) {
                         return;
@@ -190,13 +198,13 @@ export const Api = {
                 })
         },
         startRefreshDialog: (userId: number) => {
-            return defaultApi.put<basicResponseType>('dialogs/' + userId)
+            return DEFAULT_API.put<basicResponseType>('dialogs/' + userId)
                 .then(response => {
                     return response.data.resultCode === resultCodesType.Success
                 })
         },
         getMessagesList: (userId: number) => {
-            return defaultApi.get<getMessagesListResponseType>('dialogs/' + userId + '/messages')
+            return DEFAULT_API.get<getMessagesListResponseType>('dialogs/' + userId + '/messages')
                 .then(response => {
                     if (response.data.error) {
                         return;
@@ -206,7 +214,7 @@ export const Api = {
                 })
         },
         sendMessage: (userId: number, message: string) => {
-            return defaultApi.post<dialogsSendMessageResponseType>('dialogs/' + userId + '/messages', {body: message})
+            return DEFAULT_API.post<dialogsSendMessageResponseType>('dialogs/' + userId + '/messages', {body: message})
                 .then(response => {
                     if (response.data.resultCode !== resultCodesType.Success) {
                         return;
@@ -216,7 +224,7 @@ export const Api = {
                 })
         },
         getNewMessagesCount: () => {
-            return defaultApi.get<number>('dialogs/messages/new/count')
+            return DEFAULT_API.get<number>('dialogs/messages/new/count')
                 .then(response => {
                     return response.data;
                 })

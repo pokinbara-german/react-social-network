@@ -3,7 +3,11 @@ import {baseThunkType} from '../types';
 import {chatApi, messageType} from '../components/API/chat-api';
 import {Dispatch} from 'redux';
 
-/** @constant {number} Maximal number of posts in chat */
+/**
+ * @constant
+ * @type number
+ * @description Maximal number of posts in chat
+ */
 const MAX_CHAT_MESSAGES = 100;
 
 export type initialStateType = {
@@ -50,6 +54,11 @@ export const chatActions = {
 
 let _messageHandler: ((messages: Array<messageType>) => void) | null = null;
 
+/**
+ * Helper function for create listener of new messages.
+ * Returns ready listener function.
+ * @param {Dispatch} dispatch
+ */
 let messageHandlerCreator = (dispatch: Dispatch) => {
     if (_messageHandler === null) {
         _messageHandler = (messages) => {
@@ -62,6 +71,11 @@ let messageHandlerCreator = (dispatch: Dispatch) => {
 
 let _connectionHandler: ((status: boolean) => void) | null = null;
 
+/**
+ * Helper function for create listener of connection.
+ * Returns ready listener function.
+ * @param {Dispatch} dispatch
+ */
 let connectionHandlerCreator = (dispatch: Dispatch) => {
     if (_connectionHandler === null) {
         _connectionHandler = (status) => {
@@ -72,12 +86,18 @@ let connectionHandlerCreator = (dispatch: Dispatch) => {
     return _connectionHandler;
 };
 
+/**
+ * Starts connection to chat and will set new messages and connection status to state.
+ */
 export const startMessagesListening = (): thunkType => (dispatch) => {
     chatApi.connect();
     chatApi.subscribe('message-received', messageHandlerCreator(dispatch));
     chatApi.subscribe('connection-changed', connectionHandlerCreator(dispatch));
 }
 
+/**
+ * Stops listeners, clears chat and disconnects from server.
+ */
 export const stopMessagesListening = (): thunkType => (dispatch) => {
     chatApi.unsubscribe('message-received', messageHandlerCreator(dispatch));
     chatApi.unsubscribe('connection-changed', connectionHandlerCreator(dispatch));
@@ -85,6 +105,10 @@ export const stopMessagesListening = (): thunkType => (dispatch) => {
     chatApi.disconnect();
 }
 
+/**
+ * Send new message to chat
+ * @param {string} message - text of message
+ */
 export const sendMessage = (message: string): thunkType => () => {
     chatApi.sendMessage(message);
 }

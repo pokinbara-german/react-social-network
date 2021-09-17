@@ -41,6 +41,20 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 /**
+ * Returns array of ProfileContacts if contact value is not empty.
+ * @param {contactsType} contacts - array of contacts from profile.
+ */
+function getContactsList (contacts: contactsType) {
+    return Object.keys(contacts).map((key) => {
+        let contactValue = contacts[key as keyof contactsType];
+
+        return contactValue
+            ? <ProfileContact key={key} contactTitle={key as keyof contactsType} contactInfo={contactValue}/>
+            : null;
+    })
+}
+
+/**
  * Returns additional info about user with 3 text blocks and 1 block of contact-links.
  * If user is owner of profile also returns button for edit data.
  * @param {propsType} props
@@ -51,20 +65,6 @@ const AdditionalInfo: React.FC<propsType> = (props) => {
 
     let ContactsList = getContactsList(props.contacts);
     let isNeedContacts = !ContactsList.every(contact => contact === null);
-
-    /**
-     * Returns array of ProfileContacts if contact value is not empty.
-     * @param {contactsType} contacts - array of contacts from profile.
-     */
-    function getContactsList (contacts: contactsType) {
-        return Object.keys(contacts).map((key) => {
-            let contactValue = contacts[key as keyof contactsType];
-
-            return contactValue
-                ? <ProfileContact key={key} contactTitle={key as keyof contactsType} contactInfo={contactValue}/>
-                : null;
-        })
-    }
 
     return (
         <div className={classes.additionalInfo} style={{maxWidth: props.blockWidth}}>

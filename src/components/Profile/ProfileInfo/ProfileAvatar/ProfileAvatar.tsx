@@ -1,15 +1,10 @@
 import {stringOrNull} from '../../../../types';
-import React, {ChangeEvent} from 'react';
-import {useDispatch} from 'react-redux';
+import React from 'react';
 import userMale from '../../../../assets/images/user-male.png';
-import {savePhoto} from '../../../../reducers/profileReducer';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {useHistory} from 'react-router-dom';
-import {getRouteNameById, routes} from '../../../../Common/Routes';
-import {startRefreshDialog} from '../../../../reducers/dialogsReducer';
+import {AvatarUploadButton} from './AvatarUploadButton/AvatarUploadButton';
+import {AddDialogButton} from './AddDialogButton/AddDialogButton';
 
 type profileAvatarPropsType = {
     largePhoto: stringOrNull,
@@ -29,13 +24,6 @@ const useStyles = makeStyles((theme: Theme) =>
         large: {
             width: theme.spacing(38),
             height: theme.spacing(38),
-        },
-        input: {
-            display: 'none',
-        },
-        label: {
-            display: 'flex',
-            justifyContent: 'center',
         }
     }),
 );
@@ -48,63 +36,12 @@ const useStyles = makeStyles((theme: Theme) =>
  */
 export const ProfileAvatar: React.FC<profileAvatarPropsType> = (props) => {
     const classes = useStyles();
-    const history = useHistory();
-    const dispatch = useDispatch();
-
     const profileAvatarLarge = props.largePhoto || userMale;
-
-    /**
-     * Add new dialog or refresh existing.
-     * Redirects to new dialog's route.
-     */
-    const addDialog = () => {
-        dispatch(startRefreshDialog(props.userId));
-        history.push(`/${getRouteNameById(routes.dialogs.id)}/${props.userId}`);
-    }
-
-    const AddDialogButton = <Button variant='contained' color='primary' onClick={addDialog}>Start dialog</Button>;
 
     return (
         <div className={classes.avatarWrapper}>
             <Avatar className={classes.large} src={profileAvatarLarge}/>
-            {props.isOwner ? <AvatarUploadButton/> : AddDialogButton}
+            {props.isOwner ? <AvatarUploadButton/> : <AddDialogButton userId={props.userId} />}
         </div>
-    );
-}
-
-/**
- * Returns styled button for upload user's avatar.
- * @constructor
- */
-const AvatarUploadButton: React.FC = () => {
-    const dispatch = useDispatch();
-    const classes = useStyles();
-
-    function onFileChange(event: ChangeEvent<HTMLInputElement>) {
-        if (!event.target.files) {
-            return;
-        }
-
-        dispatch(savePhoto(event.target.files[0]));
-    }
-
-    return (
-        <>
-            <input className={classes.input}
-                   accept='image/*'
-                   type='file'
-                   id='icon-button-file'
-                   onChange={onFileChange}
-            />
-            <label htmlFor='icon-button-file' className={classes.label}>
-                <Button variant="contained"
-                        color="primary"
-                        component="span"
-                        startIcon={<PhotoCamera />}
-                >
-                    Upload
-                </Button>
-            </label>
-        </>
     );
 }

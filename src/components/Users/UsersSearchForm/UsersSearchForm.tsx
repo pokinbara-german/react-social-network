@@ -46,7 +46,7 @@ export const UsersSearchForm: React.FC<propsType> = React.memo((props) => {
     /**
      * Process form-data to needed format and call API.
      * @param {formFieldsType} values object with data from form.
-     * @param {boolean} setSubmitting set isSubmitting form.
+     * @param {function(boolean):void} setSubmitting set isSubmitting form.
      */
     function onSubmit(values: formFieldsType, {setSubmitting}: FormikHelpers<formFieldsType>) {
         const filter: filterType = {

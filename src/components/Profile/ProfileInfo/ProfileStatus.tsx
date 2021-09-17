@@ -1,5 +1,4 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
-import styles from './ProfileInfo.module.css';
 import Preloader from "../../../Common/Preloader/Preloader";
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -28,13 +27,16 @@ type propsType = {
 const ProfileStatus: React.FC<propsType> = (props) => {
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
+            statusDiv: {
+                display: 'flex',
+                maxWidth: props.blockWidth || 'auto',
+            },
             statusInput: {
+                maxWidth: props.blockWidth || 'auto',
                 margin: theme.spacing(1),
             },
             statusText: {
                 overflowWrap: 'anywhere',
-                maxWidth: props.blockWidth || 'auto',
-                flexBasis: '35.5ch',
                 flexGrow: 1,
                 whiteSpace: 'pre-line'
             },
@@ -56,10 +58,9 @@ const ProfileStatus: React.FC<propsType> = (props) => {
     }, [props.status]);
 
     const toggleEditing = () => {
-        let newValue = !isStatusEditing;
-        setStatusEditing(newValue);
+        setStatusEditing(!isStatusEditing);
 
-        if (!newValue && status && (statusText !== status)) {
+        if (isStatusEditing && status && (statusText !== status)) {
             props.updateStatus(status);
         }
     }
@@ -83,7 +84,7 @@ const ProfileStatus: React.FC<propsType> = (props) => {
             />
           </Tooltip>
         : <React.Fragment>
-            <div className={styles.statusDiv} onClick={toggleEditing}>
+            <div className={classes.statusDiv} onClick={toggleEditing}>
                 {props.isOwner
                     ? <Tooltip title="Click to edit" aria-label="edit status" placement="right">
                         <Typography color='textSecondary' className={classes.statusText}>{statusText}</Typography>

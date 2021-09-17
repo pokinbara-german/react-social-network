@@ -32,6 +32,9 @@ export const appActions = {
     setInitDone: () => ({type: 'SN/APP/SET_INIT_DONE'} as const)
 }
 
+/**
+ * Gets data, needed for app start.
+ */
 export const makeInit = (): thunkType => async (dispatch) => {
     try {
         await dispatch(getAuth());

@@ -5,6 +5,12 @@ import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import ScheduleOutlinedIcon from '@material-ui/icons/ScheduleOutlined';
 import {LikesBlock} from '../LikesBlock/LikesBlock';
 
+/**
+ * @const
+ * @description - value of css font-size for icons.
+ */
+const FONT_SIZE = '0.9rem';
+
 export const PostActions = {
     onlyText(text: string) {
         return <Typography component='span'>{text}</Typography>;
@@ -13,7 +19,7 @@ export const PostActions = {
         return (
             <div className={styles.textWithIconWrapper}>
                 <Typography component='span'>{text}</Typography>
-                <CheckOutlinedIcon style={{fontSize: '0.9rem'}} color='primary' className={styles.icon}/>
+                <CheckOutlinedIcon style={{fontSize: FONT_SIZE}} color='primary' className={styles.icon}/>
             </div>
         );
     },
@@ -21,7 +27,7 @@ export const PostActions = {
         return (
             <div className={styles.textWithIconWrapper}>
                 <Typography component='span'>{text}</Typography>
-                <ScheduleOutlinedIcon style={{fontSize: '0.9rem'}} color='disabled' className={styles.icon}/>
+                <ScheduleOutlinedIcon style={{fontSize: FONT_SIZE}} color='disabled' className={styles.icon}/>
             </div>
         );
     },

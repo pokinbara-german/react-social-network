@@ -3,31 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import React, {useEffect} from 'react';
-import {dialogsActions, getDialogsList, getMessagesList, initialStateType} from '../../reducers/dialogsReducer';
+import React from 'react';
+import {dialogsActions, getDialogsList, getMessagesList} from '../../reducers/dialogsReducer';
 import List from '@material-ui/core/List';
 import Post from '../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
-import {useDispatch} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {MatchParams} from '../../types';
 import {NoDialog} from './NoDialog/NoDialog';
 import {Dialog} from './Dialog/Dialog';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import {Counter} from '../../Common/Counter/Counter';
-
-export type dialogsPropsType = {
-    dialogsPage: initialStateType
-};
+import {getDialogsUserListSelector} from '../../Common/Selectors/Selectors';
+import withAuthRedirect from '../../Hocs/withAuthRedirect';
 
 type matchType = RouteComponentProps<MatchParams>;
 
 /**
  * Returns page with dialogs.
- * @param {dialogsPropsType} props - props object (whole dialogs stage)
+ * Allow only for authorized users.
+ * @param {Object} props - props object
+ * @param {matchType} props.match - props from router
  * @constructor
  */
-const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
+const Dialogs: React.FC<matchType> = (props) => {
+    const userList = useSelector(getDialogsUserListSelector);
     const dispatch = useDispatch();
     const currentDialogId = props.match.params.userId ? parseInt(props.match.params.userId) : 0;
 
@@ -57,7 +58,7 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
 
     const classes = useStyles();
 
-    let users = props.dialogsPage.userList.map( (user) => {
+    let users = userList.map( (user) => {
         let action = user.newMessagesCount > 0 ? <Counter count={user.newMessagesCount} inCorner={true}/> : undefined;
 
         return <Post key={'User' + user.id}
@@ -70,14 +71,14 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
         />
     });
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (currentDialogId) {
             dispatch(dialogsActions.chatChanged(currentDialogId));
             dispatch(getMessagesList(currentDialogId));
         }
     }, [currentDialogId, dispatch]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         dispatch(getDialogsList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -98,4 +99,4 @@ const Dialogs: React.FC<dialogsPropsType & matchType> = (props) => {
     );
 };
 
-export default Dialogs;
+export default withRouter(withAuthRedirect(Dialogs));
