@@ -1,6 +1,7 @@
 import {inferActionsType} from '../redux/reduxStore';
 import {baseThunkType, messageListType, userListType} from '../types';
 import {Api} from '../components/API/api';
+import he from 'he';
 
 export type initialStateType = {
     userList: Array<userListType>,
@@ -19,6 +20,19 @@ const initialState: initialStateType = {
     newMessagesCount: 0
 };
 
+/**
+ * Unescape HTML-entities in every message body.
+ * Returns new array.
+ * @param {Array<messageListType>} messagesList - list of messages from API
+ */
+function getUnescapedMessages(messagesList: Array<messageListType>): Array<messageListType> {
+    return  messagesList.map(message => {
+        let unescapedMessage = {...message};
+        unescapedMessage.body = he.unescape(message.body);
+        return unescapedMessage;
+    })
+}
+
 const dialogsReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
         case 'SN/DIALOGS/ADD_MESSAGE':
@@ -34,7 +48,7 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
         case 'SN/DIALOGS/MESSAGES_LIST_RECEIVED':
             return {
                 ...state,
-                messageList: [...action.payload]
+                messageList: getUnescapedMessages(action.payload)
             }
         case 'SN/DIALOGS/CHAT_CHANGED':
             return {
