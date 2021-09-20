@@ -17,18 +17,18 @@ export const PostActions = {
     },
     textWithOk(text: string) {
         return (
-            <div className={styles.textWithIconWrapper}>
+            <span className={styles.textWithIconWrapper}>
                 <Typography component='span'>{text}</Typography>
                 <CheckOutlinedIcon style={{fontSize: FONT_SIZE}} color='primary' className={styles.icon}/>
-            </div>
+            </span>
         );
     },
     textWithWait(text: string) {
         return (
-            <div className={styles.textWithIconWrapper}>
+            <span className={styles.textWithIconWrapper}>
                 <Typography component='span'>{text}</Typography>
                 <ScheduleOutlinedIcon style={{fontSize: FONT_SIZE}} color='disabled' className={styles.icon}/>
-            </div>
+            </span>
         );
     },
     textWithLikes(text: string, postId: string, likes: number) {
