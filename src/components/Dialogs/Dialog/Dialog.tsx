@@ -1,9 +1,11 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+    getDialogHasMoreSelector,
     getDialogsMessagesSelector,
     getDialogsUserListSelector,
-    getOwnerIdSelector, getOwnerPhotosSelector
+    getOwnerIdSelector,
+    getOwnerPhotosSelector
 } from '../../../Common/Selectors/Selectors';
 import Post from '../../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
@@ -17,6 +19,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {useHistory} from 'react-router-dom';
 import {userListType} from '../../../types';
 import {getRouteNameById, routes} from '../../../Common/Routes';
+import {MoreDialogMessagesButton} from './MoreDialogMessagesButton/MoreDialogMessagesButton';
 
 type dialogPropsType = {
     currentDialogId: number
@@ -60,6 +63,7 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
     const opponents = useSelector(getDialogsUserListSelector);
     const ownerId = useSelector(getOwnerIdSelector);
     const ownerPhoto = useSelector(getOwnerPhotosSelector)?.small;
+    const hasMore = useSelector(getDialogHasMoreSelector);
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
@@ -94,6 +98,10 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
                      rightSided={isOwner}
         />
     });
+
+    if (hasMore) {
+        messagesComponentsList.unshift(<MoreDialogMessagesButton currentDialogId={currentDialogId}/>);
+    }
 
     function closeDialog () {
         history.push(`/${getRouteNameById(routes.dialogs.id)}`);

@@ -7,6 +7,8 @@ export type initialStateType = {
     userList: Array<userListType>,
     messageList: Array<messageListType>,
     currentDialogId: number,
+    currentDialogPage: number,
+    currentDialogHasMore: boolean,
     newMessagesCount: number
 };
 
@@ -17,6 +19,8 @@ const initialState: initialStateType = {
     userList: [],
     messageList: [],
     currentDialogId: 0,
+    currentDialogPage: 0,
+    currentDialogHasMore: false,
     newMessagesCount: 0
 };
 
@@ -48,12 +52,16 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
         case 'SN/DIALOGS/MESSAGES_LIST_RECEIVED':
             return {
                 ...state,
-                messageList: getUnescapedMessages(action.payload)
+                messageList: [...getUnescapedMessages(action.payload), ...state.messageList],
+                currentDialogPage: state.currentDialogPage + 1
             }
         case 'SN/DIALOGS/CHAT_CHANGED':
             return {
                 ...state,
-                currentDialogId: action.payload
+                currentDialogId: action.payload,
+                messageList: [],
+                currentDialogPage: 0,
+                currentDialogHasMore: false
             }
         case 'SN/DIALOGS/NEW_MESSAGES_COUNT_RECEIVED':
             return {
@@ -76,6 +84,11 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
                 newMessagesCount: state.newMessagesCount >= messagesWasRead ? state.newMessagesCount - messagesWasRead : 0
             }
         }
+        case 'SN/DIALOGS/HAS_NEW_MESSAGES_CHANGED':
+            return {
+                ...state,
+                currentDialogHasMore: action.payload > state.messageList.length
+            }
         default:
             return state;
     }
@@ -88,6 +101,7 @@ export const dialogsActions = {
     chatChanged: (chatId: number) => ({type: 'SN/DIALOGS/CHAT_CHANGED', payload: chatId} as const),
     chatMessagesRead: (chatId: number) => ({type: 'SN/DIALOGS/CHAT_MESSAGES_READ', payload: chatId} as const),
     newMessagesCountReceived: (count: number) => ({type: 'SN/DIALOGS/NEW_MESSAGES_COUNT_RECEIVED', payload: count} as const),
+    countMessagesChanged: (count: number) => ({type: 'SN/DIALOGS/HAS_NEW_MESSAGES_CHANGED', payload: count} as const),
 }
 
 /**
@@ -121,14 +135,16 @@ export const startRefreshDialog = (userId: number): thunkType => async (dispatch
  * Requests list of messages from api and set it to state.
  * @param {number} userId - opponent ID
  */
-export const getMessagesList = (userId: number): thunkType => async (dispatch) => {
-    let data = await Api.Dialogs.getMessagesList(userId);
+export const getMessagesList = (userId: number): thunkType => async (dispatch, getState) => {
+    const dialogsPage = getState().dialogsPage;
+    let data = await Api.Dialogs.getMessagesList(userId, dialogsPage.currentDialogPage);
 
     if (!data) {
         return;
     }
 
-    dispatch(dialogsActions.messagesListReceived(data));
+    dispatch(dialogsActions.messagesListReceived(data.items));
+    dispatch(dialogsActions.countMessagesChanged(data.totalCount));
 }
 
 /**

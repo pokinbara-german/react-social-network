@@ -60,6 +60,10 @@ export function getNewMessagesCountSelector (state: appStateType) {
     return state.dialogsPage.newMessagesCount;
 }
 
+export function getDialogHasMoreSelector (state: appStateType) {
+    return state.dialogsPage.currentDialogHasMore;
+}
+
 export function getAppInitDoneSelector (state: appStateType) {
     return state.app.initDone;
 }
