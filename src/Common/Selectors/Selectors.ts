@@ -4,14 +4,6 @@ export function getUsersSelector (state: appStateType) {
     return state.usersPage.users;
 }
 
-export function getCurrentPageSelector (state: appStateType) {
-    return state.usersPage.currentPage;
-}
-
-export function getPageSizeSelector (state: appStateType) {
-    return state.usersPage.pageSize;
-}
-
 export function getIsUsersFetchingSelector (state: appStateType) {
     return state.usersPage.isUsersFetching;
 }

@@ -33,6 +33,13 @@ const initialState: initialStateType = {
     }
 };
 
+/**
+ * Sets user with ID in list followed or unfollowed.
+ * Returns new list of users.
+ * @param {usersType} userObject - object of user from search
+ * @param {number} userId - ID of profile
+ * @param {boolean} status - true - is followed, false - is not
+ */
 function mapUserFollowingStatus(userObject: usersType, userId: number, status: boolean) {
         if (userObject.id === userId) {
             return {...userObject, followed: status}
@@ -42,24 +49,29 @@ function mapUserFollowingStatus(userObject: usersType, userId: number, status: b
 
 const usersReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
-        case 'SN/USERS/FOLLOW':
+        case 'SN/USERS/FOLLOWED':
             return {
                 ...state,
                 users: state.users.map(user => mapUserFollowingStatus(user, action.userId, true))
             }
-        case 'SN/USERS/UNFOLLOW':
+        case 'SN/USERS/UNFOLLOWED':
             return {
                 ...state,
                 users: state.users.map(user => mapUserFollowingStatus(user, action.userId, false))
             }
-        case 'SN/USERS/ZERO_NEXT_PAGE':
-            return {...state, currentPage: 0};
         case 'SN/USERS/SET_SEARCH_TERM':
-            return {...state, filter: {...action.filter}, users: []};
-        case 'SN/USERS/SET_USERS':
-            return {...state, users: [...state.users, ...action.users]}
-        case 'SN/USERS/NEXT_PAGE':
-            return {...state, currentPage: ++state.currentPage}
+            return {
+                ...state,
+                filter: {...action.filter},
+                users: [],
+                currentPage: 0
+            }
+        case 'SN/USERS/USERS_LIST_RECEIVED':
+            return {
+                ...state,
+                users: [...state.users, ...action.users],
+                currentPage: ++state.currentPage
+            }
         case 'SN/USERS/UPDATE_IS_USERS_FETCHING':
             return {...state, isUsersFetching: action.isUsersFetching}
         case 'SN/USERS/UPDATE_IS_FOLLOWING_FETCHING':
@@ -76,16 +88,20 @@ const usersReducer = (state = initialState, action: actionsType): initialStateTy
 }
 
 export const userActions = {
-    followUser: (userId: number) => ({type: 'SN/USERS/FOLLOW', userId} as const),
-    unfollowUser: (userId: number) => ({type: 'SN/USERS/UNFOLLOW', userId} as const),
-    zeroNextPage: () => ({type: 'SN/USERS/ZERO_NEXT_PAGE'} as const),
+    /** Action after user following */
+    followUser: (userId: number) => ({type: 'SN/USERS/FOLLOWED', userId} as const),
+    /** Action after user unfollowing */
+    unfollowUser: (userId: number) => ({type: 'SN/USERS/UNFOLLOWED', userId} as const),
+    /** Action for set new search filter */
     setSearchFilter: (filter: filterType) => ({type: 'SN/USERS/SET_SEARCH_TERM', filter} as const),
-    setUsers: (users: Array<usersType>) => ({type: 'SN/USERS/SET_USERS', users} as const),
-    setNextPage: () => ({type: 'SN/USERS/NEXT_PAGE'} as const),
+    /** Action after users list was received from API */
+    usersListReceived: (users: Array<usersType>) => ({type: 'SN/USERS/USERS_LIST_RECEIVED', users} as const),
+    /** Action which sets status of users list receiving. true - in progress, false - is done */
     updateUsersFetching: (isUsersFetching: boolean) => ({
         type: 'SN/USERS/UPDATE_IS_USERS_FETCHING',
         isUsersFetching
     } as const),
+    /** Action which sets status of users following\unfollowing process. true - in progress, false - is done */
     updateFollowingFetching: (isFetching: boolean, userId: number) => ({
         type: 'SN/USERS/UPDATE_IS_FOLLOWING_FETCHING',
         isFetching,
@@ -95,19 +111,18 @@ export const userActions = {
 
 /**
  * Gets one page of users from API and sets it to state.
- * @param {number} pageSize - number of items in page
- * @param {number} currentPage - number of page
  * @param {filterType} filter - search filter
  */
-export const getUsers = (pageSize: number, currentPage: number, filter: filterType): thunkType => {
+export const getUsers = (filter: filterType): thunkType => {
     return async (dispatch, getState) => {
+        const currentPage = getState().usersPage.currentPage;
+        const pageSize = getState().usersPage.pageSize;
+
         dispatch(userActions.updateUsersFetching(true));
         if (filter !== getState().usersPage.filter) {
             dispatch(userActions.setSearchFilter(filter));
-            dispatch(userActions.zeroNextPage());
         }
 
-        //TODO: хранить currentPage в стейте и оттуда же доставать
         let data = await Api.Users.getUsers(pageSize, currentPage, filter);
 
         dispatch(userActions.updateUsersFetching(false));
@@ -116,8 +131,7 @@ export const getUsers = (pageSize: number, currentPage: number, filter: filterTy
             return;
         }
 
-        dispatch(userActions.setUsers(data.items));
-        dispatch(userActions.setNextPage());
+        dispatch(userActions.usersListReceived(data.items));
     }
 }
 
