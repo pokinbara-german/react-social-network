@@ -35,46 +35,59 @@ function getFormattedDate(date: string): string {
     return `${datePart} ${timePart}`;
 }
 
+/** Object with creators of ready actions for Post component */
 export const PostActions = {
+    /**
+     * Returns ready action where only text.
+     * @param {string} text - text in action
+     * @param {string=} date - string with date (optional)
+     */
     onlyText(text: string, date: string = '') {
         return (
             <span className={styles.textWithIconWrapper}>
                 <Typography component='span'>{text}</Typography>
-                {date && <Typography component='span' style={{fontSize: DATE_SIZE}} color='textSecondary'>
-                            {getFormattedDate(date)}
-                         </Typography>
-                }
+                {date && <DateBlock date={date}/>}
             </span>
         );
     },
+    /**
+     * Returns ready action with text and icon of read message.
+     * @param {string} text - text in action
+     * @param {string=} date - string with date (optional)
+     */
     textWithOk(text: string, date: string = '') {
         return (
             <span className={styles.textWithIconWrapper}>
                 <Typography component='span'>{text}</Typography>
                 <span className={styles.secondRow}>
-                    {date && <Typography component='span' style={{fontSize: DATE_SIZE}} color='textSecondary'>
-                                {getFormattedDate(date)}
-                             </Typography>
-                    }
+                    {date && <DateBlock date={date}/>}
                     <CheckOutlinedIcon style={{fontSize: FONT_SIZE}} color='primary' className={styles.icon}/>
                 </span>
             </span>
         );
     },
+    /**
+     * Returns ready action with text and icon of unread message.
+     * @param {string} text - text in action
+     * @param {string=} date - string with date (optional)
+     */
     textWithWait(text: string, date: string = '') {
         return (
             <span className={styles.textWithIconWrapper}>
                 <Typography component='span'>{text}</Typography>
                 <span className={styles.secondRow}>
-                    {date && <Typography component='span' style={{fontSize: DATE_SIZE}} color='textSecondary'>
-                                {getFormattedDate(date)}
-                             </Typography>
-                    }
+                    {date && <DateBlock date={date}/>}
                     <ScheduleOutlinedIcon style={{fontSize: FONT_SIZE}} color='disabled' className={styles.icon}/>
                 </span>
             </span>
         );
     },
+    /**
+     * Returns ready action with text, likes counter and button for add likes.
+     * @param {string} text - text in action
+     * @param {string} postId - ID of post
+     * @param {number} likes - current number of likes
+     */
     textWithLikes(text: string, postId: string, likes: number) {
         return (
             <>
@@ -83,4 +96,22 @@ export const PostActions = {
             </>
         );
     }
+}
+
+type dateBlockPropsType = {
+    date: string
+}
+
+/**
+ *
+ * @param {dateBlockPropsType} props - props object
+ * @param {string} props.date - date as text
+ * @constructor
+ */
+const DateBlock:React.FC<dateBlockPropsType> = (props) => {
+    return (
+        <Typography component='span' style={{fontSize: DATE_SIZE}} color='textSecondary'>
+            {getFormattedDate(props.date)}
+        </Typography>
+    );
 }
