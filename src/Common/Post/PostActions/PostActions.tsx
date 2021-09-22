@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './PostActions.module.css'
 import Typography from '@material-ui/core/Typography';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
-import ScheduleOutlinedIcon from '@material-ui/icons/ScheduleOutlined';
+import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
 import {LikesBlock} from '../LikesBlock/LikesBlock';
 
 /**
@@ -61,7 +61,7 @@ export const PostActions = {
                 <Typography component='span'>{text}</Typography>
                 <span className={styles.secondRow}>
                     {date && <DateBlock date={date}/>}
-                    <CheckOutlinedIcon style={{fontSize: FONT_SIZE}} color='primary' className={styles.icon}/>
+                    <DoneAllOutlinedIcon style={{fontSize: FONT_SIZE}} color='primary' className={styles.icon}/>
                 </span>
             </span>
         );
@@ -77,7 +77,7 @@ export const PostActions = {
                 <Typography component='span'>{text}</Typography>
                 <span className={styles.secondRow}>
                     {date && <DateBlock date={date}/>}
-                    <ScheduleOutlinedIcon style={{fontSize: FONT_SIZE}} color='disabled' className={styles.icon}/>
+                    <CheckOutlinedIcon style={{fontSize: FONT_SIZE}} color='disabled' className={styles.icon}/>
                 </span>
             </span>
         );
