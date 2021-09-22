@@ -12,6 +12,7 @@ export type initialStateType = {
     newMessagesCount: number,
     isDialogsFetching: boolean,
     isMessagesFetching: boolean,
+    isMessageSentFetching: boolean,
 };
 
 type actionsType = inferActionsType<typeof dialogsActions>;
@@ -26,6 +27,7 @@ const initialState: initialStateType = {
     newMessagesCount: 0,
     isDialogsFetching: false,
     isMessagesFetching: false,
+    isMessageSentFetching: false,
 };
 
 /**
@@ -104,6 +106,11 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
                 ...state,
                 isMessagesFetching: action.payload
             }
+        case 'SN/DIALOGS/UPDATE_IS_MESSAGE_SENT_FETCHING':
+            return {
+                ...state,
+                isMessageSentFetching: action.payload
+            }
         default:
             return state;
     }
@@ -133,6 +140,11 @@ export const dialogsActions = {
     updateMessagesFetching: (isMessagesFetching: boolean) => ({
         type: 'SN/DIALOGS/UPDATE_IS_MESSAGES_FETCHING',
         payload: isMessagesFetching
+    } as const),
+    /** Action which sets status of message sent process. true - in progress, false - is done */
+    updateMessageSentFetching: (isMessageSentFetching: boolean) => ({
+        type: 'SN/DIALOGS/UPDATE_IS_MESSAGE_SENT_FETCHING',
+        payload: isMessageSentFetching
     } as const),
 }
 
@@ -171,7 +183,9 @@ export const startRefreshDialog = (userId: number): thunkType => async (dispatch
  */
 export const getMessagesList = (userId: number): thunkType => async (dispatch, getState) => {
     const dialogsPage = getState().dialogsPage;
+
     dispatch(dialogsActions.updateMessagesFetching(true));
+
     let data = await Api.Dialogs.getMessagesList(userId, dialogsPage.currentDialogPage);
 
     if (!data) {
@@ -189,6 +203,9 @@ export const getMessagesList = (userId: number): thunkType => async (dispatch, g
  */
 export const sendMessage = (text: string): thunkType => async (dispatch, getState) => {
     let userId = getState().dialogsPage.currentDialogId;
+
+    dispatch(dialogsActions.updateMessageSentFetching(true));
+
     let data = await Api.Dialogs.sendMessage(userId, text);
 
     if (!data) {
@@ -196,6 +213,7 @@ export const sendMessage = (text: string): thunkType => async (dispatch, getStat
     }
 
     dispatch(dialogsActions.messageSent(data));
+    dispatch(dialogsActions.updateMessageSentFetching(false));
 }
 
 /**

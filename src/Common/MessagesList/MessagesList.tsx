@@ -1,5 +1,8 @@
 import React from 'react';
 import List from '@material-ui/core/List';
+import {useSelector} from 'react-redux';
+import {getIsMessageSentFetchingSelector} from '../Selectors/Selectors';
+import Preloader from '../Preloader/Preloader';
 
 type messagesListPropsType = {
     messages: Array<JSX.Element>,
@@ -16,6 +19,7 @@ type messagesListPropsType = {
  */
 export const MessagesList: React.FC<messagesListPropsType> = (props) => {
     const {messages} = props;
+    const isMessageSentFetching = useSelector(getIsMessageSentFetchingSelector);
     const messagesRef = React.useRef<HTMLLIElement>(null);
     const [isAutoscroll, setIsAutoscroll] = React.useState(true);
 
@@ -44,6 +48,7 @@ export const MessagesList: React.FC<messagesListPropsType> = (props) => {
     return (
         <List style={{height: props.height, overflowY: 'auto', width: '100%'}} onScroll={scrollHandler}>
             {messages}
+            {isMessageSentFetching && <li><Preloader notCentered={true}/></li>}
             <li ref={messagesRef}/>
         </List>
     );
