@@ -81,6 +81,7 @@ export type userListType = {
 export type messageListType = {
     id: string,
     body: string,
+    addedAt: string,
     senderId: number,
     senderName: string,
     recipientId: number,

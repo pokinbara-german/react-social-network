@@ -11,23 +11,67 @@ import {LikesBlock} from '../LikesBlock/LikesBlock';
  */
 const FONT_SIZE = '0.9rem';
 
+/**
+ * @const
+ * @description - value of css font-size for date block.
+ */
+const DATE_SIZE = '0.7rem';
+
+/**
+ * Return date string in human readable format.
+ * @param {string} date - date as string like "2021-09-18T10:06:21.48"
+ */
+function getFormattedDate(date: string): string {
+    const separator = 'T';
+
+    if (!date || date.indexOf(separator) < 1) {
+        return '';
+    }
+
+    let dateParts = date.split(separator);
+    let datePart = dateParts[0].replace(/-/g, ' ').split(' ').reverse().join(' ');
+    let timePart = dateParts[1].split('.')[0];
+
+    return `${datePart} ${timePart}`;
+}
+
 export const PostActions = {
-    onlyText(text: string) {
-        return <Typography component='span'>{text}</Typography>;
-    },
-    textWithOk(text: string) {
+    onlyText(text: string, date: string = '') {
         return (
             <span className={styles.textWithIconWrapper}>
                 <Typography component='span'>{text}</Typography>
-                <CheckOutlinedIcon style={{fontSize: FONT_SIZE}} color='primary' className={styles.icon}/>
+                {date && <Typography component='span' style={{fontSize: DATE_SIZE}} color='textSecondary'>
+                            {getFormattedDate(date)}
+                         </Typography>
+                }
             </span>
         );
     },
-    textWithWait(text: string) {
+    textWithOk(text: string, date: string = '') {
         return (
             <span className={styles.textWithIconWrapper}>
                 <Typography component='span'>{text}</Typography>
-                <ScheduleOutlinedIcon style={{fontSize: FONT_SIZE}} color='disabled' className={styles.icon}/>
+                <span className={styles.secondRow}>
+                    {date && <Typography component='span' style={{fontSize: DATE_SIZE}} color='textSecondary'>
+                                {getFormattedDate(date)}
+                             </Typography>
+                    }
+                    <CheckOutlinedIcon style={{fontSize: FONT_SIZE}} color='primary' className={styles.icon}/>
+                </span>
+            </span>
+        );
+    },
+    textWithWait(text: string, date: string = '') {
+        return (
+            <span className={styles.textWithIconWrapper}>
+                <Typography component='span'>{text}</Typography>
+                <span className={styles.secondRow}>
+                    {date && <Typography component='span' style={{fontSize: DATE_SIZE}} color='textSecondary'>
+                                {getFormattedDate(date)}
+                             </Typography>
+                    }
+                    <ScheduleOutlinedIcon style={{fontSize: FONT_SIZE}} color='disabled' className={styles.icon}/>
+                </span>
             </span>
         );
     },

@@ -85,10 +85,10 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
         const isOwner = message.senderId === ownerId;
         const action = isOwner
             ? (message.viewed
-                ? PostActions.textWithOk(message.body)
-                : PostActions.textWithWait(message.body)
+                ? PostActions.textWithOk(message.body, message.addedAt)
+                : PostActions.textWithWait(message.body, message.addedAt)
               )
-            : PostActions.onlyText(message.body);
+            : PostActions.onlyText(message.body, message.addedAt);
 
         return <Post key={'Message' + message.id}
                      postId={message.id}
