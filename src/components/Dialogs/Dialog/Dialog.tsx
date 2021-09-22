@@ -14,16 +14,21 @@ import {dialogsActions, sendMessage} from '../../../reducers/dialogsReducer';
 import {PostActions} from '../../../Common/Post/PostActions/PostActions';
 import {MessagesList} from '../../../Common/MessagesList/MessagesList';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import {useHistory} from 'react-router-dom';
 import {userListType} from '../../../types';
-import {getRouteNameById, routes} from '../../../Common/Routes';
 import {MoreDialogMessagesButton} from './MoreDialogMessagesButton/MoreDialogMessagesButton';
+import {GoBackButton} from './GoBackButton/GoBackButton';
+import {EmptyMessagesList} from './EmptyMessagesList/EmptyMessagesList';
 
 type dialogPropsType = {
     currentDialogId: number
 }
+
+/**
+ * @const
+ * @type string
+ * @description height of block.
+ */
+const BLOCK_HEIGHT = '70vh';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,13 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
             width: '20%',
             margin: theme.spacing(3),
-        },
-        goBackButtonWrapper: {
-            [theme.breakpoints.up('sm')]: {
-                display: 'none',
-            },
         }
-    }),
+    })
 );
 
 /**
@@ -55,6 +55,7 @@ function getOpponentData(opponents: Array<userListType>, dialogId: number):userL
 
 /**
  * Returns block of dialog with list of messages and form to add new.
+ * @returns {JSX.Element}
  * @constructor
  */
 export const Dialog: React.FC<dialogPropsType> = (props) => {
@@ -65,7 +66,6 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
     const ownerPhoto = useSelector(getOwnerPhotosSelector)?.small;
     const hasMore = useSelector(getDialogHasMoreSelector);
     const classes = useStyles();
-    const history = useHistory();
     const dispatch = useDispatch();
 
     const opponent = getOpponentData(opponents, currentDialogId);
@@ -103,19 +103,13 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
         messagesComponentsList.unshift(<MoreDialogMessagesButton key={'MoreMessagesButton'} currentDialogId={currentDialogId}/>);
     }
 
-    function closeDialog () {
-        history.push(`/${getRouteNameById(routes.dialogs.id)}`);
-    }
-
     return (
         <div className={classes.messages}>
-            <div className={classes.goBackButtonWrapper}>
-                <IconButton onClick={closeDialog}>
-                    <ChevronLeftIcon/>
-                </IconButton>
-                <Divider/>
-            </div>
-            <MessagesList messages={messagesComponentsList} height={'70vh'}/>
+            <GoBackButton/>
+            {messages.length
+                ? <MessagesList messages={messagesComponentsList} height={BLOCK_HEIGHT}/>
+                : <EmptyMessagesList height={BLOCK_HEIGHT}/>
+            }
             <Divider/>
             <AddMessageForm blockWidth={'30ch'}
                             sendMessage={sendMessage}
