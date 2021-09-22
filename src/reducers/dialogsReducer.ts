@@ -40,7 +40,7 @@ function getUnescapedMessages(messagesList: Array<messageListType>): Array<messa
 
 const dialogsReducer = (state = initialState, action: actionsType): initialStateType => {
     switch (action.type) {
-        case 'SN/DIALOGS/ADD_MESSAGE':
+        case 'SN/DIALOGS/MESSAGE_SENT':
             return {
                 ...state,
                 messageList: [...state.messageList, {...action.newMessage}]
@@ -85,7 +85,7 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
                 newMessagesCount: state.newMessagesCount >= messagesWasRead ? state.newMessagesCount - messagesWasRead : 0
             }
         }
-        case 'SN/DIALOGS/HAS_NEW_MESSAGES_CHANGED':
+        case 'SN/DIALOGS/COUNT_MESSAGES_CHANGED':
             return {
                 ...state,
                 currentDialogHasMore: action.payload > state.messageList.length
@@ -96,13 +96,20 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
 }
 
 export const dialogsActions = {
-    messageSent: (newMessage: messageListType) => ({type: 'SN/DIALOGS/ADD_MESSAGE', newMessage} as const),
+    /** Action after message sending */
+    messageSent: (newMessage: messageListType) => ({type: 'SN/DIALOGS/MESSAGE_SENT', newMessage} as const),
+    /** Action after list of dialogs was received from API */
     dialogsListReceived: (list: Array<userListType>) => ({type: 'SN/DIALOGS/DIALOGS_LIST_RECEIVED', payload: list} as const),
+    /** Action after list messages was received from API */
     messagesListReceived: (list: Array<messageListType>) => ({type: 'SN/DIALOGS/MESSAGES_LIST_RECEIVED', payload: list} as const),
+    /** Action after change of dialog opponent */
     chatChanged: (chatId: number) => ({type: 'SN/DIALOGS/CHAT_CHANGED', payload: chatId} as const),
+    /** Action after read messages in current dialog */
     chatMessagesRead: (chatId: number) => ({type: 'SN/DIALOGS/CHAT_MESSAGES_READ', payload: chatId} as const),
+    /** Action after counter of unread messages was received from API */
     newMessagesCountReceived: (count: number) => ({type: 'SN/DIALOGS/NEW_MESSAGES_COUNT_RECEIVED', payload: count} as const),
-    countMessagesChanged: (count: number) => ({type: 'SN/DIALOGS/HAS_NEW_MESSAGES_CHANGED', payload: count} as const),
+    /** Action after change count of messages in messages list */
+    countMessagesChanged: (count: number) => ({type: 'SN/DIALOGS/COUNT_MESSAGES_CHANGED', payload: count} as const),
 }
 
 /**
