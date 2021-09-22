@@ -100,7 +100,7 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
     });
 
     if (hasMore) {
-        messagesComponentsList.unshift(<MoreDialogMessagesButton currentDialogId={currentDialogId}/>);
+        messagesComponentsList.unshift(<MoreDialogMessagesButton key={'MoreMessagesButton'} currentDialogId={currentDialogId}/>);
     }
 
     function closeDialog () {

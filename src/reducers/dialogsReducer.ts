@@ -33,6 +33,7 @@ function getUnescapedMessages(messagesList: Array<messageListType>): Array<messa
     return  messagesList.map(message => {
         let unescapedMessage = {...message};
         unescapedMessage.body = he.unescape(message.body);
+        unescapedMessage.body = unescapedMessage.body.replace(/<br \/>/g, '\n');
         return unescapedMessage;
     })
 }
