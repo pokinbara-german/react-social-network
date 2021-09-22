@@ -56,6 +56,10 @@ export function getDialogHasMoreSelector (state: appStateType) {
     return state.dialogsPage.currentDialogHasMore;
 }
 
+export function getIsDialogsFetchingSelector (state: appStateType) {
+    return state.dialogsPage.isDialogsFetching;
+}
+
 export function getAppInitDoneSelector (state: appStateType) {
     return state.app.initDone;
 }

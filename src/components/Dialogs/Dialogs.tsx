@@ -5,8 +5,6 @@
  */
 import React from 'react';
 import {dialogsActions, getDialogsList, getMessagesList} from '../../reducers/dialogsReducer';
-import List from '@material-ui/core/List';
-import Post from '../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
 import {useDispatch, useSelector} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
@@ -14,9 +12,10 @@ import {MatchParams} from '../../types';
 import {NoDialog} from './NoDialog/NoDialog';
 import {Dialog} from './Dialog/Dialog';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
-import {Counter} from '../../Common/Counter/Counter';
-import {getDialogsUserListSelector} from '../../Common/Selectors/Selectors';
+import {getIsDialogsFetchingSelector} from '../../Common/Selectors/Selectors';
 import withAuthRedirect from '../../Hocs/withAuthRedirect';
+import Preloader from '../../Common/Preloader/Preloader';
+import {DialogsList} from './DialogsList/DialogsList';
 
 type matchType = RouteComponentProps<MatchParams>;
 
@@ -25,10 +24,11 @@ type matchType = RouteComponentProps<MatchParams>;
  * Allow only for authorized users.
  * @param {Object} props - props object
  * @param {matchType} props.match - props from router
+ * @returns {JSX.Element}
  * @constructor
  */
 const Dialogs: React.FC<matchType> = (props) => {
-    const userList = useSelector(getDialogsUserListSelector);
+    const isDialogsFetching = useSelector(getIsDialogsFetchingSelector);
     const dispatch = useDispatch();
     const currentDialogId = props.match.params.userId ? parseInt(props.match.params.userId) : 0;
 
@@ -45,31 +45,13 @@ const Dialogs: React.FC<matchType> = (props) => {
                     width: '100%'
                 },
             },
-            dialogsItems: {
-                height: '90vh',
-                overflowY: 'auto',
-                flexGrow: 1,
-                '& > li > div': {
-                    flexGrow: 1,
-                }
+            emptyDialogsList: {
+                minWidth: 200
             }
         }),
     );
 
     const classes = useStyles();
-
-    let users = userList.map( (user) => {
-        let action = user.newMessagesCount > 0 ? <Counter count={user.newMessagesCount} inCorner={true}/> : undefined;
-
-        return <Post key={'User' + user.id}
-                     postId={String(user.id)}
-                     avatar={user.photos.small}
-                     userName={user.userName}
-                     userId={user.id}
-                     primaryLink={user.id !== currentDialogId}
-                     action={action}
-        />
-    });
 
     React.useEffect(() => {
         if (currentDialogId) {
@@ -86,9 +68,10 @@ const Dialogs: React.FC<matchType> = (props) => {
     return (
         <div className={classes.dialogsWrapper}>
             <div className={classes.dialogs}>
-                <List className={classes.dialogsItems}>
-                    {users}
-                </List>
+                {isDialogsFetching
+                    ? <div className={classes.emptyDialogsList}><Preloader/></div>
+                    : <DialogsList currentDialogId={currentDialogId}/>
+                }
                 <Divider orientation='vertical'/>
             </div>
             {currentDialogId

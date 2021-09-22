@@ -9,7 +9,8 @@ export type initialStateType = {
     currentDialogId: number,
     currentDialogPage: number,
     currentDialogHasMore: boolean,
-    newMessagesCount: number
+    newMessagesCount: number,
+    isDialogsFetching: boolean
 };
 
 type actionsType = inferActionsType<typeof dialogsActions>;
@@ -21,7 +22,8 @@ const initialState: initialStateType = {
     currentDialogId: 0,
     currentDialogPage: 0,
     currentDialogHasMore: false,
-    newMessagesCount: 0
+    newMessagesCount: 0,
+    isDialogsFetching: false,
 };
 
 /**
@@ -90,6 +92,11 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
                 ...state,
                 currentDialogHasMore: action.payload > state.messageList.length
             }
+        case 'SN/DIALOGS/UPDATE_IS_DIALOGS_FETCHING':
+            return {
+                ...state,
+                isDialogsFetching: action.payload
+            }
         default:
             return state;
     }
@@ -110,12 +117,18 @@ export const dialogsActions = {
     newMessagesCountReceived: (count: number) => ({type: 'SN/DIALOGS/NEW_MESSAGES_COUNT_RECEIVED', payload: count} as const),
     /** Action after change count of messages in messages list */
     countMessagesChanged: (count: number) => ({type: 'SN/DIALOGS/COUNT_MESSAGES_CHANGED', payload: count} as const),
+    /** Action which sets status of dialogs list receiving. true - in progress, false - is done */
+    updateDialogsFetching: (isDialogsFetching: boolean) => ({
+        type: 'SN/DIALOGS/UPDATE_IS_DIALOGS_FETCHING',
+        payload: isDialogsFetching
+    } as const),
 }
 
 /**
  * Requests list of dialogs from api and set it to state.
  */
 export const getDialogsList = (): thunkType => async (dispatch) => {
+    dispatch(dialogsActions.updateDialogsFetching(true));
     let data = await Api.Dialogs.getDialogsList();
 
     if (!data || !data.length) {
@@ -124,6 +137,7 @@ export const getDialogsList = (): thunkType => async (dispatch) => {
     }
 
     dispatch(dialogsActions.dialogsListReceived(data));
+    dispatch(dialogsActions.updateDialogsFetching(false));
 }
 
 /**
