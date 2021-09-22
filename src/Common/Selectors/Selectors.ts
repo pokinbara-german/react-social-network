@@ -60,6 +60,10 @@ export function getIsDialogsFetchingSelector (state: appStateType) {
     return state.dialogsPage.isDialogsFetching;
 }
 
+export function getIsMessagesFetchingSelector (state: appStateType) {
+    return state.dialogsPage.isMessagesFetching;
+}
+
 export function getAppInitDoneSelector (state: appStateType) {
     return state.app.initDone;
 }

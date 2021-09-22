@@ -10,7 +10,8 @@ export type initialStateType = {
     currentDialogPage: number,
     currentDialogHasMore: boolean,
     newMessagesCount: number,
-    isDialogsFetching: boolean
+    isDialogsFetching: boolean,
+    isMessagesFetching: boolean,
 };
 
 type actionsType = inferActionsType<typeof dialogsActions>;
@@ -24,6 +25,7 @@ const initialState: initialStateType = {
     currentDialogHasMore: false,
     newMessagesCount: 0,
     isDialogsFetching: false,
+    isMessagesFetching: false,
 };
 
 /**
@@ -97,6 +99,11 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
                 ...state,
                 isDialogsFetching: action.payload
             }
+        case 'SN/DIALOGS/UPDATE_IS_MESSAGES_FETCHING':
+            return {
+                ...state,
+                isMessagesFetching: action.payload
+            }
         default:
             return state;
     }
@@ -121,6 +128,11 @@ export const dialogsActions = {
     updateDialogsFetching: (isDialogsFetching: boolean) => ({
         type: 'SN/DIALOGS/UPDATE_IS_DIALOGS_FETCHING',
         payload: isDialogsFetching
+    } as const),
+    /** Action which sets status of messages list receiving. true - in progress, false - is done */
+    updateMessagesFetching: (isMessagesFetching: boolean) => ({
+        type: 'SN/DIALOGS/UPDATE_IS_MESSAGES_FETCHING',
+        payload: isMessagesFetching
     } as const),
 }
 
@@ -159,6 +171,7 @@ export const startRefreshDialog = (userId: number): thunkType => async (dispatch
  */
 export const getMessagesList = (userId: number): thunkType => async (dispatch, getState) => {
     const dialogsPage = getState().dialogsPage;
+    dispatch(dialogsActions.updateMessagesFetching(true));
     let data = await Api.Dialogs.getMessagesList(userId, dialogsPage.currentDialogPage);
 
     if (!data) {
@@ -167,6 +180,7 @@ export const getMessagesList = (userId: number): thunkType => async (dispatch, g
 
     dispatch(dialogsActions.messagesListReceived(data.items));
     dispatch(dialogsActions.countMessagesChanged(data.totalCount));
+    dispatch(dialogsActions.updateMessagesFetching(false));
 }
 
 /**

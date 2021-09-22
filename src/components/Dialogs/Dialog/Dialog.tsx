@@ -4,6 +4,7 @@ import {
     getDialogHasMoreSelector,
     getDialogsMessagesSelector,
     getDialogsUserListSelector,
+    getIsMessagesFetchingSelector,
     getOwnerIdSelector,
     getOwnerPhotosSelector
 } from '../../../Common/Selectors/Selectors';
@@ -18,6 +19,7 @@ import {userListType} from '../../../types';
 import {MoreDialogMessagesButton} from './MoreDialogMessagesButton/MoreDialogMessagesButton';
 import {GoBackButton} from './GoBackButton/GoBackButton';
 import {EmptyMessagesList} from './EmptyMessagesList/EmptyMessagesList';
+import Preloader from '../../../Common/Preloader/Preloader';
 
 type dialogPropsType = {
     currentDialogId: number
@@ -65,6 +67,7 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
     const ownerId = useSelector(getOwnerIdSelector);
     const ownerPhoto = useSelector(getOwnerPhotosSelector)?.small;
     const hasMore = useSelector(getDialogHasMoreSelector);
+    const isMessagesFetching = useSelector(getIsMessagesFetchingSelector);
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -100,7 +103,9 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
     });
 
     if (hasMore) {
-        messagesComponentsList.unshift(<MoreDialogMessagesButton key={'MoreMessagesButton'} currentDialogId={currentDialogId}/>);
+        messagesComponentsList.unshift(
+            isMessagesFetching ? <Preloader/> : <MoreDialogMessagesButton key={'MoreMessagesButton'} currentDialogId={currentDialogId}/>
+        );
     }
 
     return (
@@ -108,7 +113,9 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
             <GoBackButton/>
             {messages.length
                 ? <MessagesList messages={messagesComponentsList} height={BLOCK_HEIGHT}/>
-                : <EmptyMessagesList height={BLOCK_HEIGHT}/>
+                : isMessagesFetching
+                    ? <div style={{height: BLOCK_HEIGHT}}><Preloader/></div>
+                    : <EmptyMessagesList height={BLOCK_HEIGHT}/>
             }
             <Divider/>
             <AddMessageForm blockWidth={'30ch'}
