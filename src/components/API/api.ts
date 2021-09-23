@@ -203,14 +203,15 @@ export const Api = {
                     return response.data.resultCode === resultCodesType.Success
                 })
         },
-        getMessagesList: (userId: number) => {
-            return DEFAULT_API.get<getMessagesListResponseType>('dialogs/' + userId + '/messages')
+        getMessagesList: (userId: number, page: number = 1, count: number = 10) => {
+            return DEFAULT_API.get<getMessagesListResponseType>('dialogs/' + userId + '/messages',
+                {params: {count: count, page: page + 1}})
                 .then(response => {
                     if (response.data.error) {
                         return;
                     }
 
-                    return response.data.items;
+                    return response.data;
                 })
         },
         sendMessage: (userId: number, message: string) => {

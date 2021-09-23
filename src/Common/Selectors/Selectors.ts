@@ -4,14 +4,6 @@ export function getUsersSelector (state: appStateType) {
     return state.usersPage.users;
 }
 
-export function getCurrentPageSelector (state: appStateType) {
-    return state.usersPage.currentPage;
-}
-
-export function getPageSizeSelector (state: appStateType) {
-    return state.usersPage.pageSize;
-}
-
 export function getIsUsersFetchingSelector (state: appStateType) {
     return state.usersPage.isUsersFetching;
 }
@@ -58,6 +50,22 @@ export function getDialogsUserListSelector (state: appStateType) {
 
 export function getNewMessagesCountSelector (state: appStateType) {
     return state.dialogsPage.newMessagesCount;
+}
+
+export function getDialogHasMoreSelector (state: appStateType) {
+    return state.dialogsPage.currentDialogHasMore;
+}
+
+export function getIsDialogsFetchingSelector (state: appStateType) {
+    return state.dialogsPage.isDialogsFetching;
+}
+
+export function getIsMessageSentFetchingSelector (state: appStateType) {
+    return state.dialogsPage.isMessageSentFetching;
+}
+
+export function getIsMessagesFetchingSelector (state: appStateType) {
+    return state.dialogsPage.isMessagesFetching;
 }
 
 export function getAppInitDoneSelector (state: appStateType) {

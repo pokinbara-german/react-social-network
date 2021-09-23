@@ -9,7 +9,7 @@ type preloaderPropsType = {
 /**
  * Returns block with preloader spinner.
  * @param {preloaderPropsType} props - props object
- * @param {boolean=} props.notCentered - if true, block will be aligned to center
+ * @param {boolean=} props.notCentered - true - aligned to start, false or not used - aligned to center
  * @constructor
  */
 const Preloader: React.FC<preloaderPropsType> = (props) => {

@@ -7,11 +7,7 @@ import {getUsers, filterType} from '../../reducers/usersReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import Users from './Users';
 import React, {useEffect} from 'react';
-import {
-    getCurrentPageSelector,
-    getPageSizeSelector,
-    getUsersFilterSelector
-} from '../../Common/Selectors/Selectors';
+import {getUsersFilterSelector} from '../../Common/Selectors/Selectors';
 import {useHistory} from 'react-router-dom';
 import * as queryString from 'querystring';
 
@@ -20,9 +16,12 @@ type queryType = {
         friend?: string,
 }
 
+/**
+ * Wrapper component above Users component.
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const UsersContainer: React.FC = () => {
-    const currentPage = useSelector(getCurrentPageSelector);
-    const pageSize = useSelector(getPageSizeSelector);
     const filter = useSelector(getUsersFilterSelector);
     const history = useHistory();
 
@@ -69,15 +68,9 @@ const UsersContainer: React.FC = () => {
 
     /** Gets data from ajax on call and append it to state field */
     function onPageChanged(newFilter?: filterType) {
-        let actualFilter = filter;
-        let actualPage = currentPage;
+        let actualFilter = newFilter || filter;
 
-        if (newFilter) {
-            actualFilter = newFilter;
-            actualPage = 0;
-        }
-
-        dispatch(getUsers(pageSize, actualPage, actualFilter));
+        dispatch(getUsers(actualFilter));
     }
 
     return <Users onPageChanged={onPageChanged}/>;

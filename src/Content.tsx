@@ -3,16 +3,17 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import Toolbar from '@material-ui/core/Toolbar';
 import {Route, Switch} from 'react-router-dom';
-import StartPage from './Pages/StartPage';
 import {getRouteNameById, routes} from './Common/Routes';
 import {Login} from './components/Login/Login';
 import {NotFound} from './components/NotFound';
+import {SuspenseFallback} from './Common/SuspenseFallback/SuspenseFallback';
+import StartPage from './Pages/StartPage';
 
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
 const Music = React.lazy(() => import('./components/Music/Music'));
 const News = React.lazy(() => import('./components/News/News'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
-const DialogsContainer = React.lazy(() => import('./components/Messages/Dialogs'));
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/Dialogs'));
 const ChatPage = React.lazy(() => import('./Pages/ChatPage'));
 
 /**
@@ -38,7 +39,7 @@ export const Content: React.FC = () => {
     return (
         <main className={classes.content}>
             <Toolbar/>
-            <React.Suspense fallback={<div>Загрузка...</div>}>
+            <React.Suspense fallback={<SuspenseFallback/>}>
                 <Switch>
                     <Route exact path="/" component={StartPage}/>
                     <Route path={'/' + getRouteNameById(routes.profile.id) + '/:userId?'} component={ProfileComponent}/>
