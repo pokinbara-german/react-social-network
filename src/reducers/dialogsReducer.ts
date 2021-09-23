@@ -49,7 +49,7 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
         case 'SN/DIALOGS/MESSAGE_SENT':
             return {
                 ...state,
-                messageList: [...state.messageList, {...action.newMessage}]
+                messageList: [...state.messageList, ...getUnescapedMessages([action.newMessage])]
             };
         case 'SN/DIALOGS/DIALOGS_LIST_RECEIVED':
             return {
