@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import {Route, Switch} from 'react-router-dom';
 import {getRouteNameById, routes} from './Common/Routes';
 import {Login} from './components/Login/Login';
-import {NotFound} from './components/NotFound';
+import {NotFound} from './Pages/NotFound';
 import {SuspenseFallback} from './Common/SuspenseFallback/SuspenseFallback';
 import StartPage from './Pages/StartPage';
 
