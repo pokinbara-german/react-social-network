@@ -8,6 +8,7 @@ const useStyles = makeStyles(() =>
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            textAlign: 'center',
             height: '70vh'
         }
     })
