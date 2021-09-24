@@ -1,4 +1,4 @@
-import {Api} from '../components/API/api';
+import {Api} from '../API/api';
 import {baseThunkType, arrayOfNumbers, usersType, stringOrNull} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
 import {Dispatch} from 'redux';

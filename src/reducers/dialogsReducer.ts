@@ -1,6 +1,6 @@
 import {inferActionsType} from '../redux/reduxStore';
 import {baseThunkType, messageListType, userListType} from '../types';
-import {Api} from '../components/API/api';
+import {Api} from '../API/api';
 import he from 'he';
 
 export type initialStateType = {

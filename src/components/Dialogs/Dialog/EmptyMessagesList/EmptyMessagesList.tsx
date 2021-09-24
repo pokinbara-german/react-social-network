@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import {FullPageBlock} from '../../../../Common/FullPageBlock/FullPageBlock';
+import {FullPageBlock} from '../../../Common/FullPageBlock/FullPageBlock';
 
 /**
  * Returns block with helper text.

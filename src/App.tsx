@@ -3,14 +3,14 @@ import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import {useDispatch, useSelector} from "react-redux";
 import {makeInit} from "./reducers/appReducer";
-import Preloader from "./Common/Preloader/Preloader";
+import Preloader from "./components/Common/Preloader/Preloader";
 import {AppHeader} from './components/Header/AppHeader';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
-import {GlobalAlert} from './Common/GlobalAlert/GlobalAlert';
+import {GlobalAlert} from './components/Common/GlobalAlert/GlobalAlert';
 import {Content} from './Content';
-import {getAppInitDoneSelector} from './Common/Selectors/Selectors';
+import {getAppInitDoneSelector} from './selectors/selectors';
 
 const DRAWER_WIDTH = 240;
 

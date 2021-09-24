@@ -7,19 +7,19 @@ import {
     getIsMessagesFetchingSelector,
     getOwnerIdSelector,
     getOwnerPhotosSelector
-} from '../../../Common/Selectors/Selectors';
-import Post from '../../../Common/Post/Post';
+} from '../../../selectors/selectors';
+import Post from '../../Common/Post/Post';
 import Divider from '@material-ui/core/Divider';
-import {AddMessageForm} from '../../../Common/AddMessageForm/AddMessageForm';
+import {AddMessageForm} from '../../Common/AddMessageForm/AddMessageForm';
 import {dialogsActions, sendMessage} from '../../../reducers/dialogsReducer';
-import {PostActions} from '../../../Common/Post/PostActions/PostActions';
-import {MessagesList} from '../../../Common/MessagesList/MessagesList';
+import {PostActions} from '../../Common/Post/PostActions/PostActions';
+import {MessagesList} from '../../Common/MessagesList/MessagesList';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import {userListType} from '../../../types';
 import {MoreDialogMessagesButton} from './MoreDialogMessagesButton/MoreDialogMessagesButton';
 import {GoBackButton} from './GoBackButton/GoBackButton';
 import {EmptyMessagesList} from './EmptyMessagesList/EmptyMessagesList';
-import Preloader from '../../../Common/Preloader/Preloader';
+import Preloader from '../../Common/Preloader/Preloader';
 
 type dialogPropsType = {
     currentDialogId: number

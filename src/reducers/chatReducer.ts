@@ -1,6 +1,6 @@
 import {inferActionsType} from '../redux/reduxStore';
 import {baseThunkType} from '../types';
-import {chatApi, messageType} from '../components/API/chat-api';
+import {chatApi, messageType} from '../API/chat-api';
 import {Dispatch} from 'redux';
 
 /**

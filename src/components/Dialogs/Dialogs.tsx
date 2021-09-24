@@ -12,9 +12,9 @@ import {MatchParams} from '../../types';
 import {NoDialog} from './NoDialog/NoDialog';
 import {Dialog} from './Dialog/Dialog';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
-import {getIsDialogsFetchingSelector} from '../../Common/Selectors/Selectors';
+import {getIsDialogsFetchingSelector} from '../../selectors/selectors';
 import withAuthRedirect from '../../Hocs/withAuthRedirect';
-import Preloader from '../../Common/Preloader/Preloader';
+import Preloader from '../Common/Preloader/Preloader';
 import {DialogsList} from './DialogsList/DialogsList';
 
 type matchType = RouteComponentProps<MatchParams>;

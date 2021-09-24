@@ -1,6 +1,6 @@
 import React from 'react';
-import {routes} from '../../Common/Routes';
-import {NotRealized} from '../../Common/NotRealized/NotRealized';
+import {routes} from '../../utils/routes';
+import {NotRealized} from '../Common/NotRealized/NotRealized';
 
 /**
  * Returns complete page of News route.

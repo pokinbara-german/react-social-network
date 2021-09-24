@@ -1,4 +1,4 @@
-import {Api} from '../components/API/api';
+import {Api} from '../API/api';
 import {baseThunkType, contactsType, photosType, postsDataType, profileType} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
 import {nanoid} from 'nanoid';

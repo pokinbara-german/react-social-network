@@ -1,4 +1,4 @@
-import {appStateType} from '../../redux/reduxStore';
+import {appStateType} from '../redux/reduxStore';
 
 export function getUsersSelector (state: appStateType) {
     return state.usersPage.users;

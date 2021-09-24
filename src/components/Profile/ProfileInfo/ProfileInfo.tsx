@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 import React, {useState} from 'react';
-import Preloader from "../../../Common/Preloader/Preloader";
+import Preloader from "../../Common/Preloader/Preloader";
 import ProfileStatus from "./ProfileStatus";
 import AdditionalInfo from "./AdditionalInfo/AdditionalInfo";
 import AdditionalInfoForm from "./AdditionalInfoForm/AdditionalInfoForm";

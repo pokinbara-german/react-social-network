@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
-import {profileActions} from '../../../reducers/profileReducer';
+import {profileActions} from '../../../../reducers/profileReducer';
 import Tooltip from '@material-ui/core/Tooltip';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';

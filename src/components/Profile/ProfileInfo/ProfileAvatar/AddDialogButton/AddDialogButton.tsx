@@ -2,7 +2,7 @@ import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {startRefreshDialog} from '../../../../../reducers/dialogsReducer';
-import {getRouteNameById, routes} from '../../../../../Common/Routes';
+import {getRouteNameById, routes} from '../../../../../utils/routes';
 import Button from '@material-ui/core/Button';
 
 type addDialogButtonPropsType = {

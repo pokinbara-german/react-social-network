@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 import React from 'react';
-import Post from '../../../Common/Post/Post';
+import Post from '../../Common/Post/Post';
 import {postsDataType, stringOrNull} from '../../../types';
 import List from '@material-ui/core/List';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {AddMessageForm} from '../../../Common/AddMessageForm/AddMessageForm';
+import {AddMessageForm} from '../../Common/AddMessageForm/AddMessageForm';
 import {profileActions} from '../../../reducers/profileReducer';
 import Typography from '@material-ui/core/Typography';
-import {PostActions} from '../../../Common/Post/PostActions/PostActions';
+import {PostActions} from '../../Common/Post/PostActions/PostActions';
 
 export type myPostsPropsType = {
     postsData: Array<postsDataType>,

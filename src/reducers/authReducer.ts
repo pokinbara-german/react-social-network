@@ -1,4 +1,4 @@
-import {Api} from '../components/API/api';
+import {Api} from '../API/api';
 import {baseThunkType, captchaResultCodeType, stringOrNull} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
 import {emptyStatusCallback, setStatusType} from '../utils/formikSetters';

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import {createField, FormikCheckbox, FormikField} from '../../../../../Common/FormComponents/FieldsComponentsFormik';
+import {createField, FormikCheckbox, FormikField} from '../../../../Common/FormComponents/FieldsComponentsFormik';
 import {required, validatorCreator} from '../../../../../utils/validators';
 import {ErrorMessage} from 'formik';
 import {fieldNamesType} from '../AdditionalInfoForm';

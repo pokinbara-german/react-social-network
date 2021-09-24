@@ -1,5 +1,5 @@
 import React from 'react';
-import Preloader from '../../Common/Preloader/Preloader';
+import Preloader from '../Common/Preloader/Preloader';
 import User from './User/User';
 import {filterType, follow, unfollow} from '../../reducers/usersReducer';
 import UsersSearchForm from './UsersSearchForm/UsersSearchForm';
@@ -8,7 +8,7 @@ import {
     getFollowingInProgressSelector,
     getIsUsersFetchingSelector,
     getUsersSelector
-} from '../../Common/Selectors/Selectors';
+} from '../../selectors/selectors';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import {createStyles, makeStyles} from '@material-ui/core';
