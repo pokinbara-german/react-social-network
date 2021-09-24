@@ -9,9 +9,9 @@ import {NotFound} from './Pages/NotFound';
 import {SuspenseFallback} from './Common/SuspenseFallback/SuspenseFallback';
 import StartPage from './Pages/StartPage';
 
-const Settings = React.lazy(() => import('./components/Settings/Settings'));
-const Music = React.lazy(() => import('./components/Music/Music'));
-const News = React.lazy(() => import('./components/News/News'));
+const Settings = React.lazy(() => import('./Pages/Settings/Settings'));
+const Music = React.lazy(() => import('./Pages/Music/Music'));
+const News = React.lazy(() => import('./Pages/News/News'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/Dialogs'));
 const ChatPage = React.lazy(() => import('./Pages/ChatPage'));

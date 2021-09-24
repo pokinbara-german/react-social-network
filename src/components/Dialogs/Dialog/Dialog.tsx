@@ -115,7 +115,7 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
                 ? <MessagesList messages={messagesComponentsList} height={BLOCK_HEIGHT}/>
                 : isMessagesFetching
                     ? <div style={{height: BLOCK_HEIGHT}}><Preloader/></div>
-                    : <EmptyMessagesList height={BLOCK_HEIGHT}/>
+                    : <EmptyMessagesList/>
             }
             <Divider/>
             <AddMessageForm blockWidth={'30ch'}
