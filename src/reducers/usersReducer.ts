@@ -115,13 +115,14 @@ export const userActions = {
  */
 export const getUsers = (filter: filterType): thunkType => {
     return async (dispatch, getState) => {
-        const currentPage = getState().usersPage.currentPage;
-        const pageSize = getState().usersPage.pageSize;
-
         dispatch(userActions.updateUsersFetching(true));
+
         if (filter !== getState().usersPage.filter) {
             dispatch(userActions.setSearchFilter(filter));
         }
+
+        const currentPage = getState().usersPage.currentPage;
+        const pageSize = getState().usersPage.pageSize;
 
         let data = await Api.Users.getUsers(pageSize, currentPage, filter);
 
