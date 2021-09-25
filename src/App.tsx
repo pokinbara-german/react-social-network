@@ -1,84 +1,105 @@
-import React, {Suspense} from "react";
+import React from "react";
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import {Route} from 'react-router-dom';
-import ProfileContainer from "./components/Profile/ProfileContainer";
-import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from "./components/Login/Login";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {makeInit} from "./reducers/appReducer";
-import Preloader from "./Common/Preloader/Preloader";
-import StartPage from "./components/StartPage/StartPage";
-import {appStateType} from './redux/reduxStore';
+import Preloader from "./components/Common/Preloader/Preloader";
+import {AppHeader} from './components/Header/AppHeader';
+import {createStyles, makeStyles, Theme} from '@material-ui/core';
+import Drawer from '@material-ui/core/Drawer';
+import Toolbar from '@material-ui/core/Toolbar';
+import {GlobalAlert} from './components/Common/GlobalAlert/GlobalAlert';
+import {Content} from './Content';
+import {getAppInitDoneSelector} from './selectors/selectors';
 
-const Settings = React.lazy(() => import('./components/Settings/Settings'));
-const Music = React.lazy(() => import('./components/Music/Music'));
-const News = React.lazy(() => import('./components/News/News'));
-const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
-const MessagesContainer = React.lazy(() => import('./components/Messages/MessagesContainer'));
+const DRAWER_WIDTH = 240;
 
-type mapStatePropsType = {
-    isInitDone: boolean
-}
+/**
+ * Returns whole app (header, menu and needed page).
+ * @constructor
+ */
+const App: React.FC = () => {
+    const dispatch = useDispatch();
+    const isInitDone = useSelector(getAppInitDoneSelector);
+    const [isNotificationOpen, setNotificationOpen] = React.useState(false);
+    const [notificationText, setNotificationText] = React.useState('');
+    const [isMenuOpen, setMenuOpen] = React.useState<boolean>(false);
 
-type mapDispatchPropsType = {
-    makeInit: () => void
-}
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            root: {
+                display: 'flex',
+            },
+            drawer: {
+                width: DRAWER_WIDTH,
+                [theme.breakpoints.down('md')]: {
+                    width: theme.spacing(7) + 1,
+                },
+                [theme.breakpoints.down('xs')]: {
+                    display: isMenuOpen ? '' : 'none',
+                },
+                flexShrink: 0,
+            },
+            drawerPaper: {
+                width: DRAWER_WIDTH,
+                [theme.breakpoints.down('md')]: {
+                    width: theme.spacing(7) + 1,
+                },
+            },
+        }),
+    );
 
-type ownPropsType = {};
-
-type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType;
-
-class App extends React.Component<propsType> {
-    catchGenericError(reason: PromiseRejectionEvent) {
+    /**
+     * Catch error reason and set alert-data.
+     * @param reason
+     */
+    const catchGenericError = (reason: PromiseRejectionEvent) => {
         let response = reason.reason.response;
-        //TODO: переписать на нормальный вывод ошибки
-        alert('ERROR: сервер вернул ответ ' + response.status + ' ' + response.statusText);
-    }
 
-    componentDidMount() {
-        window.addEventListener('unhandledrejection', this.catchGenericError);
-        this.props.makeInit();
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('unhandledrejection', this.catchGenericError);
-    }
-
-    render() {
-        let MessagesComponent = () =>  <MessagesContainer/>;
-        let ProfileComponent = () => <ProfileContainer/>;
-
-        if (!this.props.isInitDone) {
-            return <Preloader/>
+        if (response) {
+            setNotificationText('ERROR: server returned ' + response.status + ' ' + response.statusText);
+        } else {
+            setNotificationText('ERROR: server is not respond!');
         }
 
-        return (
-            <div className="app-wrapper">
-                <HeaderContainer/>
-                <Navbar/>
-                <div className="content">
-                    <Suspense fallback={<div>Загрузка...</div>}>
-                        <Route exact path="/" component={StartPage}/>
-                        <Route path="/profile/:userId?" component={ProfileComponent}/>
-                        <Route path="/messages" component={MessagesComponent}/>
-                        <Route path="/news" component={News}/>
-                        <Route path="/music" component={Music}/>
-                        <Route path="/users" component={UsersContainer}/>
-                        <Route path="/settings" component={Settings}/>
-                        <Route path="/login" component={Login}/>
-                    </Suspense>
-                </div>
-            </div>
-        );
+        setNotificationOpen(true);
+    };
+
+    React.useEffect(() => {
+        window.addEventListener('unhandledrejection', catchGenericError);
+        dispatch(makeInit());
+
+        // returned function will be called on component unmount
+        return () => {
+            window.removeEventListener('unhandledrejection', catchGenericError);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const classes = useStyles();
+
+    if (!isInitDone) {
+        return <Preloader/>
     }
+
+    function onMenuClick() {
+        setMenuOpen(!isMenuOpen);
+    }
+
+    return (
+        <div className={classes.root}>
+            <GlobalAlert isOpen={isNotificationOpen}
+                         text={notificationText}
+                         setNotificationOpen={setNotificationOpen}
+            />
+            <AppHeader onMenuClick={onMenuClick}/>
+            <Drawer className={classes.drawer} variant='permanent' classes={{paper: classes.drawerPaper}}>
+                <Toolbar />
+                <Navbar onMenuClick={onMenuClick}/>
+            </Drawer>
+            <Content/>
+        </div>
+    );
 }
 
-let mapStateToProps = (state: appStateType): mapStatePropsType => {
-    return {isInitDone: state.app.initDone}
-}
-
-export default connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, appStateType>(
-    mapStateToProps,
-    {makeInit}
-)(App);
+export default App

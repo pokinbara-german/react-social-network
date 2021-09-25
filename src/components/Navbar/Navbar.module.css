@@ -8,18 +8,7 @@ and open the template in the editor.
     Author     : shadow
 */
 
-.nav {
-    grid-area: nav;
-    background-color: #00f;
-    padding: 20px;
-}
-
-.item a {
-    color: white;
-    text-decoration: none;
-}
-
-.item a.active {
-    color: gold;
-    font-weight: 900;
+.drawerContainer {
+    overflow: auto;
+    overflow-x: hidden;
 }

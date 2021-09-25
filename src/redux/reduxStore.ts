@@ -5,7 +5,7 @@ import usersReducer from "../reducers/usersReducer";
 import authReducer from "../reducers/authReducer";
 import appReducer from "../reducers/appReducer";
 import thunk from "redux-thunk";
-import {reducer as formReducer} from 'redux-form'
+import chatReducer from '../reducers/chatReducer';
 
 const rootReducer = combineReducers({
     profilePage: profileReducer,
@@ -13,12 +13,11 @@ const rootReducer = combineReducers({
     usersPage: usersReducer,
     auth: authReducer,
     app: appReducer,
-    form: formReducer
+    chat: chatReducer
 });
 
 type rootReducerType = typeof rootReducer;
 export type appStateType = ReturnType<rootReducerType>;
-
 export type inferActionsType<T> = T extends {[key: string]: (...args: any[]) => infer U} ? U : never;
 
 let store = createStore(rootReducer, applyMiddleware(thunk));

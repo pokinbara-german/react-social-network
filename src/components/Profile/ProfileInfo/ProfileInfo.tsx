@@ -3,77 +3,83 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import React, {ChangeEvent, useState} from 'react';
-import styles from './ProfileInfo.module.css';
-import Preloader from "../../../Common/Preloader/Preloader";
-import userMale from "../../../assets/images/user-male.png"
+import React, {useState} from 'react';
+import Preloader from "../../Common/Preloader/Preloader";
 import ProfileStatus from "./ProfileStatus";
 import AdditionalInfo from "./AdditionalInfo/AdditionalInfo";
 import AdditionalInfoForm from "./AdditionalInfoForm/AdditionalInfoForm";
-import {profileType} from '../../../reducers/types/types';
+import {ProfileAvatar} from './ProfileAvatar/ProfileAvatar';
+import Typography from '@material-ui/core/Typography';
+import ProfileBackground from '../../../assets/images/social-network-pattern-background.jpg';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {useSelector} from 'react-redux';
+import {getProfileSelector} from '../../../selectors/selectors';
 
 export type propsType = {
-    profile: profileType | null,
-    status: string,
     isOwner: boolean,
-    statusFetching: boolean,
-    updateStatus: (status: string) => void,
-    savePhoto: (file: File) => void,
-    saveProfile: (profile: profileType) => any,
+    blockWidth: string
 }
 
+const wallpaperBlend = 'linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95))';
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        wallpaper: {
+            backgroundImage: `${wallpaperBlend}, url(${ProfileBackground})`,
+            backgroundSize: '40%',
+            margin: theme.spacing(-3)
+        },
+        profileDescriptionWrapper: {
+            display: 'flex',
+            flexDirection: 'column',
+            flexGrow: 1,
+            margin: theme.spacing(0, 4),
+        },
+        profileDescription: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            padding: theme.spacing(1)
+        }
+    }),
+);
+
+/**
+ * Returns profile-block with avatar, status and profile info.
+ * @param {propsType} props - props object
+ * @constructor
+ */
 const ProfileInfo: React.FC<propsType> = (props) => {
+    const profile = useSelector(getProfileSelector);
+    const largePhoto = profile ? profile.photos.large : null;
+    const userId = profile ? profile.userId : 0;
+    const classes = useStyles();
+
     let [isEditMode, setEditMode] = useState(false);
 
-    if (!props.profile) {
+    if (!profile) {
         return <Preloader/>
     }
 
-    let formInitialValues = {
-        fullName: props.profile.fullName,
-        aboutMe: props.profile.aboutMe,
-        lookingForAJob: props.profile.lookingForAJob,
-        lookingForAJobDescription: props.profile.lookingForAJobDescription,
-        contacts: props.profile.contacts
-    }
-    let profileAvatarLarge = props.profile.photos.large || userMale;
-
-    function onFileChange(event: ChangeEvent<HTMLInputElement>) {
-        if (!event.target.files) {
-            return;
-        }
-
-        props.savePhoto(event.target.files[0]);
-    }
-
-    function onSubmit (formData: profileType) {
-        props.saveProfile(formData).then(() => {
-            setEditMode(false);
-        }).catch(() => {});
-    }
-
     return (
-        <div>
-            <div>
-                <img className={styles.wallpaper} alt='wallpaper' src={'https://miro.medium.com/max/3182/1*ZdpBdyvqfb6qM1InKR2sQQ.png'}/>
-            </div>
-            <div className={styles.profileDescription}>
-                <div>
-                    <img className={styles.avatar} alt='ava' src={profileAvatarLarge}/>
-                    {props.isOwner && <input type={'file'} onChange={onFileChange}/>}
-                </div>
-                <div className={styles.profileDescriptionWrapper}>
-                    <span className={styles.name}>{props.profile.fullName}</span>
-                    <ProfileStatus status={props.status} updateStatus={props.updateStatus}
-                                           statusFetching={props.statusFetching}/>
+        <div className={classes.wallpaper}>
+            <div className={classes.profileDescription}>
+                <ProfileAvatar largePhoto={largePhoto} isOwner={props.isOwner} userId={userId}/>
+                <div className={classes.profileDescriptionWrapper}>
+                    <Typography variant='h4'>{profile?.fullName}</Typography>
+                    <ProfileStatus isOwner={props.isOwner}
+                                   blockWidth={props.blockWidth}
+                    />
                     {isEditMode
-                            ? <AdditionalInfoForm onChancel={() => setEditMode(false)} contacts={props.profile.contacts} onSubmit={onSubmit} initialValues={formInitialValues}/>
-                            : <AdditionalInfo aboutMe={props.profile.aboutMe}
-                                              lookingForAJob={props.profile.lookingForAJob}
-                                              lookingForAJobDescription={props.profile.lookingForAJobDescription}
-                                              contacts={props.profile.contacts}
+                            ? <AdditionalInfoForm onChancel={() => setEditMode(false)}
+                                                  profile={profile}
+                            />
+                            : <AdditionalInfo aboutMe={profile.aboutMe}
+                                              lookingForAJob={profile.lookingForAJob}
+                                              lookingForAJobDescription={profile.lookingForAJobDescription}
+                                              contacts={profile.contacts}
                                               setEditMode={() => setEditMode(true)}
                                               isOwner={props.isOwner}
+                                              blockWidth={props.blockWidth}
                             />
                     }
                 </div>

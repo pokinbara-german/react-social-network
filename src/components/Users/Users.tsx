@@ -1,17 +1,32 @@
 import React from 'react';
-import styles from './Users.module.css';
-import Preloader from '../../Common/Preloader/Preloader';
+import Preloader from '../Common/Preloader/Preloader';
 import User from './User/User';
-import {arrayOfNumbers, usersType} from '../../reducers/types/types';
+import {filterType, follow, unfollow} from '../../reducers/usersReducer';
+import UsersSearchForm from './UsersSearchForm/UsersSearchForm';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+    getFollowingInProgressSelector,
+    getIsUsersFetchingSelector,
+    getUsersHasMoreSelector,
+    getUsersSelector
+} from '../../selectors/selectors';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import {createStyles, makeStyles} from '@material-ui/core';
 
 type usersPropsType = {
-    usersPage: Array<usersType>,
-    isUsersFetching: boolean,
-    followingInProgress: arrayOfNumbers,
-    followUser: (userId: number) => void,
-    unfollowUser: (userId: number) => void,
-    onPageChanged: () => void
+    onPageChanged: (filter?: filterType) => void
 }
+
+const useStyles = makeStyles(() =>
+    createStyles({
+        usersWrapper: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center'
+        }
+    }),
+);
 
 /**
  * Returns list of users and one button for update it's list.
@@ -20,29 +35,52 @@ type usersPropsType = {
  * @constructor
  */
 const Users: React.FC<usersPropsType> = (props) => {
-    let users = props.usersPage.map((user) =>
+    let usersPage = useSelector(getUsersSelector);
+    let isUsersFetching = useSelector(getIsUsersFetchingSelector);
+    let followingInProgress = useSelector(getFollowingInProgressSelector);
+    let isHasMore = useSelector(getUsersHasMoreSelector);
+
+    const classes = useStyles();
+
+    const dispatch = useDispatch();
+
+    const followUser = (userId: number) => {
+        dispatch(follow(userId));
+    }
+
+    const unfollowUser = (userId: number) => {
+        dispatch(unfollow(userId));
+    }
+
+    const users = usersPage.map((user) =>
         <User key={'User' + user.id}
               user={user}
-              unfollowUser={props.unfollowUser}
-              followUser={props.followUser}
-              followingInProgress={props.followingInProgress}
+              unfollowUser={unfollowUser}
+              followUser={followUser}
+              followingInProgress={followingInProgress}
         />
     );
 
-    let MoreUsersComponent = () => {
+    const MoreUsersComponent = () => {
         return (
-            <div className={styles.moreUsersWrapper}>
-                <button onClick={() => props.onPageChanged()}>More Users</button>
-            </div>
+            <Box textAlign={'center'} padding={'20px'}>
+                <Button variant='contained' color='primary' onClick={() => props.onPageChanged()}>More Users</Button>
+            </Box>
         );
     }
 
     return (
         <div>
-            {users}
-            {props.isUsersFetching ? <Preloader/> : <MoreUsersComponent/>}
+            <UsersSearchForm onPageChanged={props.onPageChanged}/>
+            <div className={classes.usersWrapper}>
+                {users}
+            </div>
+            {isUsersFetching
+                ? <Preloader/>
+                : isHasMore && <MoreUsersComponent/>
+            }
         </div>
     );
-}
+};
 
 export default Users;

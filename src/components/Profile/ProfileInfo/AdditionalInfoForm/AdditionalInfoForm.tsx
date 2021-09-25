@@ -1,86 +1,133 @@
 import React from "react";
-import styles from "./AdditionalInfoForm.module.css";
-import {createField, Input, TextArea} from "../../../../Common/FormComponents/FieldsComponents/FieldsComponents";
-import {InjectedFormProps, reduxForm} from "redux-form";
-import {required} from "../../../../utils/validators";
-import {contactsType, profileType} from '../../../../reducers/types/types';
+import {contactsType, profileType} from '../../../../types';
+import Button from '@material-ui/core/Button';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {FormikHelpers, FormikProvider, useFormik} from 'formik';
+import {useDispatch} from 'react-redux';
+import {saveProfile} from '../../../../reducers/profileReducer';
+import {FormBasicInfo, FormContactsInfo} from './AdditionalInfoParts/AdditionalInfoParts';
 
-type formOwnPropsType = {
-    contacts: contactsType,
+type propsType = {
+    profile: profileType,
     onChancel: () => void
 }
 
 type formDataType = profileType;
-type fieldNamesType = keyof formDataType;
+export type fieldNamesType = keyof formDataType;
 
-
-const AdditionalInfoForm: React.FC<InjectedFormProps<formDataType, formOwnPropsType> & formOwnPropsType> = (props) => {
-    return (
-        <form className={styles.additionalInfo} onSubmit={props.handleSubmit}>
-            {props.error && <div className={styles.error}><div>{props.error}</div></div>}
-            <button>Сохранить</button>
-            <button onClick={props.onChancel}>Отмена</button>
-            <div className={styles.row}>
-                <span>Полное имя: </span>
-                {createField<fieldNamesType>(
-                    undefined,
-                    'Ваше имя',
-                    'fullName',
-                    Input,
-                    [required]
-                )}
-            </div>
-            <div className={styles.row}>
-                <span>Обо мне: </span>
-                {createField<fieldNamesType>(
-                    undefined,
-                    'Расскажите о себе',
-                    'aboutMe',
-                    Input,
-                    []
-                )}
-            </div>
-            <div className={styles.row}>
-                <span>Ищу работу: </span>
-                {createField<fieldNamesType>(
-                    undefined,
-                    undefined,
-                    'lookingForAJob',
-                    Input,
-                    [],
-                    {type: 'checkbox'}
-                )}
-            </div>
-            <div className={styles.row}>
-                <span>Навыки: </span>
-                {createField<fieldNamesType>(
-                    undefined,
-                    'Расскажите о навыках',
-                    'lookingForAJobDescription',
-                    TextArea,
-                    []
-                )}
-            </div>
-            <div>
-                <span>Контакты: </span>
-                <div>
-                    {Object.keys(props.contacts).map(key => {
-                        return (
-                            <div key={key} className={styles.contact}><span>{key}:</span>
-                                {createField(
-                                    undefined,
-                                    key,
-                                    'contacts.' + key,
-                                    Input,
-                                    []
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-        </form>
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        additionalInfoForm: {
+            display: 'flex',
+            flexDirection: 'column',
+        },
+        buttonsWrapper: {
+            display: 'flex',
+            justifyContent: 'center',
+            '& > *': {
+                margin: theme.spacing(1),
+            },
+        },
+        infoWrapper: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            '& > *': {
+                margin: theme.spacing(1),
+                flexGrow: 1,
+                flexBasis: '460px',
+            }
+        },
+        statusText: {
+            color: 'red',
+            marginLeft: theme.spacing(1),
+        },
+        errorsWrapper: {
+            display: 'flex',
+            justifyContent: 'center'
+        }
+    }),
 );
+
+/**
+ * Sets every contact value to empty string if it's value is null.
+ * Because Material-UI not allow null as value to input.
+ * @param {contactsType} contacts - object with contacts
+ */
+function normalizeContacts (contacts: contactsType) {
+    for (let contact in contacts) {
+        if (contacts.hasOwnProperty(contact)) {
+            contacts[contact as keyof contactsType] = contacts[contact as keyof contactsType] || '';
+        }
+
+    }
+
+    return contacts;
 }
 
-export default reduxForm<formDataType, formOwnPropsType>({form: 'profileInfo'})(AdditionalInfoForm);
+/**
+ * Returns form with profile-info data.
+ * @param {propsType} props
+ * @constructor
+ */
+const AdditionalInfoForm: React.FC<propsType> = (props) => {
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    let initialValues = props.profile;
+    initialValues.contacts = normalizeContacts(initialValues.contacts);
+
+    const formik = useFormik({
+        initialValues: props.profile,
+        enableReinitialize: true,
+        onSubmit: onSubmit,
+    });
+
+    async function onSubmit (formData: profileType, {setSubmitting, setFieldError, setStatus}: FormikHelpers<profileType>) {
+        let hasApiErrors = '';
+
+        try {
+            await dispatch(saveProfile(formData,  setFieldError, setStatus));
+        }
+        catch (error) {
+            hasApiErrors = error;
+        }
+        finally {
+            setSubmitting(false);
+        }
+
+        if (!hasApiErrors && formik.submitCount > 0) {
+            props.onChancel();
+        }
+    }
+
+    /**
+     * Handler for manually trigger lookingForAJob-checkbox in formik.
+     * Because formik can't trigger Material-UI Checkbox by himself if default value set.
+     */
+    function triggerCheckbox() {
+        formik.setFieldValue("lookingForAJob", !formik.values.lookingForAJob);
+    }
+
+    return (
+        <form className={classes.additionalInfoForm} onSubmit={formik.handleSubmit}>
+            <FormikProvider value={formik}>
+            <div className={classes.infoWrapper}>
+                <FormBasicInfo checked={props.profile.lookingForAJob} triggerCheckbox={triggerCheckbox}/>
+                <FormContactsInfo contacts={props.profile.contacts}/>
+            </div>
+            <div className={classes.errorsWrapper}>
+                <div className={classes.statusText}>{formik.status}</div>
+            </div>
+            <div className={classes.buttonsWrapper}>
+                <Button color='primary'
+                        variant='contained'
+                        type='submit'
+                        disabled={formik.isSubmitting || !formik.isValid || !formik.dirty}
+                >Save</Button>
+                <Button color='secondary' variant='contained' onClick={props.onChancel}>Cancel</Button>
+            </div>
+            </FormikProvider>
+        </form>
+    );
+}
+
+export default AdditionalInfoForm;

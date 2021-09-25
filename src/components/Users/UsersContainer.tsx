@@ -3,80 +3,77 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import {getUsers, follow, unfollow} from '../../reducers/usersReducer';
-import {connect} from 'react-redux';
+import {getUsers, filterType} from '../../reducers/usersReducer';
+import {useDispatch, useSelector} from 'react-redux';
 import Users from './Users';
-import React from 'react';
-import {arrayOfNumbers, usersType} from '../../reducers/types/types';
-import {appStateType} from '../../redux/reduxStore';
+import React, {useEffect} from 'react';
+import {getUsersFilterSelector} from '../../selectors/selectors';
+import {useHistory} from 'react-router-dom';
+import * as queryString from 'querystring';
 
-type mapStatePropsType = {
-    usersPage: Array<usersType>,
-    currentPage: number,
-    pageSize: number,
-    isUsersFetching: boolean,
-    followingInProgress: arrayOfNumbers
-};
-
-type mapDispatchPropsType = {
-    getUsers: (pageSize: number, currentPage: number) => void,
-    follow: (userId: number) => void,
-    unfollow: (userId: number) => void
-};
-
-type ownPropsType = {
-};
-
-type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType;
-
-class UsersComponent extends React.Component<propsType> {
-    /** Gets data for page on component first render */
-    componentDidMount() {
-        if (this.props.usersPage.length === 0) {
-            this.onPageChanged();
-        }
-    }
-
-    /** Gets data from ajax on call and append it to state field */
-    onPageChanged() {
-        this.props.getUsers(this.props.pageSize, this.props.currentPage);
-    }
-
-    render() {
-        return <Users
-            usersPage={this.props.usersPage}
-            onPageChanged={this.onPageChanged.bind(this)}
-            unfollowUser={this.props.unfollow}
-            followUser={this.props.follow}
-            isUsersFetching={this.props.isUsersFetching}
-            followingInProgress={this.props.followingInProgress}
-        />;
-    }
+type queryType = {
+    searchTerm?: string,
+        friend?: string,
 }
 
 /**
- * Returns state fields for connect.
- * @param {appStateType} state - redux state
- * @returns {{usersPage: ([]|*), pageSize: (number|*), currentPage: (number|*)}}
+ * Wrapper component above Users component.
+ * @returns {JSX.Element}
+ * @constructor
  */
-let mapStateToProps = (state: appStateType): mapStatePropsType => {
-    return (
-        {
-            usersPage: state.usersPage.users,
-            currentPage: state.usersPage.currentPage,
-            pageSize: state.usersPage.pageSize,
-            isUsersFetching: state.usersPage.isUsersFetching,
-            followingInProgress: state.usersPage.followingInProgress
+const UsersContainer: React.FC = () => {
+    const filter = useSelector(getUsersFilterSelector);
+    const history = useHistory();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        //TODO: подумать, как можно подхватывать изменения на ходу, а не при старте
+        let parsed: queryType = queryString.parse(history.location.search.substr(1));
+        let newFilter = {...filter};
+
+        newFilter.searchTerm = parsed.searchTerm || null;
+        newFilter.friend = parsed.friend === undefined ? null : parsed.friend === 'true';
+
+        onPageChanged(newFilter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        let query = constructQuery(filter);
+
+        history.push({
+            pathname: history.location.pathname,
+            search: queryString.stringify(query)
+        });
+    }, [filter, history]);
+
+    /**
+     * Constructs query object from filter
+     * @param {filterType} filter - filter object
+     */
+    function constructQuery (filter: filterType) {
+        let query: queryType = {};
+
+        if (filter.searchTerm) {
+            query.searchTerm = filter.searchTerm;
         }
-    );
-};
 
-const mapDispatchToProps: mapDispatchPropsType =  {
-    getUsers,
-    follow,
-    unfollow
+        if (filter.friend !== null) {
+            query.friend = String(filter.friend);
+        }
+
+        return query;
+    }
+
+    /** Gets data from ajax on call and append it to state field */
+    function onPageChanged(newFilter?: filterType) {
+        let actualFilter = newFilter || filter;
+
+        dispatch(getUsers(actualFilter));
+    }
+
+    return <Users onPageChanged={onPageChanged}/>;
 }
-
-const UsersContainer = connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, appStateType>(mapStateToProps, mapDispatchToProps)(UsersComponent);
 
 export default UsersContainer;

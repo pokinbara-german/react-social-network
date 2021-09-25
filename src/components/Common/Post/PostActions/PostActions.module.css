@@ -1,0 +1,13 @@
+.textWithIconWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.textWithIconWrapper .secondRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.textWithIconWrapper .icon {
+    align-self: center;
+}
