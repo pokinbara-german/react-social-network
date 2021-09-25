@@ -1,8 +1,8 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {getDialogsUserListSelector} from '../../../Common/Selectors/Selectors';
-import {Counter} from '../../../Common/Counter/Counter';
-import Post from '../../../Common/Post/Post';
+import {getDialogsUserListSelector} from '../../../selectors/selectors';
+import {Counter} from '../../Common/Counter/Counter';
+import Post from '../../Common/Post/Post';
 import List from '@material-ui/core/List';
 import {createStyles, makeStyles} from '@material-ui/core';
 

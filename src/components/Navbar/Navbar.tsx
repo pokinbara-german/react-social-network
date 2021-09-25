@@ -10,10 +10,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import {getRouteIdByName, getRouteNameById, routes, routesVariants} from '../../Common/Routes';
+import {getRouteIdByName, getRouteNameById, routes, routesVariants} from '../../utils/routes';
 import {useSelector} from 'react-redux';
-import {getNewMessagesCountSelector} from '../../Common/Selectors/Selectors';
-import {Counter} from '../../Common/Counter/Counter';
+import {getNewMessagesCountSelector} from '../../selectors/selectors';
+import {Counter} from '../Common/Counter/Counter';
 
 interface MainMenuItemProps {
     icon: React.ReactElement;

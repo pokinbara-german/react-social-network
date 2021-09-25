@@ -5,8 +5,8 @@ import {
     photosType,
     profileType,
     resultCodesType, stringOrNull, userListType, usersType
-} from "../../types";
-import {filterType} from '../../reducers/usersReducer';
+} from "../types";
+import {filterType} from '../reducers/usersReducer';
 
 /**
  * @const

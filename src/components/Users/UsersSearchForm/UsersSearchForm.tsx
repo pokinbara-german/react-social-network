@@ -2,11 +2,11 @@ import {filterType} from '../../../reducers/usersReducer';
 import React from 'react';
 import {FormikHelpers, FormikProvider, useFormik} from 'formik';
 import {useSelector} from 'react-redux';
-import {getUsersFilterSelector} from '../../../Common/Selectors/Selectors';
+import {getUsersFilterSelector} from '../../../selectors/selectors';
 import Button from '@material-ui/core/Button';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
-import {routes} from '../../../Common/Routes';
-import {createField, FormikField, formikSelect} from '../../../Common/FormComponents/FieldsComponentsFormik';
+import {routes} from '../../../utils/routes';
+import {createField, FormikField, formikSelect} from '../../Common/FormComponents/FieldsComponentsFormik';
 import {validatorCreator} from '../../../utils/validators';
 
 type propsType = {

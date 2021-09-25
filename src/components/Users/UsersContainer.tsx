@@ -7,7 +7,7 @@ import {getUsers, filterType} from '../../reducers/usersReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import Users from './Users';
 import React, {useEffect} from 'react';
-import {getUsersFilterSelector} from '../../Common/Selectors/Selectors';
+import {getUsersFilterSelector} from '../../selectors/selectors';
 import {useHistory} from 'react-router-dom';
 import * as queryString from 'querystring';
 

@@ -1,15 +1,17 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import React from 'react';
-import styles from './News.module.css';
+import {routes} from '../../utils/routes';
+import {NotRealized} from '../Common/NotRealized/NotRealized';
 
+/**
+ * Returns complete page of News route.
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const News = () => {
     return(
         <div>
-            News
+            <h1>{routes.news.title}</h1>
+            <NotRealized/>
         </div>);
 };
 

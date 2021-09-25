@@ -1,12 +1,12 @@
 import React from "react";
 import {Field, FieldProps} from "formik";
-import {validatorType} from "../../utils/validators";
+import {validatorType} from "../../../utils/validators";
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
 import {createStyles, makeStyles} from '@material-ui/core';
-import {getFontsWithEmoji} from '../../utils/fontHelpers';
+import {getFontsWithEmoji} from '../../../utils/fontHelpers';
 
 type elementPropsType = {
     error?: boolean,

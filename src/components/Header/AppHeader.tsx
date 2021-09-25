@@ -7,7 +7,7 @@ import React from 'react';
 import styles from './AppHeader.module.css';
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
-import {getIsAuthSelector, getLoginSelector, getOwnerPhotosSelector} from '../../Common/Selectors/Selectors';
+import {getIsAuthSelector, getLoginSelector, getOwnerPhotosSelector} from '../../selectors/selectors';
 import {logout} from '../../reducers/authReducer';
 import logo from '../../assets/images/logo.svg';
 import userMale from "../../assets/images/user-male.png";

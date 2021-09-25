@@ -1,7 +1,7 @@
 import React from 'react';
 import List from '@material-ui/core/List';
 import {useSelector} from 'react-redux';
-import {getIsMessageSentFetchingSelector} from '../Selectors/Selectors';
+import {getIsMessageSentFetchingSelector} from '../../../selectors/selectors';
 import Preloader from '../Preloader/Preloader';
 
 type messagesListPropsType = {

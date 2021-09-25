@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import {useSelector} from 'react-redux';
-import {getIsAuthSelector} from '../../../Common/Selectors/Selectors';
+import {getIsAuthSelector} from '../../../selectors/selectors';
 
 type userPropsType = {
     user: usersType,

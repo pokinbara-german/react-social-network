@@ -1,6 +1,6 @@
 import {inferActionsType} from '../redux/reduxStore';
 import {baseThunkType, messageListType, userListType} from '../types';
-import {Api} from '../components/API/api';
+import {Api} from '../API/api';
 import he from 'he';
 
 export type initialStateType = {
@@ -49,7 +49,7 @@ const dialogsReducer = (state = initialState, action: actionsType): initialState
         case 'SN/DIALOGS/MESSAGE_SENT':
             return {
                 ...state,
-                messageList: [...state.messageList, {...action.newMessage}]
+                messageList: [...state.messageList, ...getUnescapedMessages([action.newMessage])]
             };
         case 'SN/DIALOGS/DIALOGS_LIST_RECEIVED':
             return {

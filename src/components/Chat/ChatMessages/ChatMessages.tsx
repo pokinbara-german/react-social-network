@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {getChatMessages, getOwnerIdSelector} from '../../Common/Selectors/Selectors';
+import {getChatMessages, getOwnerIdSelector} from '../../../selectors/selectors';
 import Post from '../../Common/Post/Post';
 import {PostActions} from '../../Common/Post/PostActions/PostActions';
 import {MessagesList} from '../../Common/MessagesList/MessagesList';

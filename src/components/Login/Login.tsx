@@ -1,7 +1,7 @@
 import React from "react";
 import {useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
-import {getCaptchaUrlSelector, getIsAuthSelector} from '../../Common/Selectors/Selectors';
+import {getCaptchaUrlSelector, getIsAuthSelector} from '../../selectors/selectors';
 import LoginForm from './LoginForm/LoginForm';
 import Typography from '@material-ui/core/Typography';
 import {createStyles, makeStyles} from '@material-ui/core/styles';

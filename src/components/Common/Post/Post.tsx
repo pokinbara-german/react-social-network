@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 import React from 'react';
-import userMale from "../../assets/images/user-male.png";
-import {stringOrNull} from '../../types';
+import userMale from "../../../assets/images/user-male.png";
+import {stringOrNull} from '../../../types';
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -13,8 +13,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import {NavLink} from 'react-router-dom';
-import {getRouteNameById, routes} from '../Routes';
-import {getFontsWithEmoji} from '../../utils/fontHelpers';
+import {getRouteNameById, routes} from '../../../utils/routes';
+import {getFontsWithEmoji} from '../../../utils/fontHelpers';
 
 type postPropsType = {
     postId: string,

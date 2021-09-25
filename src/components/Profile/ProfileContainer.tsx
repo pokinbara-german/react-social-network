@@ -1,29 +1,21 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import React from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getProfile, getStatus, updateStatus} from "../../reducers/profileReducer";
+import {getProfile, getStatus} from "../../reducers/profileReducer";
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import withAuthRedirect from "../../Hocs/withAuthRedirect";
-import {MatchParams, profileType} from "../../types";
+import {MatchParams} from "../../types";
 import {appStateType} from "../../redux/reduxStore";
 
 type matchType = RouteComponentProps<MatchParams>;
 
 type mapStatePropsType = {
-    profile: profileType | null,
-    status: string,
-    statusFetching: boolean
+    ownerId: string | undefined
 };
 
 type mapDispatchPropsType = {
     getProfile: (userId: number) => void,
     getStatus: (userId: number) => void,
-    updateStatus: (status: string) => void,
 };
 
 type ownPropsType = {
@@ -51,22 +43,22 @@ class ProfileContainer extends React.Component<propsType & matchType> {
         }
     }
     render() {
-        return <Profile {...this.props} isOwner={!this.props.match.params.userId}/>
+        let isUserIdExist = !!this.props.match.params.userId;
+        let isOwner = isUserIdExist ? this.props.match.params.userId === this.props.ownerId : true;
+
+        return <Profile {...this.props} isOwner={isOwner}/>
     }
 }
 
 let mapStateToProps = (state: appStateType) => {
     return {
-        profile: state.profilePage.profile,
-        status: state.profilePage.status,
-        statusFetching: state.profilePage.statusFetching
+        ownerId: state.profilePage.ownerProfile?.userId.toString()
     }
 }
 
 const mapDispatchToProps: mapDispatchPropsType = {
     getProfile,
     getStatus,
-    updateStatus,
 }
 
 export default connect<

@@ -1,25 +1,25 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {sendMessage, startMessagesListening, stopMessagesListening} from '../reducers/chatReducer';
-import {ChatMessages} from '../components/Chat/ChatMessages';
+import {sendMessage, startMessagesListening, stopMessagesListening} from '../../reducers/chatReducer';
+import {ChatMessages} from './ChatMessages/ChatMessages';
 import Divider from '@material-ui/core/Divider';
 import {AddMessageForm} from '../Common/AddMessageForm/AddMessageForm';
-import {getIsChatConnectedSelector} from '../Common/Selectors/Selectors';
-import withAuthRedirect from '../Hocs/withAuthRedirect';
+import {getIsChatConnectedSelector} from '../../selectors/selectors';
+import withAuthRedirect from '../../Hocs/withAuthRedirect';
 
 /**
  * @const
  * @type string
- * @description block max width.
+ * @description form max width.
  */
-const MAX_WIDTH = '30ch';
+const FORM_WIDTH = '52.5ch';
 
 /**
  * Returns whole page of chat.
  * Available only for authorized users.
  * @constructor
  */
-const ChatPage: React.FC = () => {
+const Chat: React.FC = () => {
     const dispatch = useDispatch();
     const isConnected = useSelector(getIsChatConnectedSelector);
 
@@ -35,7 +35,7 @@ const ChatPage: React.FC = () => {
         <div>
             <ChatMessages/>
             <Divider/>
-            <AddMessageForm blockWidth={MAX_WIDTH}
+            <AddMessageForm blockWidth={FORM_WIDTH}
                             sendMessage={sendMessage}
                             buttonText='Send'
                             minTextLength={2}
@@ -46,4 +46,4 @@ const ChatPage: React.FC = () => {
     );
 }
 
-export default withAuthRedirect(ChatPage);
+export default withAuthRedirect(Chat);

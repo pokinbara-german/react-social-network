@@ -1,13 +1,17 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import React from 'react';
-import ProfileInfo, {propsType} from './ProfileInfo/ProfileInfo';
-import MyPostsContainer from "./MyPosts/MyPostsContainer";
+import ProfileInfo from './ProfileInfo/ProfileInfo';
+import MyPosts from './MyPosts/MyPosts';
 
-type profilePropsType = propsType;
+type profilePropsType = {
+    isOwner: boolean,
+}
+
+/**
+ * @const
+ * @type string
+ * @description block width (CSS value, i.e. "10px").
+ */
+const BLOCK_WIDTH = '52.5ch';
 
 /**
  * Whole profile-page with info about user and posts-block.
@@ -17,13 +21,10 @@ type profilePropsType = propsType;
 const Profile: React.FC<profilePropsType> = (props) => {
     return (
         <div>
-            <ProfileInfo profile={props.profile}
-                         status={props.status}
-                         updateStatus={props.updateStatus}
-                         statusFetching={props.statusFetching}
-                         isOwner={props.isOwner}
+            <ProfileInfo isOwner={props.isOwner}
+                         blockWidth={BLOCK_WIDTH}
             />
-            <MyPostsContainer/>
+            <MyPosts blockWidth={BLOCK_WIDTH}/>
         </div>);
 };
 
