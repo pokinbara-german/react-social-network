@@ -7,6 +7,7 @@ export type initialStateType = {
     users: Array<usersType>,
     currentPage: number,
     pageSize: number,
+    isHasMore: boolean,
     isUsersFetching: boolean,
     followingInProgress: arrayOfNumbers,
     filter: filterType
@@ -25,6 +26,7 @@ const initialState: initialStateType = {
     users: [],
     currentPage: 0,
     pageSize: 12,
+    isHasMore: false,
     isUsersFetching: false,
     followingInProgress: [],
     filter: {
@@ -64,13 +66,19 @@ const usersReducer = (state = initialState, action: actionsType): initialStateTy
                 ...state,
                 filter: {...action.filter},
                 users: [],
-                currentPage: 0
+                currentPage: 0,
+                isHasMore: false
             }
         case 'SN/USERS/USERS_LIST_RECEIVED':
             return {
                 ...state,
                 users: [...state.users, ...action.users],
                 currentPage: ++state.currentPage
+            }
+        case 'SN/USERS/COUNT_USERS_CHANGED':
+            return {
+                ...state,
+                isHasMore: state.users.length < action.count
             }
         case 'SN/USERS/UPDATE_IS_USERS_FETCHING':
             return {...state, isUsersFetching: action.isUsersFetching}
@@ -96,6 +104,8 @@ export const userActions = {
     setSearchFilter: (filter: filterType) => ({type: 'SN/USERS/SET_SEARCH_TERM', filter} as const),
     /** Action after users list was received from API */
     usersListReceived: (users: Array<usersType>) => ({type: 'SN/USERS/USERS_LIST_RECEIVED', users} as const),
+    /** Action after received new value of total users */
+    countUsersChanged: (count: number) => ({type: 'SN/USERS/COUNT_USERS_CHANGED', count} as const),
     /** Action which sets status of users list receiving. true - in progress, false - is done */
     updateUsersFetching: (isUsersFetching: boolean) => ({
         type: 'SN/USERS/UPDATE_IS_USERS_FETCHING',
@@ -133,6 +143,7 @@ export const getUsers = (filter: filterType): thunkType => {
         }
 
         dispatch(userActions.usersListReceived(data.items));
+        dispatch(userActions.countUsersChanged(data.totalCount));
     }
 }
 

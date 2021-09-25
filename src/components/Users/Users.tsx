@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
     getFollowingInProgressSelector,
     getIsUsersFetchingSelector,
+    getUsersHasMoreSelector,
     getUsersSelector
 } from '../../selectors/selectors';
 import Button from '@material-ui/core/Button';
@@ -37,6 +38,7 @@ const Users: React.FC<usersPropsType> = (props) => {
     let usersPage = useSelector(getUsersSelector);
     let isUsersFetching = useSelector(getIsUsersFetchingSelector);
     let followingInProgress = useSelector(getFollowingInProgressSelector);
+    let isHasMore = useSelector(getUsersHasMoreSelector);
 
     const classes = useStyles();
 
@@ -73,7 +75,10 @@ const Users: React.FC<usersPropsType> = (props) => {
             <div className={classes.usersWrapper}>
                 {users}
             </div>
-            {isUsersFetching ? <Preloader/> : <MoreUsersComponent/>}
+            {isUsersFetching
+                ? <Preloader/>
+                : isHasMore && <MoreUsersComponent/>
+            }
         </div>
     );
 };

@@ -16,6 +16,10 @@ export function getUsersFilterSelector (state: appStateType) {
     return state.usersPage.filter;
 }
 
+export function getUsersHasMoreSelector (state: appStateType) {
+    return state.usersPage.isHasMore;
+}
+
 export function getIsAuthSelector (state: appStateType) {
     return state.auth.isAuth;
 }
