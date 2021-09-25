@@ -5,26 +5,28 @@ import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {useDispatch, useSelector} from 'react-redux';
+import {getProfileStatusFetchingSelector, getProfileStatusSelector} from '../../../selectors/selectors';
+import {updateStatus} from '../../../reducers/profileReducer';
 
 type propsType = {
-    status: string,
     isOwner: boolean,
-    statusFetching: boolean,
     blockWidth?: string,
-    updateStatus: (status: string) => void
 };
 
 /**
  * Returns status block or input for editing status.
  * @param {propsType} props - props object
- * @param {string} props.status - status text
  * @param {boolean} props.isOwner - is user owner of this page
- * @param {boolean} props.statusFetching - fetching in progress flag
  * @param {string=} props.blockWidth - with of block (optional)
  * @param {function(status: string):void} props.updateStatus - callback for set status
  * @constructor
  */
 const ProfileStatus: React.FC<propsType> = (props) => {
+    const status = useSelector(getProfileStatusSelector);
+    const statusFetching = useSelector(getProfileStatusFetchingSelector);
+    const dispatch = useDispatch();
+
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             statusDiv: {
@@ -48,28 +50,28 @@ const ProfileStatus: React.FC<propsType> = (props) => {
 
     const classes = useStyles();
 
-    let statusText = props.status || 'No status';
+    let statusText = status || 'No status';
 
     let [isStatusEditing, setStatusEditing] = useState(false);
-    let [status, setStatus] = useState(props.status);
+    let [newStatus, setNewStatus] = useState(status);
 
     useEffect(() => {
-        setStatus(props.status);
-    }, [props.status]);
+        setNewStatus(status);
+    }, [status]);
 
     const toggleEditing = () => {
         setStatusEditing(!isStatusEditing);
 
-        if (isStatusEditing && status && (statusText !== status)) {
-            props.updateStatus(status);
+        if (isStatusEditing && newStatus && (statusText !== newStatus)) {
+            dispatch(updateStatus(newStatus));
         }
     }
 
     const onStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setStatus(event.target.value);
+        setNewStatus(event.target.value);
     }
 
-    if (props.statusFetching) {
+    if (statusFetching) {
         return <Preloader notCentered={true}/>
     }
 
@@ -79,7 +81,7 @@ const ProfileStatus: React.FC<propsType> = (props) => {
                        onBlur={toggleEditing}
                        onChange={onStatusChange}
                        className={classes.statusInput}
-                       value={status}
+                       value={newStatus}
                        multiline={true}
             />
           </Tooltip>

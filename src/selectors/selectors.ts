@@ -75,3 +75,19 @@ export function getAppInitDoneSelector (state: appStateType) {
 export function getOwnerPhotosSelector (state: appStateType) {
     return state.profilePage.ownerProfile?.photos;
 }
+
+export function getPostsSelector (state: appStateType) {
+    return state.profilePage.postsData;
+}
+
+export function getProfileSelector (state: appStateType) {
+    return state.profilePage.profile;
+}
+
+export function getProfileStatusSelector (state: appStateType) {
+    return state.profilePage.status;
+}
+
+export function getProfileStatusFetchingSelector (state: appStateType) {
+    return state.profilePage.statusFetching;
+}

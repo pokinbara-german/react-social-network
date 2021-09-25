@@ -31,6 +31,12 @@ type dialogPropsType = {
  * @description height of block.
  */
 const BLOCK_HEIGHT = '70vh';
+/**
+ * @const
+ * @type string
+ * @description width of form.
+ */
+const FORM_WIDTH = '52.5ch';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -118,7 +124,7 @@ export const Dialog: React.FC<dialogPropsType> = (props) => {
                     : <EmptyMessagesList/>
             }
             <Divider/>
-            <AddMessageForm blockWidth={'30ch'}
+            <AddMessageForm blockWidth={FORM_WIDTH}
                             sendMessage={sendMessage}
                             buttonText='Send'
                             minTextLength={2}

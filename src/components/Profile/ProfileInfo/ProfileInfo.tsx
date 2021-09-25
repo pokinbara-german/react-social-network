@@ -8,22 +8,19 @@ import Preloader from "../../Common/Preloader/Preloader";
 import ProfileStatus from "./ProfileStatus";
 import AdditionalInfo from "./AdditionalInfo/AdditionalInfo";
 import AdditionalInfoForm from "./AdditionalInfoForm/AdditionalInfoForm";
-import {profileType} from '../../../types';
 import {ProfileAvatar} from './ProfileAvatar/ProfileAvatar';
 import Typography from '@material-ui/core/Typography';
 import ProfileBackground from '../../../assets/images/social-network-pattern-background.jpg';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {useSelector} from 'react-redux';
+import {getProfileSelector} from '../../../selectors/selectors';
 
 export type propsType = {
-    profile: profileType | null,
-    status: string,
     isOwner: boolean,
-    statusFetching: boolean,
-    updateStatus: (status: string) => void,
+    blockWidth: string
 }
 
 const wallpaperBlend = 'linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95))';
-const blockWidth = '30ch';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -48,41 +45,41 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /**
  * Returns profile-block with avatar, status and profile info.
- * @param {propsType} props - props
+ * @param {propsType} props - props object
  * @constructor
  */
 const ProfileInfo: React.FC<propsType> = (props) => {
+    const profile = useSelector(getProfileSelector);
+    const largePhoto = profile ? profile.photos.large : null;
+    const userId = profile ? profile.userId : 0;
     const classes = useStyles();
 
     let [isEditMode, setEditMode] = useState(false);
 
-    if (!props.profile) {
+    if (!profile) {
         return <Preloader/>
     }
 
     return (
         <div className={classes.wallpaper}>
             <div className={classes.profileDescription}>
-                <ProfileAvatar largePhoto={props.profile.photos.large} isOwner={props.isOwner} userId={props.profile.userId}/>
+                <ProfileAvatar largePhoto={largePhoto} isOwner={props.isOwner} userId={userId}/>
                 <div className={classes.profileDescriptionWrapper}>
-                    <Typography variant='h4'>{props.profile.fullName}</Typography>
-                    <ProfileStatus status={props.status}
-                                   updateStatus={props.updateStatus}
-                                   statusFetching={props.statusFetching}
-                                   isOwner={props.isOwner}
-                                   blockWidth={blockWidth}
+                    <Typography variant='h4'>{profile?.fullName}</Typography>
+                    <ProfileStatus isOwner={props.isOwner}
+                                   blockWidth={props.blockWidth}
                     />
                     {isEditMode
                             ? <AdditionalInfoForm onChancel={() => setEditMode(false)}
-                                                  profile={props.profile}
+                                                  profile={profile}
                             />
-                            : <AdditionalInfo aboutMe={props.profile.aboutMe}
-                                              lookingForAJob={props.profile.lookingForAJob}
-                                              lookingForAJobDescription={props.profile.lookingForAJobDescription}
-                                              contacts={props.profile.contacts}
+                            : <AdditionalInfo aboutMe={profile.aboutMe}
+                                              lookingForAJob={profile.lookingForAJob}
+                                              lookingForAJobDescription={profile.lookingForAJobDescription}
+                                              contacts={profile.contacts}
                                               setEditMode={() => setEditMode(true)}
                                               isOwner={props.isOwner}
-                                              blockWidth={blockWidth}
+                                              blockWidth={props.blockWidth}
                             />
                     }
                 </div>
