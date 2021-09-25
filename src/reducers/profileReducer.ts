@@ -12,7 +12,7 @@ export type initialStateType = {
     status: string
 }
 
-type actionsType = inferActionsType<typeof profileActions>;
+export type actionsType = inferActionsType<typeof profileActions>;
 type thunkType = baseThunkType<actionsType>;
 
 const initialState: initialStateType = {
@@ -73,6 +73,12 @@ const profileReducer = (state = initialState, action: actionsType): initialState
             return {...state, postsData: state.postsData.map((post) => {
                 return post.id === action.postId ? {...post, likes: post.likes+1} : post;
                 })}
+        case 'SN/PROFILE/LOGGED_OUT':
+            return {
+                ...state,
+                profile: null,
+                ownerProfile: null
+            }
         default:
             return state;
     }
@@ -88,6 +94,7 @@ export const profileActions = {
     toggleStatusFetching: () => ({type: 'SN/PROFILE/TOGGLE_STATUS_FETCHING'} as const),
     savePhotoSuccess: (photos: photosType) => ({type: 'SN/PROFILE/SAVE_PHOTO_SUCCESS', photos} as const),
     addLike: (postId: string) => ({type: 'SN/PROFILE/ADD_LIKE', postId} as const),
+    loggedOut: () => ({type: 'SN/PROFILE/LOGGED_OUT'} as const),
 }
 
 /**

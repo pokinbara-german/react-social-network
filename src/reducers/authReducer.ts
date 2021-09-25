@@ -2,6 +2,8 @@ import {Api} from '../API/api';
 import {baseThunkType, captchaResultCodeType, stringOrNull} from '../types';
 import {inferActionsType} from '../redux/reduxStore';
 import {emptyStatusCallback, setStatusType} from '../utils/formikSetters';
+import {profileActions, actionsType as profileActionsType} from './profileReducer';
+import {makeInit} from './appReducer';
 
 export type initialStateType = {
     id: number | null,
@@ -13,7 +15,7 @@ export type initialStateType = {
 }
 
 type actionsType = inferActionsType<typeof authActions>;
-type thunkType = baseThunkType<actionsType, void>;
+type thunkType = baseThunkType<actionsType | profileActionsType, void>;
 
 const initialState: initialStateType = {
     id: null,
@@ -83,7 +85,7 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
         return errorCallback(data.error);
     }
 
-    await dispatch(getAuth());
+    dispatch(makeInit());
     dispatch(authActions.getCaptchaSuccess(null));
 }
 
@@ -98,6 +100,7 @@ export const logout = (): thunkType => async (dispatch) => {
     }
 
     dispatch(authActions.setAuth(null, null, null, false));
+    dispatch(profileActions.loggedOut());
 }
 
 /**
