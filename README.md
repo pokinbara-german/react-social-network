@@ -1,6 +1,17 @@
-# Getting Started with Create React App
+# Description
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project published at: [Social Network demo](https://pokinbara-german.github.io/react-social-network)
+
+Authentification data for tests is:\
+login: free@samuraijs.com\
+password: free
+
+## Quick start
+
+- Clone the repo: `git clone https://github.com/pokinbara-german/react-social-network.git`
+- Run `npm install` to install the Node.js dependencies.
+- Run `cd react-social-network` to enter project directory.
+- Run `npm start` to start local web-server.
 
 ## Available Scripts
 
@@ -27,7 +38,11 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npm run deploy`
+
+Do same that `npm run build` and deploy current project to Github-pages.\
+See documentation about [deployment](https://create-react-app.dev/docs/deployment/#github-pages) for more information.
+
 
 ### `npm run eject`
 
@@ -39,32 +54,35 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Stack
+<a href="https://wikipedia.org/wiki/HTML">
+     <img src="https://user-images.githubusercontent.com/60598547/119217439-c0286e00-bac9-11eb-9c92-93f36757f533.png" 
+          alt="HTML"
+          width="60">
+</a>
+<a href="https://wikipedia.org/wiki/CSS">
+     <img src="https://user-images.githubusercontent.com/60598547/119216744-062f0300-bac5-11eb-8e94-2741e9d464a7.png" 
+          alt="CSS"
+          width="60">
+</a>
+<a href="https://www.typescriptlang.org/">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" 
+          alt="TypeScript"
+          width="50">
+</a>
+<a href="https://reactjs.org/">
+     <img src="https://user-images.githubusercontent.com/60598547/119216771-2d85d000-bac5-11eb-8316-9c42247c485f.png" 
+          alt="React"
+          width="60" 
+          height="60">
+</a>
+<a href="https://redux.js.org/">
+     <img src="https://www.vergic.com/wpsitefiles_de3fxs/wp-content/uploads/2017/04/logo.png" 
+          alt="Redux"
+          width="60">
+</a>
+<a href="https://mui.com/">
+     <img src="https://v4.mui.com/static/logo_raw.svg" 
+          alt="MaterialUI"
+          width="60">
+</a>
