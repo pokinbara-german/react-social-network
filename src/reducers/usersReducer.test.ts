@@ -12,8 +12,13 @@ beforeEach(() => {
         ],
         currentPage: 0,
         pageSize: 10,
+        isHasMore: false,
         isUsersFetching: false,
-        followingInProgress: []
+        followingInProgress: [],
+        filter: {
+            searchTerm: null,
+            friend: null
+        }
     };
 });
 
