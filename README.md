@@ -81,6 +81,11 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
           alt="Redux"
           width="60">
 </a>
+<a href="https://formik.org/">
+     <img src="https://user-images.githubusercontent.com/4060187/61057426-4e5a4600-a3c3-11e9-9114-630743e05814.png" 
+          alt="Formik"
+          width="60">
+</a>
 <a href="https://mui.com/">
      <img src="https://v4.mui.com/static/logo_raw.svg" 
           alt="MaterialUI"
