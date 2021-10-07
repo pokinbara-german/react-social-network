@@ -30,6 +30,7 @@ type propsType = {
  */
 export const ProfileContact: React.FC<propsType> = ({contactTitle, contactInfo}) => {
     let Icon = <div/>;
+    const urlPrefix = contactInfo.indexOf('http') === 0 ? '' : '//';
 
     switch (contactTitle) {
         case 'facebook':
@@ -59,7 +60,7 @@ export const ProfileContact: React.FC<propsType> = ({contactTitle, contactInfo})
     }
 
     return (
-        <IconButton color="primary" component='a' rel={'noreferrer'} href={contactInfo} target={'_blank'}>
+        <IconButton color="primary" component='a' rel={'noreferrer'} href={urlPrefix + contactInfo} target={'_blank'}>
             {Icon}
         </IconButton>
     );
