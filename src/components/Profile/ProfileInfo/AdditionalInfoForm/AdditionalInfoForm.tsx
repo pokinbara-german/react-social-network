@@ -88,7 +88,7 @@ const AdditionalInfoForm: React.FC<propsType> = (props) => {
             await dispatch(saveProfile(formData,  setFieldError, setStatus));
         }
         catch (error) {
-            hasApiErrors = error;
+            hasApiErrors = error as string;
         }
         finally {
             setSubmitting(false);
