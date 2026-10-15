@@ -40,7 +40,7 @@ Your app is ready to be deployed!
 
 ### `npm run deploy`
 
-Do same that `npm run build` and deploy current project to Github-pages.\
+It does the same as `npm run build` and deploys the current project to GitHub Pages.\
 See documentation about [deployment](https://create-react-app.dev/docs/deployment/#github-pages) for more information.
 
 
