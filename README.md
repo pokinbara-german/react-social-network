@@ -66,7 +66,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
           width="60">
 </a>
 <a href="https://www.typescriptlang.org/">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" 
+    <img src="https://www.typescriptlang.org/icons/icon-512x512.png" 
           alt="TypeScript"
           width="50">
 </a>
@@ -77,7 +77,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
           height="60">
 </a>
 <a href="https://redux.js.org/">
-     <img src="https://www.vergic.com/wpsitefiles_de3fxs/wp-content/uploads/2017/04/logo.png" 
+     <img src="https://redux.js.org/img/redux.svg" 
           alt="Redux"
           width="60">
 </a>
