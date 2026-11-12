@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getIsAuthSelector, getLoginSelector, getOwnerPhotosSelector} from '../../selectors/selectors';
 import {logout} from '../../reducers/authReducer';
 import logo from '../../assets/images/logo.svg';
-import userMale from "../../assets/images/user-male.png";
+import userMale from '../../assets/images/user-male.png';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
@@ -19,6 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import { useLocation } from 'react-router-dom';
 
 type appHeaderPropsType = {
     onMenuClick: () => void
@@ -64,6 +65,7 @@ export const AppHeader: React.FC<appHeaderPropsType> = (props) => {
     const isAuth = useSelector(getIsAuthSelector);
     const login = useSelector(getLoginSelector);
     const ownerPhotos = useSelector(getOwnerPhotosSelector);
+    const location = useLocation();
 
     const dispatch = useDispatch();
 
@@ -96,7 +98,9 @@ export const AppHeader: React.FC<appHeaderPropsType> = (props) => {
                                     <ExitToAppOutlinedIcon/>
                                 </IconButton>
                             </div>
-                            : <NavLink to='/login' className={styles.loginLink}>Login</NavLink>
+                            : location.pathname === '/login'
+                                ? null
+                                : <NavLink to='/login' className={styles.loginLink}>Login</NavLink>
                     }
                 </div>
             </Toolbar>
