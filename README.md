@@ -11,7 +11,9 @@ password: free
 - Clone the repo: `git clone https://github.com/pokinbara-german/react-social-network.git`
 - Run `npm install` to install the Node.js dependencies.
 - Run `cd react-social-network` to enter project directory.
-- Run `npm start` to start local web-server.
+- Run `npm start` to start local web-server.\
+  (You should use the prefix `NODE_OPTIONS=--openssl-legacy-provider` before running `npm start`, `npm run build` and similar commands,\
+  if you are using Node.js 20. e.g. `NODE_OPTIONS=--openssl-legacy-provider npm start`)
 
 ## Available Scripts
 
