@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 import React from 'react';
-import userMale from "../../../assets/images/user-male.png";
+import userMale from '../../../assets/images/user-male.png';
 import {stringOrNull} from '../../../types';
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
